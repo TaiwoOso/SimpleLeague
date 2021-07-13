@@ -21,6 +21,8 @@ android {
 
         // should correspond to key/value pairs inside the file
         buildConfigField("String", "RIOT_KEY", apikeyProperties['RIOT_KEY'])
+        buildConfigField("String", "PARSE_APPLICATION_ID", apikeyProperties['PARSE_APPLICATION_ID'])
+        buildConfigField("String", "PARSE_CLIENT_KEY", apikeyProperties['PARSE_CLIENT_KEY'])
     }
 
     buildTypes {

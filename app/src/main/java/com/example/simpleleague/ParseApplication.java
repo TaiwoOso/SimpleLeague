@@ -1,6 +1,9 @@
 package com.example.simpleleague;
 
+import com.example.simpleleague.models.Champion;
 import com.parse.Parse;
+import com.parse.ParseObject;
+
 import android.app.Application;
 
 public class ParseApplication extends Application {
@@ -10,9 +13,13 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+
+        // Register parse models
+        ParseObject.registerSubclass(Champion.class);
+
         Parse.initialize(new Parse.Configuration.Builder(this)
-                .applicationId("fa9c9CXfrCUaoWNaTeNVH5xHHmJ0SsqWuYwKndZd")
-                .clientKey("o3RWfrwKcAKMvtmOZNLPFnjMLxU0xNfWWYX74CzP")
+                .applicationId(BuildConfig.PARSE_APPLICATION_ID)
+                .clientKey(BuildConfig.PARSE_CLIENT_KEY)
                 .server("https://parseapi.back4app.com")
                 .build()
         );
