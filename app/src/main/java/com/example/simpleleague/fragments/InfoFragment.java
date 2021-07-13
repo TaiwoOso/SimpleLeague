@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +64,14 @@ public class InfoFragment extends Fragment {
 
         // Get the champions and notify adapter
         queryChampions();
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
+            }
+        }, 20000);
+
 //        for (Champion champion : champions) {
 //            Log.i(TAG, champion.getName()+": "+champion.getImageUrl());
 //        }
@@ -87,12 +96,16 @@ public class InfoFragment extends Fragment {
                         champion.setImageUrl(champion_image_url);
                         champions.add(champion);
 
-                        Log.i(TAG, key+": "+champion_image_url);
+//                        Log.i(TAG, key+": "+champion_image_url);
                     }
                 } catch (Exception e) {
                     Log.e(TAG, e.getMessage(), e);
                 }
-                adapter.notifyDataSetChanged();
+                Log.i(TAG, "Finished!");
+//                adapter.notifyDataSetChanged();
+//                for (Champion champion : champions) {
+//                    Log.i(TAG, champion.getName()+": "+champion.getImageUrl());
+//                }
             }
         });
         thread.start();
