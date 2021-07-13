@@ -44,6 +44,10 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         return champions.size();
     }
 
+    public void addAll(List<Champion> list) {
+        champions.addAll(list);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private View rootView;

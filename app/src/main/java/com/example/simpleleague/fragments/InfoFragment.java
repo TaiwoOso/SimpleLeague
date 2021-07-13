@@ -16,9 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.ChampionsAdapter;
 import com.example.simpleleague.models.Champion;
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
@@ -46,6 +48,7 @@ public class InfoFragment extends Fragment {
     private RecyclerView rvChampions;
     private List<Champion> champions;
     private ChampionsAdapter adapter;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,12 +71,58 @@ public class InfoFragment extends Fragment {
         rvChampions.setLayoutManager(layout);
 
         // Get the champions from Parse and notify adapter
-        queryChampions();
+        queryChampions(0);
+
+        // Load more champions during scrolling
+        // Retain an instance so that you can call `resetState()` for fresh searches
+        scrollListener = new EndlessRecyclerViewScrollListener(layout) {
+            @Override
+            public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                loadNextChampionsFromParse(skips);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        rvChampions.addOnScrollListener(scrollListener);
     }
 
-    private void queryChampions() {
+    // Append the next "page" of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    private void loadNextChampionsFromParse(int skips) {
+        // Send an API request to retrieve appropriate "paginated" data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
+        queryChampions(skips);
+    }
+
+    private void queryChampions(int skips) {
         // Specify which class to query
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
+        // limit query to [limit] champions
+        int limit = 20;
+        query.setLimit(limit);
+        // skip this amount
+        query.setSkip(skips);
+        query.findInBackground(new FindCallback<Champion>() {
+            @Override
+            public void done(List<Champion> champions, ParseException e) {
+                // error checking
+                if (e != null) {
+                    Log.e(TAG, "Issue with retrieving champions", e);
+                    return;
+                }
+                // log champions retrieved
+                for (Champion champion : champions) {
+                    Log.i(TAG, champion.getName()+" retrieved!");
+                }
+                // save received posts to list and notify adapter of new data
+                adapter.addAll(champions);
+                adapter.notifyItemRangeInserted(skips, skips+limit);
+            }
+        });
     }
 
 //    // Gets the champions from Riot's DataDragon -- Clear Parse Database first
