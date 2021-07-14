@@ -4,6 +4,11 @@
 
 
     <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/ic_user"
+        android:title="Profile"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_info"
         android:icon="@drawable/ic_info"
         android:title="Info"

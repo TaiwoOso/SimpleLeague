@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.simpleleague.fragments.InfoFragment;
+import com.example.simpleleague.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.ParseUser;
 
@@ -30,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         // Define fragments
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment infoFragment = new InfoFragment();
+        final Fragment profileFragment = new ProfileFragment();
         // Navigate through fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -38,8 +40,9 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.action_info) {
                     fragment = infoFragment;
+                } else { // default to profileFragment
+                    fragment = profileFragment;
                 }
-                fragment = infoFragment;
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;
             }
