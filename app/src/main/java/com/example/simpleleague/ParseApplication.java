@@ -1,6 +1,7 @@
 package com.example.simpleleague;
 
 import com.example.simpleleague.models.Champion;
+import com.example.simpleleague.models.Post;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -16,6 +17,7 @@ public class ParseApplication extends Application {
 
         // Register parse models
         ParseObject.registerSubclass(Champion.class);
+        ParseObject.registerSubclass(Post.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(BuildConfig.PARSE_APPLICATION_ID)
