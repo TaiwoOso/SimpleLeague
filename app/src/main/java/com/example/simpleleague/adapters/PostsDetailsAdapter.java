@@ -15,88 +15,88 @@ import com.example.simpleleague.R;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
+import com.example.simpleleague.viewholders.PostViewHolder;
+import com.example.simpleleague.viewholders.ViewHolder;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class PostsDetailsAdapter extends RecyclerView.Adapter<PostsDetailsAdapter.ViewHolder> {
+public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     private Context mContext;
-    private List<ParseObject> postsAndComments;
+    List<Post> post;
+    List<Comment> comments;
 
-    public PostsDetailsAdapter(Context mContext, List<ParseObject> postsAndComments) {
+    public PostsDetailsAdapter(Context mContext, List<Comment> comments) {
         this.mContext = mContext;
-        this.postsAndComments = postsAndComments;
+        this.post = new ArrayList<>();
+        this.comments = comments;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_post_details, parent, false);
-        return new ViewHolder(view);
+        View view;
+        if (viewType == 0) {
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_post_details, parent, false);
+            return new PostViewHolder(view);
+        }
+        view = LayoutInflater.from(mContext).inflate(R.layout.item_comment, parent, false);
+        return new CommentViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PostsDetailsAdapter.ViewHolder holder, int position) {
-        ParseObject object = postsAndComments.get(position);
-        if (object instanceof Post) {
-            holder.bind((Post) object);
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (position == 0) {
+            holder.bind(post.get(position));
         } else {
-            holder.bind((Comment) object);
+            Comment comment = comments.get(position-1);
+            holder.bind(comment);
         }
     }
 
     @Override
     public int getItemCount() {
-        return postsAndComments.size();
+        return post.size()+comments.size();
     }
 
-    public void addAll(Post post, List<Comment> comments) {
-        postsAndComments.add(post);
-        postsAndComments.addAll(comments);
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    public void addAll(Post p, List<Comment> list) {
+        post.add(p);
+        comments.addAll(list);
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder {
+
+    class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder {
+
+        public PostViewHolder(@NonNull View itemView) {
+            super(itemView, mContext);
+        }
+    }
+
+    class CommentViewHolder extends ViewHolder {
 
         private ImageView ivProfileImage;
         private TextView tvUsername;
-        private TextView tvTitle;
         private TextView tvBody;
-        private TextView tvCommentsLabel;
 
-        public ViewHolder(@NonNull View itemView) {
+        public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
             tvBody = itemView.findViewById(R.id.tvBody);
-            tvCommentsLabel = itemView.findViewById(R.id.tvCommentsLabel);
         }
 
-        public void bind(Post post) {
-            ParseFile profileImage = (ParseFile) post.getUser().get(User.KEY_PROFILE_IMAGE);
-            if (profileImage != null) {
-                Glide.with(mContext)
-                        .load(profileImage.getUrl())
-                        .placeholder(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
-            } else {
-                Glide.with(mContext)
-                        .load(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
-            }
-            tvUsername.setText(post.getUser().getUsername());
-            tvTitle.setText(post.getTitle());
-            tvTitle.setVisibility(View.VISIBLE);
-            tvBody.setText(post.getBody());
-            tvCommentsLabel.setVisibility(View.VISIBLE);
-        }
-
-        public void bind(Comment comment) {
+        @Override
+        public void bind(Object object) {
+            Comment comment = (Comment) object;
             ParseFile profileImage = (ParseFile) comment.getUser().get(User.KEY_PROFILE_IMAGE);
             if (profileImage != null) {
                 Glide.with(mContext)
@@ -111,10 +111,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<PostsDetailsAdapte
                         .into(ivProfileImage);
             }
             tvUsername.setText(comment.getUser().getUsername());
-            tvTitle.setVisibility(View.GONE);
             tvBody.setText(comment.getBody());
-            tvCommentsLabel.setVisibility(View.GONE);
         }
-
     }
 }

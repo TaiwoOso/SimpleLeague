@@ -16,6 +16,7 @@ import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
+import com.example.simpleleague.viewholders.PostViewHolder;
 import com.parse.ParseFile;
 
 import org.parceler.Parcels;
@@ -37,7 +38,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_post, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, mContext);
     }
 
     @Override
@@ -56,39 +57,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends PostViewHolder implements View.OnClickListener {
 
-        private ImageView ivProfileImage;
-        private TextView tvUsername;
-        private TextView tvTitle;
-        private TextView tvBody;
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvBody = itemView.findViewById(R.id.tvBody);
+        public ViewHolder(@NonNull View itemView, Context context) {
+            super(itemView, context);
             itemView.setOnClickListener(this);
-        }
-
-        public void bind(Post post) {
-            ParseFile profileImage = (ParseFile) post.getUser().get(User.KEY_PROFILE_IMAGE);
-            if (profileImage != null) {
-                Glide.with(mContext)
-                        .load(profileImage.getUrl())
-                        .placeholder(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
-            } else {
-                Glide.with(mContext)
-                        .load(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
-            }
-            tvUsername.setText(post.getUser().getUsername());
-            tvTitle.setText(post.getTitle());
-            tvBody.setText(post.getBody());
         }
 
         @Override

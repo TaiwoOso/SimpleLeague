@@ -24,9 +24,9 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     public static final String TAG = "PostDetailsActivity";
     private RecyclerView rvPostDetails;
-    private List<ParseObject> postsAndComments;
-    private PostsDetailsAdapter adapter;
     private Post post;
+    private List<Comment> comments;
+    private PostsDetailsAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,17 +34,14 @@ public class PostDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_post_details);
         // Initialize fields
         rvPostDetails = findViewById(R.id.rvPostDetails);
-        postsAndComments = new ArrayList<>();
-        adapter = new PostsDetailsAdapter(this, postsAndComments);
-
+        comments = new ArrayList<>();
+        adapter = new PostsDetailsAdapter(this, comments);
         // Unwrap the post passed via intent
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
         Log.d(TAG, String.format("Showing details for '%s'", post.getUser().getUsername()));
-
         // Recycler View
         rvPostDetails.setAdapter(adapter);
         rvPostDetails.setLayoutManager(new LinearLayoutManager(this));
-
         // Get comments from Parse
         queryPostDetails();
     }

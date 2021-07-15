@@ -54,12 +54,10 @@ public class ProfileFragment extends Fragment {
         rvProfile = view.findViewById(R.id.rvProfile);
         posts = new ArrayList<>();
         adapter = new ProfileAdapter(getContext(), posts, currentUser);
-        
         // Recycler View
         rvProfile.setAdapter(adapter);
         rvProfile.setLayoutManager(new LinearLayoutManager(getContext()));
-        
-        // Query posts from Parse
+        // Query user's posts from Parse
         queryPosts();
     }
 
@@ -85,56 +83,6 @@ public class ProfileFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
-            }
-        });
-    }
-
-    public static void loadProfileImage(ImageView ivProfileImage, Context mContext) {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseFile image = currentUser.getParseFile(User.KEY_PROFILE_IMAGE);
-        if (image != null) {
-            Glide.with(mContext)
-                    .load(image.getUrl())
-                    .placeholder(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
-        } else {
-            Glide.with(mContext)
-                    .load(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
-        }
-    }
-
-    public static void setFollowing(TextView tvFollowing, ParseUser user) {
-        List<String> list = (List<String>) user.get(User.KEY_FOLLOWING);
-        if (list == null) {
-            tvFollowing.setText(String.valueOf(0));
-        } else {
-            tvFollowing.setText(String.valueOf(list.size()));
-        }
-    }
-
-    public static void setFollowers(TextView tvFollowers, ParseUser user) {
-        List<String> list = (List<String>) user.get(User.KEY_FOLLOWERS);
-        if (list == null) {
-            tvFollowers.setText(String.valueOf(0));
-        } else {
-            tvFollowers.setText(String.valueOf(list.size()));
-        }
-    }
-
-    public static void setNumberPosts(TextView tvPosts) {
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereEqualTo(Post.KEY_USER, ParseUser.getCurrentUser());
-        query.countInBackground(new CountCallback() {
-            @Override
-            public void done(int count, ParseException e) {
-                if (e == null) {
-                    tvPosts.setText(String.valueOf(count));
-                } else {
-                    Log.e(TAG, "Error getting # of posts", e);
-                }
             }
         });
     }

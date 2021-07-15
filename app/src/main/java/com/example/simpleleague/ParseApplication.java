@@ -15,7 +15,6 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-
         // Register parse models
         ParseObject.registerSubclass(Champion.class);
         ParseObject.registerSubclass(Post.class);

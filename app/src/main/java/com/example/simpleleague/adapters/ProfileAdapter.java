@@ -13,11 +13,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.fragments.ProfileFragment;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
+import com.example.simpleleague.viewholders.PostViewHolder;
+import com.example.simpleleague.viewholders.ViewHolder;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
@@ -25,7 +28,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHolder> {
+public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "ProfileAdapter";
     Context mContext;
@@ -40,20 +43,20 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @NonNull
     @Override
-    public ProfileAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView;
         if (viewType == 0) {
             itemView = LayoutInflater.from(mContext).inflate(R.layout.item_profile, parent, false);
             return new UserViewHolder(itemView);
         }
         itemView = LayoutInflater.from(mContext).inflate(R.layout.item_post, parent, false);
-        return new PostViewHolder(itemView);
+        return new PostViewHolder(itemView, mContext);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProfileAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position == 0) {
-            holder.bind(user);
+             holder.bind(user);
         } else {
             Post post = posts.get(position-1);
             holder.bind(post);
@@ -67,8 +70,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) return 0;
-        return 1;
+        return position;
     }
 
     public void addAll(List<Post> list) {
@@ -76,16 +78,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    abstract class ViewHolder extends RecyclerView.ViewHolder {
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
-
-        public abstract void bind(Object object);
-    }
-
-    class UserViewHolder extends ProfileAdapter.ViewHolder {
+    class UserViewHolder extends ViewHolder {
 
         private ImageView ivProfileImage;
         private TextView tvUsername;
@@ -104,29 +97,22 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.ViewHold
 
         public void bind(Object object) {
             ParseUser user = (ParseUser) object;
-            ProfileFragment.loadProfileImage(ivProfileImage, mContext);
+            ParseQueries.loadProfileImage(ivProfileImage, mContext);
             tvUsername.setText(user.getUsername());
-            ProfileFragment.setFollowers(tvFollowers, user);
-            ProfileFragment.setFollowing(tvFollowing, user);
-            ProfileFragment.setNumberPosts(tvPosts);
+            ParseQueries.setFollowers(tvFollowers, user);
+            ParseQueries.setFollowing(tvFollowing, user);
+            ParseQueries.setNumberPosts(tvPosts);
         }
     }
 
-    class PostViewHolder extends ProfileAdapter.ViewHolder implements View.OnClickListener {
-        private ImageView ivProfileImage;
-        private TextView tvUsername;
-        private TextView tvTitle;
-        private TextView tvBody;
+    class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder implements View.OnClickListener {
 
-        public PostViewHolder(@NonNull View itemView) {
-            super(itemView);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvBody = itemView.findViewById(R.id.tvBody);
+        public PostViewHolder(@NonNull View itemView, Context context) {
+            super(itemView, context);
             itemView.setOnClickListener(this);
         }
 
+        @Override
         public void bind(Object object) {
             Post post = (Post) object;
             ivProfileImage.setVisibility(View.GONE);

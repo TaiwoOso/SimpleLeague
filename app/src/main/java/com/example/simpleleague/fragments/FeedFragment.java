@@ -46,11 +46,9 @@ public class FeedFragment extends Fragment {
         rvPosts = view.findViewById(R.id.rvPosts);
         posts = new ArrayList<Post>();
         adapter = new PostsAdapter(getContext(), posts);
-
         // RecyclerView
         rvPosts.setAdapter(adapter);
         rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
-
         // Get the posts from Parse
         queryPosts();
     }

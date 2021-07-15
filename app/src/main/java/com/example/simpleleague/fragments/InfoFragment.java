@@ -64,15 +64,12 @@ public class InfoFragment extends Fragment {
         rvChampions = view.findViewById(R.id.rvChampions);
         champions = new ArrayList<>();
         adapter = new ChampionsAdapter(getContext(), champions);
-
         // RecyclerView
         GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         rvChampions.setAdapter(adapter);
         rvChampions.setLayoutManager(layout);
-
         // Get the champions from Parse and notify adapter
         queryChampions(0);
-
         // Load more champions during scrolling
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(layout) {
