@@ -115,9 +115,9 @@ public class InfoFragment extends Fragment {
                     return;
                 }
                 // log champions retrieved
-                for (Champion champion : champions) {
-                    Log.i(TAG, champion.getName()+" retrieved!");
-                }
+//                for (Champion champion : champions) {
+//                    Log.i(TAG, champion.getName()+" retrieved!");
+//                }
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(champions);
                 adapter.notifyItemRangeInserted(skips, skips+limit);

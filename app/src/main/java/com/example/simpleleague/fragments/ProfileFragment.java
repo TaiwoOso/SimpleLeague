@@ -29,6 +29,7 @@ import java.util.List;
 public class ProfileFragment extends Fragment {
 
     public static final String TAG = "ProfileFragment";
+    private final ParseUser currentUser = ParseUser.getCurrentUser();
     private ImageView ivProfileImage;
     private TextView tvUsername;
     private TextView tvFollowers;
@@ -53,6 +54,18 @@ public class ProfileFragment extends Fragment {
         tvPosts = view.findViewById(R.id.tvPosts);
 
         // Load profile image
+        loadProfileImage();
+        // Set the username
+        tvUsername.setText(currentUser.getUsername());
+        // Set the followers
+        setFollowers();
+        // Set the following
+        setFollowing();
+        // Set the posts
+        setNumberPosts();
+    }
+
+    private void loadProfileImage() {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseFile image = currentUser.getParseFile(User.KEY_PROFILE_IMAGE);
         if (image != null) {
@@ -67,25 +80,24 @@ public class ProfileFragment extends Fragment {
                     .centerCrop()
                     .into(ivProfileImage);
         }
-        // Set the username
-        tvUsername.setText(currentUser.getUsername());
-        // Set the followers
+    }
+
+    private void setFollowing() {
+        List<String> list = (List<String>) currentUser.get(User.KEY_FOLLOWING);
+        if (list == null) {
+            tvFollowing.setText(String.valueOf(0));
+        } else {
+            tvFollowing.setText(String.valueOf(list.size()));
+        }
+    }
+
+    private void setFollowers() {
         List<String> list = (List<String>) currentUser.get(User.KEY_FOLLOWERS);
         if (list == null) {
             tvFollowers.setText(String.valueOf(0));
         } else {
             tvFollowers.setText(String.valueOf(list.size()));
         }
-        // Set the following
-        list = (List<String>) currentUser.get(User.KEY_FOLLOWING);
-        if (list == null) {
-            tvFollowing.setText(String.valueOf(0));
-        } else {
-            tvFollowing.setText(String.valueOf(list.size()));
-        }
-        // Set the posts
-        setNumberPosts();
-        
     }
 
     private void setNumberPosts() {

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.example.simpleleague.fragments.FeedFragment;
 import com.example.simpleleague.fragments.InfoFragment;
 import com.example.simpleleague.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         // Define fragments
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment infoFragment = new InfoFragment();
+        final Fragment feedFragment = new FeedFragment();
         final Fragment profileFragment = new ProfileFragment();
         // Navigate through fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -40,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.action_info) {
                     fragment = infoFragment;
+                } else if (id == R.id.action_home) {
+                    fragment = feedFragment;
                 } else { // default to profileFragment
                     fragment = profileFragment;
                 }
@@ -48,6 +52,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Set default selection
-        //bottomNavigationView.setSelectedItemId(R.id.action_info);
+        //bottomNavigationView.setSelectedItemId(R.id.action_profile);
     }
 }
