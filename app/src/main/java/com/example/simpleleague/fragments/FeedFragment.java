@@ -16,9 +16,11 @@ import android.view.ViewGroup;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
 import com.example.simpleleague.models.Post;
+import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +56,21 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts() {
+        // Get the current user
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        // Get list of user IDs that current user follows
+        List<String> followingId = (List<String>) currentUser.get(User.KEY_FOLLOWING);
+        // Error handling
+        if (followingId == null) {
+            followingId = new ArrayList<>();
+        }
+        // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        // Query posts where author of post is followed by current user
+        query.whereContainedIn(Post.KEY_USER, followingId);
+        // Include User class
         query.include(Post.KEY_USER);
+        // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

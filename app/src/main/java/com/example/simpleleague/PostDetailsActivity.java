@@ -50,10 +50,19 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void queryPostDetails() {
+        // Get list of comment IDs of the given post
         List<String> commentsId = post.getComments();
+        // Error handling
+        if (commentsId == null) {
+            commentsId = new ArrayList<>();
+        }
+        // Query from Comment class
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
-        query.include(Comment.KEY_USER);
+        // Query comments from the list of IDs
         query.whereContainedIn(Comment.KEY_OBJECT_ID, commentsId);
+        // Include User class
+        query.include(Comment.KEY_USER);
+        // Send query to Parse
         query.findInBackground(new FindCallback<Comment>() {
             @Override
             public void done(List<Comment> comments, ParseException e) {
