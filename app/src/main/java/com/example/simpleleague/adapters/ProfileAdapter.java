@@ -1,11 +1,13 @@
 package com.example.simpleleague.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,19 +28,20 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "ProfileAdapter";
     Context mContext;
+    List<ParseUser> user;
     List<Post> posts;
-    ParseUser user;
 
-    public ProfileAdapter(Context mContext, List<Post> posts, ParseUser user) {
+    public ProfileAdapter(Context mContext, List<Post> posts) {
         this.mContext = mContext;
+        this.user = new ArrayList<>();
         this.posts = posts;
-        this.user = user;
     }
 
     @NonNull
@@ -56,7 +59,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position == 0) {
-             holder.bind(user);
+             holder.bind(user.get(position));
         } else {
             Post post = posts.get(position-1);
             holder.bind(post);
@@ -65,7 +68,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return posts.size()+1;
+        return user.size()+posts.size();
     }
 
     @Override
@@ -73,7 +76,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         return position;
     }
 
-    public void addAll(List<Post> list) {
+    public void addAll(ParseUser parseUser, List<Post> list) {
+        user.add(parseUser);
         posts.addAll(list);
         notifyDataSetChanged();
     }
@@ -85,6 +89,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         private TextView tvFollowers;
         private TextView tvFollowing;
         private TextView tvPosts;
+        private Button btnFollow;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -93,15 +98,47 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             tvFollowers = itemView.findViewById(R.id.tvFollowers);
             tvFollowing = itemView.findViewById(R.id.tvFollowing);
             tvPosts = itemView.findViewById(R.id.tvPosts);
+            btnFollow = itemView.findViewById(R.id.btnFollow);
         }
 
         public void bind(Object object) {
             ParseUser user = (ParseUser) object;
-            ParseQueries.loadProfileImage(ivProfileImage, mContext);
+            ParseQueries.loadProfileImage(ivProfileImage, mContext, user);
             tvUsername.setText(user.getUsername());
             ParseQueries.setFollowers(tvFollowers, user);
             ParseQueries.setFollowing(tvFollowing, user);
-            ParseQueries.setNumberPosts(tvPosts);
+            ParseQueries.setNumberPosts(tvPosts, user);
+            // Change appearance of follow button
+            if (user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                btnFollow.setVisibility(View.GONE);
+            } else if (ParseQueries.userFollows(user)){
+                btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
+                btnFollow.setText(R.string.Followed);
+            }
+            // Listeners
+            listeners(user);
+        }
+
+        private void listeners(ParseUser user) {
+            btnFollow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (btnFollow.getText().equals("Follow")) {
+                        ParseQueries.followUser(user);
+                        btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
+                        btnFollow.setText(R.string.Followed);
+                        Log.i(TAG, "Followed");
+                    } else {
+                        ParseQueries.unfollowUser(user);
+                        btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
+                        btnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
+                        btnFollow.setText(R.string.Follow);
+                        Log.i(TAG, "Unfollowed");
+                    }
+                }
+            });
         }
     }
 

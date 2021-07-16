@@ -10,8 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.simpleleague.models.Follow;
+import com.example.simpleleague.models.User;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 public class SignupActivity extends AppCompatActivity {
@@ -74,6 +77,18 @@ public class SignupActivity extends AppCompatActivity {
             public void done(ParseException e) {
                 if (e == null) {
                     Toast.makeText(SignupActivity.this, "Signed in!", Toast.LENGTH_SHORT).show();
+                    Follow follow = ParseQueries.createFollow(user);
+                    user.put(User.KEY_FOLLOW, follow);
+                    user.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if (e == null) {
+                                Log.i(TAG, "Follow was set for user: "+user.getUsername());
+                            } else {
+                                Log.i(TAG, "Follow was not set for user: "+user.getUsername(), e);
+                            }
+                        }
+                    });
                     goMainActivity();
                 } else {
                     Log.e(TAG, "Signup failed!", e);

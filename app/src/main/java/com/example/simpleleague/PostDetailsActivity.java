@@ -38,7 +38,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         adapter = new PostsDetailsAdapter(this, comments);
         // Unwrap the post passed via intent
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-        Log.d(TAG, String.format("Showing details for '%s'", post.getUser().getUsername()));
+        Log.d(TAG, String.format("Showing post details for '%s'", post.getUser().getUsername()));
         // Recycler View
         rvPostDetails.setAdapter(adapter);
         rvPostDetails.setLayoutManager(new LinearLayoutManager(this));

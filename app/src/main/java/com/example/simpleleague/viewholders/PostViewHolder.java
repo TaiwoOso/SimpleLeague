@@ -2,6 +2,7 @@ package com.example.simpleleague.viewholders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,14 +13,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
+import com.example.simpleleague.UserDetailsActivity;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.ParseFile;
+import com.parse.ParseUser;
 
 import org.parceler.Parcels;
 
 public class PostViewHolder extends ViewHolder {
 
+    public static final String TAG = "PostViewHolder";
     Context mContext;
     public ImageView ivProfileImage;
     public TextView tvUsername;
@@ -53,5 +57,24 @@ public class PostViewHolder extends ViewHolder {
         tvUsername.setText(post.getUser().getUsername());
         tvTitle.setText(post.getTitle());
         tvBody.setText(post.getBody());
+        // Listeners
+        listeners(post);
+    }
+
+    public void listeners(Post post) {
+        ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Profile clicked!");
+                // Create an intent to display UserDetailsActivity
+                Intent intent = new Intent(mContext, UserDetailsActivity.class);
+                // Serialize the movie using parceler, use its short name as a key
+                User user = new User();
+                user.setParseUser(post.getUser());
+                intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                // Show the activity
+                mContext.startActivity(intent);
+            }
+        });
     }
 }

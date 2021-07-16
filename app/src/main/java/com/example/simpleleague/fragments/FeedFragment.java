@@ -13,8 +13,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
+import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
@@ -57,17 +59,22 @@ public class FeedFragment extends Fragment {
         // Get the current user
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get list of user IDs that current user follows
-        List<String> followingId = (List<String>) currentUser.get(User.KEY_FOLLOWING);
+        Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
+        if (follow == null) {
+            follow = ParseQueries.createFollow(currentUser);
+        }
+        List<String> following = follow.getFollowing();
         // Error handling
-        if (followingId == null) {
-            followingId = new ArrayList<>();
+        if (following == null) {
+            following = new ArrayList<>();
         }
         // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // Query posts where author of post is followed by current user
-        query.whereContainedIn(Post.KEY_USER, followingId);
         // Include User class
         query.include(Post.KEY_USER);
+        // ASK ABOUT OLD CODE EXECUTING!!!
+        query.whereContainedIn(Post.KEY_USER, following);
         // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override

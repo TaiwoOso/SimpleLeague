@@ -2,9 +2,12 @@ package com.example.simpleleague;
 
 import com.example.simpleleague.models.Champion;
 import com.example.simpleleague.models.Comment;
+import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
+import com.example.simpleleague.models.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import android.app.Application;
 
@@ -19,6 +22,7 @@ public class ParseApplication extends Application {
         ParseObject.registerSubclass(Champion.class);
         ParseObject.registerSubclass(Post.class);
         ParseObject.registerSubclass(Comment.class);
+        ParseObject.registerSubclass(Follow.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(BuildConfig.PARSE_APPLICATION_ID)
