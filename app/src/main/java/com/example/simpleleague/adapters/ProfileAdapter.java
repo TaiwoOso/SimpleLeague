@@ -86,6 +86,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private ImageView ivProfileImage;
         private TextView tvUsername;
+        private TextView tvBio;
         private TextView tvFollowers;
         private TextView tvFollowing;
         private TextView tvPosts;
@@ -95,6 +96,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
             tvUsername = itemView.findViewById(R.id.tvUsername);
+            tvBio = itemView.findViewById(R.id.tvBio);
             tvFollowers = itemView.findViewById(R.id.tvFollowers);
             tvFollowing = itemView.findViewById(R.id.tvFollowing);
             tvPosts = itemView.findViewById(R.id.tvPosts);
@@ -105,6 +107,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             ParseUser user = (ParseUser) object;
             ParseQueries.loadProfileImage(ivProfileImage, mContext, user);
             tvUsername.setText(user.getUsername());
+            ParseQueries.setBio(tvBio, user);
             ParseQueries.setFollowers(tvFollowers, user);
             ParseQueries.setFollowing(tvFollowing, user);
             ParseQueries.setNumberPosts(tvPosts, user);
@@ -155,7 +158,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             ivProfileImage.setVisibility(View.GONE);
             tvUsername.setVisibility(View.GONE);
             tvTitle.setText(post.getTitle());
-            tvBody.setText(post.getBody());
+            String blurb;
+            int blurbCount = 125;
+            String body = post.getBody();
+            if (body.length() > blurbCount) {
+                blurb = body.substring(0, blurbCount)+"...";
+                tvBody.setText(blurb);
+            }
         }
 
         @Override

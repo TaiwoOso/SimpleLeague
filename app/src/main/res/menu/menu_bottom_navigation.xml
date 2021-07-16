@@ -9,6 +9,11 @@
         android:title="Home"
         app:showAsAction="always" />
     <item
+        android:id="@+id/action_create"
+        android:icon="@drawable/ic_add"
+        android:title="Create"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/action_profile"
         android:icon="@drawable/ic_user"
         android:title="Profile"

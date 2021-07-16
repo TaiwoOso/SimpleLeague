@@ -26,6 +26,10 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        // User Persistence
+        if (ParseUser.getCurrentSessionToken() != null) {
+            goMainActivity();
+        }
         // Initialize fields
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);

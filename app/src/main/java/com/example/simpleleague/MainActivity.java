@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.simpleleague.fragments.CreateFragment;
 import com.example.simpleleague.fragments.FeedFragment;
 import com.example.simpleleague.fragments.InfoFragment;
 import com.example.simpleleague.fragments.ProfileFragment;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment infoFragment = new InfoFragment();
         final Fragment feedFragment = new FeedFragment();
+        final Fragment createFragment = new CreateFragment();
         final Fragment profileFragment = new ProfileFragment();
         // Navigate through fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                     fragment = infoFragment;
                 } else if (id == R.id.action_home) {
                     fragment = feedFragment;
+                } else if (id == R.id.action_create) {
+                    fragment = createFragment;
                 } else { // default to profileFragment
                     fragment = profileFragment;
                 }
@@ -56,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         // Set default selection
-        //bottomNavigationView.setSelectedItemId(R.id.action_profile);
+        bottomNavigationView.setSelectedItemId(R.id.action_profile);
     }
 
     @Override

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Post;
@@ -62,6 +63,19 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
             itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void bind(Object object) {
+            super.bind(object);
+            Post post = (Post) object;
+            String blurb;
+            int blurbCount = 125;
+            String body = post.getBody();
+            if (body.length() > blurbCount) {
+                blurb = body.substring(0, blurbCount)+"...";
+                tvBody.setText(blurb);
+            }
         }
 
         @Override

@@ -26,25 +26,25 @@ public class ParseQueries {
 
     public static final String TAG = "ParseQueries";
 
-    public static Follow createFollow(ParseUser user) {
+    public static Follow createFollow(ParseUser parseUser) {
         // Create Follow object for new User
         Follow follow = new Follow();
-        follow.setUser(user);
+        follow.setUser(parseUser);
         follow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "Follow created for "+user.getUsername());
+                    Log.i(TAG, "Follow created for "+parseUser.getUsername());
                 } else {
-                    Log.i(TAG, "Follow wasn't created for "+user.getUsername(), e);
+                    Log.i(TAG, "Follow wasn't created for "+parseUser.getUsername(), e);
                 }
             }
         });
         return follow;
     }
 
-    public static void loadProfileImage(ImageView ivProfileImage, Context mContext, ParseUser user) {
-        ParseFile image = user.getParseFile(User.KEY_PROFILE_IMAGE);
+    public static void loadProfileImage(ImageView ivProfileImage, Context mContext, ParseUser parseUser) {
+        ParseFile image = parseUser.getParseFile(User.KEY_PROFILE_IMAGE);
         if (image != null) {
             Glide.with(mContext)
                     .load(image.getUrl())
@@ -59,10 +59,19 @@ public class ParseQueries {
         }
     }
 
-    public static void setFollowing(TextView tvFollowing, ParseUser user) {
-        Follow follow = (Follow) user.get(User.KEY_FOLLOW);
+    public static void setBio(TextView tvBio, ParseUser parseUser) {
+        String bio = parseUser.getString(User.KEY_BIO);
+        if (bio == null) {
+            tvBio.setText(R.string.defaultBio);
+        } else {
+            tvBio.setText(bio);
+        }
+    }
+
+    public static void setFollowing(TextView tvFollowing, ParseUser parseUser) {
+        Follow follow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = createFollow(user);
+            follow = createFollow(parseUser);
         }
         List<String> following = follow.getFollowing();
         if (following == null) {
@@ -72,10 +81,10 @@ public class ParseQueries {
         }
     }
 
-    public static void setFollowers(TextView tvFollowers, ParseUser user) {
-        Follow follow = (Follow) user.get(User.KEY_FOLLOW);
+    public static void setFollowers(TextView tvFollowers, ParseUser parseUser) {
+        Follow follow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = createFollow(user);
+            follow = createFollow(parseUser);
         }
         List<String> followers = follow.getFollowers();
         if (followers == null) {
@@ -85,9 +94,9 @@ public class ParseQueries {
         }
     }
 
-    public static void setNumberPosts(TextView tvPosts, ParseUser user) {
+    public static void setNumberPosts(TextView tvPosts, ParseUser parseUser) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereEqualTo(Post.KEY_USER, user);
+        query.whereEqualTo(Post.KEY_USER, parseUser);
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
@@ -113,14 +122,14 @@ public class ParseQueries {
         return following.contains(parseUser.getObjectId());
     }
 
-    public static void followUser(ParseUser user) {
+    public static void followUser(ParseUser parseUser) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get users that current user follows
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (currentUserFollow == null) {
             currentUserFollow = createFollow(currentUser);
         }
-        currentUserFollow.addFollowing(user);
+        currentUserFollow.addFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -132,9 +141,9 @@ public class ParseQueries {
             }
         });
         // Get users that follow passed in user
-        Follow userFollow = (Follow) user.get(User.KEY_FOLLOW);
+        Follow userFollow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (userFollow == null) {
-            userFollow = createFollow(user);
+            userFollow = createFollow(parseUser);
         }
         userFollow.addFollower(currentUser);
         userFollow.saveInBackground(new SaveCallback() {
@@ -149,14 +158,14 @@ public class ParseQueries {
         });
     }
 
-    public static void unfollowUser(ParseUser user) {
+    public static void unfollowUser(ParseUser parseUser) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get users that current user follows
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (currentUserFollow == null) {
             currentUserFollow = createFollow(currentUser);
         }
-        currentUserFollow.removeFollowing(user);
+        currentUserFollow.removeFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -168,9 +177,9 @@ public class ParseQueries {
             }
         });
         // Get users that follow passed in user
-        Follow userFollow = (Follow) user.get(User.KEY_FOLLOW);
+        Follow userFollow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (userFollow == null) {
-            userFollow = createFollow(user);
+            userFollow = createFollow(parseUser);
         }
         userFollow.removeFollower(currentUser);
         userFollow.saveInBackground(new SaveCallback() {

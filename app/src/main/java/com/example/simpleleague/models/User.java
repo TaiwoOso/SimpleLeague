@@ -8,6 +8,7 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
     public static final String KEY_PROFILE_IMAGE = "profileImage";
+    public static final String KEY_BIO = "bio";
     public static final String KEY_FOLLOW = "follow";
     private ParseUser parseUser;
 

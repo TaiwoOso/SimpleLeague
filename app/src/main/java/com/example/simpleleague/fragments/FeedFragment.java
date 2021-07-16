@@ -71,10 +71,9 @@ public class FeedFragment extends Fragment {
         // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // Query posts where author of post is followed by current user
+        query.whereContainedIn(Post.KEY_USER, following);
         // Include User class
         query.include(Post.KEY_USER);
-        // ASK ABOUT OLD CODE EXECUTING!!!
-        query.whereContainedIn(Post.KEY_USER, following);
         // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override

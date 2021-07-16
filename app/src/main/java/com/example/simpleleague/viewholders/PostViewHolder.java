@@ -72,7 +72,7 @@ public class PostViewHolder extends ViewHolder {
                 User user = new User();
                 user.setParseUser(post.getUser());
                 intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
-                // Show the activity
+                // Start the activity
                 mContext.startActivity(intent);
             }
         });
