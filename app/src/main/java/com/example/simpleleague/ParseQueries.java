@@ -34,9 +34,9 @@ public class ParseQueries {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "Follow created for "+parseUser.getUsername());
+                    Log.i(TAG, "Follow created for "+parseUser.getUsername()+".");
                 } else {
-                    Log.i(TAG, "Follow wasn't created for "+parseUser.getUsername(), e);
+                    Log.i(TAG, "Follow wasn't created for "+parseUser.getUsername()+".", e);
                 }
             }
         });
@@ -71,7 +71,8 @@ public class ParseQueries {
     public static void setFollowing(TextView tvFollowing, ParseUser parseUser) {
         Follow follow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = createFollow(parseUser);
+            Log.i(TAG, "Null Follow - Unable to setFollowing for "+parseUser.getUsername()+".");
+            return;
         }
         List<String> following = follow.getFollowing();
         if (following == null) {
@@ -84,7 +85,8 @@ public class ParseQueries {
     public static void setFollowers(TextView tvFollowers, ParseUser parseUser) {
         Follow follow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = createFollow(parseUser);
+            Log.i(TAG, "Null Follow - Unable to setFollowers for "+parseUser.getUsername()+".");
+            return;
         }
         List<String> followers = follow.getFollowers();
         if (followers == null) {
@@ -103,7 +105,7 @@ public class ParseQueries {
                 if (e == null) {
                     tvPosts.setText(String.valueOf(count));
                 } else {
-                    Log.e(TAG, "Error getting # of posts", e);
+                    Log.i(TAG, "Error getting # of posts for "+parseUser.getUsername()+".", e);
                 }
             }
         });
@@ -113,7 +115,8 @@ public class ParseQueries {
         ParseUser currentUser = ParseUser.getCurrentUser();
         Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = createFollow(currentUser);
+            Log.i(TAG, "Null Follow - Unable to check if "+currentUser.getUsername()+" follows "+parseUser.getUsername()+".");
+            return false;
         }
         List<String> following = follow.getFollowing();
         if (following == null) {
@@ -127,32 +130,34 @@ public class ParseQueries {
         // Get users that current user follows
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (currentUserFollow == null) {
-            currentUserFollow = createFollow(currentUser);
+            Log.i(TAG, "Null Follow - "+currentUser.getUsername()+" cannot follow "+parseUser.getUsername()+".");
+            return;
         }
         currentUserFollow.addFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "addFollowing successful!");
+                    Log.i(TAG, currentUser.getUsername()+" followed "+parseUser.getUsername()+".");
                 } else {
-                    Log.i(TAG, "addFollowing unsuccessful!", e);
+                    Log.i(TAG, currentUser.getUsername()+" couldn't follow "+parseUser.getUsername()+".", e);
                 }
             }
         });
         // Get users that follow passed in user
         Follow userFollow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (userFollow == null) {
-            userFollow = createFollow(parseUser);
+            Log.i(TAG, "Null Follow - "+parseUser.getUsername()+" cannot be followed by "+currentUser.getUsername()+".");
+            return;
         }
         userFollow.addFollower(currentUser);
         userFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "addFollower successful!", e);
+                    Log.i(TAG, parseUser.getUsername()+" has "+currentUser.getUsername()+" as a follower.");
                 } else {
-                    Log.i(TAG, "addFollower unsuccessful!", e);
+                    Log.i(TAG, parseUser.getUsername()+" didn't receive "+currentUser.getUsername()+" as a follower.", e);
                 }
             }
         });
@@ -163,32 +168,34 @@ public class ParseQueries {
         // Get users that current user follows
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (currentUserFollow == null) {
-            currentUserFollow = createFollow(currentUser);
+            Log.i(TAG, "Null Follow - "+currentUser.getUsername()+" cannot unfollow "+parseUser.getUsername()+".");
+            return;
         }
         currentUserFollow.removeFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "removeFollowing successful!");
+                    Log.i(TAG, currentUser.getUsername()+" unfollowed "+parseUser.getUsername()+".");
                 } else {
-                    Log.i(TAG, "removeFollowing unsuccessful!", e);
+                    Log.i(TAG, currentUser.getUsername()+" couldn't unfollow "+parseUser.getUsername()+".", e);
                 }
             }
         });
         // Get users that follow passed in user
         Follow userFollow = (Follow) parseUser.get(User.KEY_FOLLOW);
         if (userFollow == null) {
-            userFollow = createFollow(parseUser);
+            Log.i(TAG, "Null Follow - "+parseUser.getUsername()+" cannot be unfollowed by "+currentUser.getUsername()+".");
+            return;
         }
         userFollow.removeFollower(currentUser);
         userFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e == null) {
-                    Log.i(TAG, "removeFollower successful!");
+                    Log.i(TAG, parseUser.getUsername()+" doesn't have "+currentUser.getUsername()+" as a follower now.");
                 } else {
-                    Log.i(TAG, "removeFollower unsuccessful!", e);
+                    Log.i(TAG, parseUser.getUsername()+" didn't have "+currentUser.getUsername()+" removed from follower.", e);
                 }
             }
         });

@@ -38,7 +38,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         adapter = new PostsDetailsAdapter(this, comments);
         // Unwrap the post passed via intent
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
-        Log.d(TAG, String.format("Showing post details for '%s'", post.getUser().getUsername()));
+        Log.d(TAG, String.format("Showing post details for %s", post.getUser().getUsername())+".");
         // Recycler View
         rvPostDetails.setAdapter(adapter);
         rvPostDetails.setLayoutManager(new LinearLayoutManager(this));
@@ -65,13 +65,11 @@ public class PostDetailsActivity extends AppCompatActivity {
             public void done(List<Comment> comments, ParseException e) {
                 // error checking
                 if (e != null) {
-                    Log.e(TAG, "Issue with retrieving comments", e);
+                    Log.e(TAG, "Issue with retrieving comments for "+post.getUser().getUsername()+"'s post.", e);
                     return;
                 }
                 // log comments retrieved
-                for (Comment comment : comments) {
-                    Log.i(TAG, "Comment: " + comment.getBody() +", username: " + comment.getUser().getUsername());
-                }
+                Log.i(TAG, "Retrieved "+comments.size()+" comment(s) for "+post.getUser().getUsername()+"'s post.");
                 // save received post and comments to list and notify adapter of new data
                 adapter.addAll(post, comments);
             }

@@ -38,7 +38,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         adapter = new ProfileAdapter(this, posts);
         // Unwrap the user passed via intent
         user = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
-        Log.d(TAG, String.format("Showing user details for '%s'", user.getUsername()));
+        Log.i(TAG, String.format("Showing user details for %s", user.getUsername())+".");
         // Recycler View
         rvUserDetails.setAdapter(adapter);
         rvUserDetails.setLayoutManager(new LinearLayoutManager(this));
@@ -59,13 +59,11 @@ public class UserDetailsActivity extends AppCompatActivity {
             public void done(List<Post> posts, ParseException e) {
                 // error checking
                 if (e != null) {
-                    Log.e(TAG, "Issue with retrieving posts", e);
+                    Log.e(TAG, "Issue with retrieving posts by "+user.getUsername()+".", e);
                     return;
                 }
                 // log posts retrieved
-                for (Post post : posts) {
-                    Log.i(TAG, "Post: " + post.getBody() +", username: " + post.getUser().getUsername());
-                }
+                Log.i(TAG, "Retrieved "+posts.size()+" post(s) by "+user.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(user, posts);
             }

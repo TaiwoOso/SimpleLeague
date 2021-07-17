@@ -65,7 +65,7 @@ public class PostViewHolder extends ViewHolder {
         ivProfileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Profile clicked!");
+                Log.i(TAG, "Clicked on "+post.getUser().getUsername()+"'s profile.");
                 // Create an intent to display UserDetailsActivity
                 Intent intent = new Intent(mContext, UserDetailsActivity.class);
                 // Serialize the movie using parceler, use its short name as a key

@@ -83,15 +83,15 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void done(ParseException e) {
                             if (e == null) {
-                                Log.i(TAG, "Follow was set for user: "+user.getUsername());
+                                Log.i(TAG, "Follow was set for "+user.getUsername()+".");
                             } else {
-                                Log.i(TAG, "Follow was not set for user: "+user.getUsername(), e);
+                                Log.i(TAG, "Follow was not set for "+user.getUsername()+".", e);
                             }
                         }
                     });
                     goMainActivity();
                 } else {
-                    Log.e(TAG, "Signup failed!", e);
+                    Log.e(TAG, "Signup failed.", e);
                     Toast.makeText(SignupActivity.this, "Signup failed! Try different username.", Toast.LENGTH_LONG).show();
                 }
             }

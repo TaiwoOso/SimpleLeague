@@ -72,6 +72,8 @@ public class FeedFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // Query posts where author of post is followed by current user
         query.whereContainedIn(Post.KEY_USER, following);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
         // Include User class
         query.include(Post.KEY_USER);
         // Send query to Parse
@@ -80,13 +82,10 @@ public class FeedFragment extends Fragment {
             public void done(List<Post> posts, ParseException e) {
                 // error checking
                 if (e != null) {
-                    Log.e(TAG, "Issue with retrieving posts", e);
+                    Log.e(TAG, "Issue with retrieving posts for "+currentUser.getUsername()+".", e);
                     return;
                 }
-                // log posts retrieved
-                for (Post post : posts) {
-                    Log.i(TAG, "Post: " + post.getBody() +", username: " + post.getUser().getUsername());
-                }
+                Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
             }

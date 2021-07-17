@@ -64,10 +64,10 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         }
 
         public void bind(Champion champion) {
-            rootView.setTag(champion);
+            rootView.setTag(champion.getName());
             tvName.setText(champion.getName());
             Glide.with(mContext)
-                    .load(champion.getImageUrl())
+                    .load(champion.getImage().getUrl())
                     .centerCrop()
                     .into(ivProfile);
         }

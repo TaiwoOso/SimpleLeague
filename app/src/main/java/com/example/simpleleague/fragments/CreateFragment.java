@@ -72,7 +72,7 @@ public class CreateFragment extends Fragment {
                     etBody.setText("");
                 } else {
                     Toast.makeText(getContext(), "Error: Try Again!", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "Error while posting for "+currentUser.getUsername(), e);
+                    Log.i(TAG, "Error while posting for "+currentUser.getUsername()+".", e);
                 }
             }
         });
