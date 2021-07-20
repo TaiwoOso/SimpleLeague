@@ -5,9 +5,27 @@
     android:layout_height="match_parent"
     tools:context=".fragments.SearchPostsFragment">
 
+    <SearchView
+        android:id="@+id/svSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="false"
+        android:layout_toStartOf="@id/btnSearch" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPosts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/svSearch"
         android:padding="8dp" />
+
+    <Button
+        android:id="@+id/btnSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="#00FFFFFF"
+        android:text="Search"
+        android:textColor="@color/black" />
 </RelativeLayout>

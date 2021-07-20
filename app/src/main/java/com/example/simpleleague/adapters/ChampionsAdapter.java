@@ -48,6 +48,11 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         champions.addAll(list);
     }
 
+    public void clear() {
+        champions.clear();
+        notifyDataSetChanged();
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         private View rootView;

@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.action_info) {
                     fragment = infoFragment;
-                    mToolbar.setVisibility(View.VISIBLE);
+                    mToolbar.setVisibility(View.GONE);
                 } else if (id == R.id.action_home) {
                     fragment = feedFragment;
                     mToolbar.setVisibility(View.VISIBLE);

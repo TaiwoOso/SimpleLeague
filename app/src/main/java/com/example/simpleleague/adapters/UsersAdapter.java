@@ -59,6 +59,11 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         parseUsers.addAll(list);
     }
 
+    public void clear() {
+        parseUsers.clear();
+        notifyDataSetChanged();
+    }
+
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 

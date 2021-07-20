@@ -17,13 +17,13 @@
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        app:menu="@menu/menu_search" />
+        app:menu="@menu/menu_search" >
+
+    </com.google.android.material.bottomnavigation.BottomNavigationView>
 
     <FrameLayout
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/topNavigation">
-
-    </FrameLayout>
+        android:layout_below="@id/topNavigation"/>
 </RelativeLayout>

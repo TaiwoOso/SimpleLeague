@@ -88,6 +88,7 @@ public class FeedFragment extends Fragment {
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
+                adapter.notifyDataSetChanged();
             }
         });
     }

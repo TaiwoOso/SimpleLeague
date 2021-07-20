@@ -1,60 +1,30 @@
 package com.example.simpleleague.fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.Button;
+import android.widget.SearchView;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
-import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.R;
-import com.example.simpleleague.SignupActivity;
 import com.example.simpleleague.adapters.ChampionsAdapter;
 import com.example.simpleleague.models.Champion;
-import com.example.simpleleague.models.Follow;
-import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
-import com.parse.LogInCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
-import com.parse.SignUpCallback;
 
-import org.apache.commons.io.FileUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 
@@ -68,6 +38,8 @@ public class InfoFragment extends Fragment {
     private List<Champion> champions;
     private ChampionsAdapter adapter;
     private EndlessRecyclerViewScrollListener scrollListener;
+    private SearchView svSearch;
+    private Button btnSearch;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -83,12 +55,23 @@ public class InfoFragment extends Fragment {
         rvChampions = view.findViewById(R.id.rvChampions);
         champions = new ArrayList<>();
         adapter = new ChampionsAdapter(getContext(), champions);
+        svSearch = view.findViewById(R.id.svSearch);
+        btnSearch = view.findViewById(R.id.btnSearch);
         // RecyclerView
         GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         rvChampions.setAdapter(adapter);
         rvChampions.setLayoutManager(layout);
         // Get the champions from Parse and notify adapter
-        queryChampions(0);
+        queryChampions(0, "");
+        // Search for specific queries
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                adapter.clear();
+                String search = svSearch.getQuery().toString();
+                queryChampions(0, search);
+            }
+        });
         // Load more champions during scrolling
         // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(layout) {
@@ -96,30 +79,32 @@ public class InfoFragment extends Fragment {
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                loadNextChampionsFromParse(skips);
+                String search = svSearch.getQuery().toString();
+                loadNextChampionsFromParse(skips, search);
             }
         };
         // Adds the scroll listener to RecyclerView
         rvChampions.addOnScrollListener(scrollListener);
     }
 
-
     // Append the next "page" of data into the adapter
     // This method probably sends out a network request and appends new data items to your adapter.
-    private void loadNextChampionsFromParse(int skips) {
+    private void loadNextChampionsFromParse(int skips, String search) {
         // Send an API request to retrieve appropriate "paginated" data
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
-        queryChampions(skips);
+        queryChampions(skips, search);
     }
 
-    private void queryChampions(int skips) {
+    private void queryChampions(int skips, String search) {
         // Get the current user
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Specify which class to query
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
+        // Search for substring
+        query.whereContains(Champion.KEY_NAME, search);
         // limit query to [limit] champions
         int limit = 20;
         query.setLimit(limit);
@@ -133,10 +118,7 @@ public class InfoFragment extends Fragment {
                     Log.e(TAG, "Issue with retrieving champions for "+currentUser.getUsername()+".", e);
                     return;
                 }
-                // log champions retrieved
-//                for (Champion champion : champions) {
-//                    Log.i(TAG, champion.getName()+" retrieved!");
-//                }
+                Log.i(TAG, "Retrieved "+champions.size()+" champions(s) for "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(champions);
                 adapter.notifyItemRangeInserted(skips, skips+limit);
