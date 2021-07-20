@@ -43,7 +43,7 @@ public class SearchFragment extends Fragment {
                 Fragment fragment;
                 if (id == R.id.action_users) {
                     fragment = searchUsersFragment;
-                } else { // default to searchUsersFragment
+                } else { // default to searchPostsFragment
                     fragment = searchPostsFragment;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

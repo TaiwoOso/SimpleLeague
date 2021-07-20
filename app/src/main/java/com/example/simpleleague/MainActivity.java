@@ -22,6 +22,9 @@ import com.example.simpleleague.fragments.ProfileFragment;
 import com.example.simpleleague.fragments.SearchFragment;
 import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.User;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -141,10 +144,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void logout() {
         ParseUser.logOut();
+        logoutGoogle();
         ParseUser currentUser = ParseUser.getCurrentUser();
         Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void logoutGoogle() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.
+                Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).
+                build();
+
+        GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(this,gso);
+        googleSignInClient.signOut();
     }
 }

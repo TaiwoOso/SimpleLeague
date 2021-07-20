@@ -3,6 +3,7 @@ package com.example.simpleleague;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +31,13 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        // Check for Data passed through Intent
+        String[] credentials = getIntent().getStringArrayExtra(LoginActivity.class.getSimpleName());
+        if (credentials != null) {
+            String username = credentials[0];
+            String password = credentials[1];
+            signup(username, password);
+        }
         // Initialize fields
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -40,7 +48,7 @@ public class SignupActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                checkPasswords();
             }
         });
         // Login --> LoginActivity
@@ -58,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
         finish();
     }
 
-    private void signup() {
+    private void checkPasswords() {
         String username = etUsername.getText().toString();
         String password = etPassword.getText().toString();
         String conformPassword = etConfirmPassword.getText().toString();
@@ -67,6 +75,10 @@ public class SignupActivity extends AppCompatActivity {
             Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
             return;
         }
+        signup(username, password);
+    }
+
+    private void signup(String username, String password) {
         // Create the ParseUser
         ParseUser user = new ParseUser();
         // Set core properties

@@ -44,7 +44,6 @@ public class SearchPostsFragment extends SearchFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         // Initialize fields
-        // Initialize fields
         rvPosts = view.findViewById(R.id.rvPosts);
         posts = new ArrayList<Post>();
         adapter = new PostsAdapter(getContext(), posts);
