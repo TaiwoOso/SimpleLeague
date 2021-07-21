@@ -47,13 +47,9 @@ public class UserDetailsActivity extends AppCompatActivity {
     }
 
     private void queryPosts() {
-        // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // Query posts with current user
         query.whereEqualTo(Post.KEY_USER, user);
-        // Include User class
         query.include(Post.KEY_USER);
-        // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -62,7 +58,6 @@ public class UserDetailsActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with retrieving posts by "+user.getUsername()+".", e);
                     return;
                 }
-                // log posts retrieved
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) by "+user.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(user, posts);

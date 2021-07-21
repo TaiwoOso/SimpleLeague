@@ -10,7 +10,7 @@
     android:layout_marginRight="4dp"
     android:clickable="true"
     app:cardCornerRadius="8dp"
-    app:cardElevation="1dp"
+    app:cardElevation="0dp"
     tools:context=".fragments.SearchUsersFragment">
 
     <RelativeLayout

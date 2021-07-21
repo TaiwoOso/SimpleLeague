@@ -84,17 +84,11 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            // Get the position
             int position = getAdapterPosition();
-            // Make sure position is valid
             if (position != RecyclerView.NO_POSITION) {
-                // Get the post at position
                 Post post = posts.get(position);
-                // Create an intent to display PostDetailsActivity
                 Intent intent = new Intent(mContext, PostDetailsActivity.class);
-                // Serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
-                // Show the activity
                 mContext.startActivity(intent);
             }
         }

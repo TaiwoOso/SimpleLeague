@@ -62,13 +62,9 @@ public class ProfileFragment extends Fragment {
     }
 
     private void queryPosts() {
-        // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // Query posts with current user
         query.whereEqualTo(Post.KEY_USER, currentUser);
-        // Include User class
         query.include(Post.KEY_USER);
-        // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -77,7 +73,6 @@ public class ProfileFragment extends Fragment {
                     Log.e(TAG, "Issue with retrieving posts by "+currentUser.getUsername()+".", e);
                     return;
                 }
-                // log posts retrieved
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) by "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(currentUser, posts);

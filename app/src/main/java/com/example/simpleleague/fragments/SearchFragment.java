@@ -12,13 +12,14 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import com.example.simpleleague.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class SearchFragment extends Fragment {
 
-    BottomNavigationView topNavigationView;
+    private BottomNavigationView topNavigationView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

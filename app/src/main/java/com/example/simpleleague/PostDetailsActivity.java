@@ -47,19 +47,14 @@ public class PostDetailsActivity extends AppCompatActivity {
     }
 
     private void queryPostDetails() {
-        // Get list of comment IDs of the given post
         List<String> commentsId = post.getComments();
         // Error handling
         if (commentsId == null) {
             commentsId = new ArrayList<>();
         }
-        // Query from Comment class
         ParseQuery<Comment> query = ParseQuery.getQuery(Comment.class);
-        // Query comments from the list of IDs
         query.whereContainedIn(Comment.KEY_OBJECT_ID, commentsId);
-        // Include User class
         query.include(Comment.KEY_USER);
-        // Send query to Parse
         query.findInBackground(new FindCallback<Comment>() {
             @Override
             public void done(List<Comment> comments, ParseException e) {
@@ -68,7 +63,6 @@ public class PostDetailsActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue with retrieving comments for "+post.getUser().getUsername()+"'s post.", e);
                     return;
                 }
-                // log comments retrieved
                 Log.i(TAG, "Retrieved "+comments.size()+" comment(s) for "+post.getUser().getUsername()+"'s post.");
                 // save received post and comments to list and notify adapter of new data
                 adapter.addAll(post, comments);

@@ -56,7 +56,6 @@ public class FeedFragment extends Fragment {
     }
 
     private void queryPosts() {
-        // Get the current user
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get list of user IDs that current user follows
         Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
@@ -68,15 +67,11 @@ public class FeedFragment extends Fragment {
         if (following == null) {
             following = new ArrayList<>();
         }
-        // Query from Post class
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // Query posts where author of post is followed by current user
         query.whereContainedIn(Post.KEY_USER, following);
-        // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
-        // Include User class
         query.include(Post.KEY_USER);
-        // Send query to Parse
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

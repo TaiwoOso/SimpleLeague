@@ -17,7 +17,7 @@
         app:itemHorizontalTranslationEnabled="false"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
-        app:menu="@menu/menu_search" >
+        app:menu="@menu/menu_search">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 

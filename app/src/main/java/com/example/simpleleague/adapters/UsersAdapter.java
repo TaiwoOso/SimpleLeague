@@ -87,21 +87,14 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
         @Override
         public void onClick(View v) {
-            // Get the position
             int position = getAdapterPosition();
-            // Make sure position is valid
             if (position != RecyclerView.NO_POSITION) {
-                // Get the parseUser at position
                 ParseUser parseUser = parseUsers.get(position);
-                // Create an intent to display UserDetailsActivity
                 Intent intent = new Intent(mContext, UserDetailsActivity.class);
-                // Serialize the movie using parceler, use its short name as a key
                 User user = new User();
                 user.setParseUser(parseUser);
                 intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
-                // Log the profile that was clicked
                 Log.i(TAG, "Clicked on " + parseUser.getUsername() + "'s profile.");
-                // Show the activity
                 mContext.startActivity(intent);
             }
         }

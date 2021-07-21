@@ -46,16 +46,9 @@ public class ParseQueries {
     public static void loadProfileImage(ImageView ivProfileImage, Context mContext, ParseUser parseUser) {
         ParseFile image = parseUser.getParseFile(User.KEY_PROFILE_IMAGE);
         if (image != null) {
-            Glide.with(mContext)
-                    .load(image.getUrl())
-                    .placeholder(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
+            Glide.with(mContext).load(image.getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
         } else {
-            Glide.with(mContext)
-                    .load(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
+            Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
         }
     }
 

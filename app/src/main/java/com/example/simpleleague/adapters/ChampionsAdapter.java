@@ -78,25 +78,16 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         public void bind(Champion champion) {
             rootView.setTag(champion.getName());
             tvName.setText(champion.getName());
-            Glide.with(mContext)
-                    .load(champion.getImage().getUrl())
-                    .centerCrop()
-                    .into(ivProfile);
+            Glide.with(mContext).load(champion.getImage().getUrl()).centerCrop().into(ivProfile);
         }
 
         @Override
         public void onClick(View v) {
-            // Get the position
             int position = getAdapterPosition();
-            // Make sure position is valid
             if (position != RecyclerView.NO_POSITION) {
-                // Get the post at position
                 Champion champion = champions.get(position);
-                // Create an intent to display PostDetailsActivity
                 Intent intent = new Intent(mContext, ChampionDetailsActivity.class);
-                // Serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Champion.class.getSimpleName(), Parcels.wrap(champion));
-                // Show the activity
                 mContext.startActivity(intent);
             }
         }

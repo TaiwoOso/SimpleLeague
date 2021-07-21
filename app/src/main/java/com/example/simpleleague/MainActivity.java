@@ -37,7 +37,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
-    public static final String RIOT_KEY = BuildConfig.RIOT_KEY;
     private BottomNavigationView bottomNavigationView;
     private Toolbar mToolbar;
 
@@ -68,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.action_info) {
                     fragment = infoFragment;
-                    mToolbar.setVisibility(View.GONE);
+                    mToolbar.setVisibility(View.VISIBLE);
                 } else if (id == R.id.action_home) {
                     fragment = feedFragment;
                     mToolbar.setVisibility(View.VISIBLE);

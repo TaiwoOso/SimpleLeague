@@ -79,12 +79,9 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signup(String username, String password) {
-        // Create the ParseUser
         ParseUser user = new ParseUser();
-        // Set core properties
         user.setUsername(username);
         user.setPassword(password);
-        // Invoke signUpInBackground
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {

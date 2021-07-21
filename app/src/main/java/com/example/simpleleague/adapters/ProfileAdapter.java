@@ -34,9 +34,9 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "ProfileAdapter";
-    Context mContext;
-    List<ParseUser> user;
-    List<Post> posts;
+    private Context mContext;
+    private List<ParseUser> user;
+    private List<Post> posts;
 
     public ProfileAdapter(Context mContext, List<Post> posts) {
         this.mContext = mContext;
@@ -169,17 +169,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public void onClick(View v) {
-            // Get the position
             int position = getAdapterPosition();
-            // Make sure position is valid
             if (position != RecyclerView.NO_POSITION) {
-                // Get the post at position
                 Post post = posts.get(position-1);
-                // Create an intent to display PostDetailsActivity
                 Intent intent = new Intent(mContext, PostDetailsActivity.class);
-                // Serialize the movie using parceler, use its short name as a key
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
-                // Show the activity
                 mContext.startActivity(intent);
             }
         }

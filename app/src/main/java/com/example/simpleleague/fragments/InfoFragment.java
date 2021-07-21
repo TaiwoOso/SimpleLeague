@@ -4,16 +4,21 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.SearchView;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -51,7 +56,39 @@ public class InfoFragment extends Fragment {
     private ChampionsAdapter adapter;
     private EndlessRecyclerViewScrollListener scrollListener;
     private SearchView svSearch;
-    private Button btnSearch;
+
+    public InfoFragment() {
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_info, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        svSearch = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        svSearch.setQueryHint("Search");
+        // Search for specific queries
+        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.clear();
+                String search = svSearch.getQuery().toString();
+                queryChampions(0, search);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,60 +104,29 @@ public class InfoFragment extends Fragment {
         rvChampions = view.findViewById(R.id.rvChampions);
         champions = new ArrayList<>();
         adapter = new ChampionsAdapter(getContext(), champions);
-        svSearch = view.findViewById(R.id.svSearch);
-        btnSearch = view.findViewById(R.id.btnSearch);
         // RecyclerView
         GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         rvChampions.setAdapter(adapter);
         rvChampions.setLayoutManager(layout);
         // Get the champions from Parse and notify adapter
         queryChampions(0, "");
-        // Search for specific queries
-        btnSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter.clear();
-                String search = svSearch.getQuery().toString();
-                queryChampions(0, search);
-            }
-        });
         // Load more champions during scrolling
-        // Retain an instance so that you can call `resetState()` for fresh searches
         scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
                 String search = svSearch.getQuery().toString();
-                loadNextChampionsFromParse(skips, search);
+                queryChampions(skips, search);
             }
         };
-        // Adds the scroll listener to RecyclerView
         rvChampions.addOnScrollListener(scrollListener);
     }
 
-    // Append the next "page" of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
-    private void loadNextChampionsFromParse(int skips, String search) {
-        // Send an API request to retrieve appropriate "paginated" data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
-        queryChampions(skips, search);
-    }
-
     private void queryChampions(int skips, String search) {
-        // Get the current user
         ParseUser currentUser = ParseUser.getCurrentUser();
-        // Specify which class to query
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
-        // Search for substring
         query.whereContains(Champion.KEY_NAME, search);
-        // limit query to [limit] champions
         int limit = 20;
         query.setLimit(limit);
-        // skip this amount
         query.setSkip(skips);
         query.findInBackground(new FindCallback<Champion>() {
             @Override

@@ -32,8 +32,8 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "PostsDetailsAdapter";
     private Context mContext;
-    List<Post> post;
-    List<Comment> comments;
+    private List<Post> post;
+    private List<Comment> comments;
 
     public PostsDetailsAdapter(Context mContext, List<Comment> comments) {
         this.mContext = mContext;
@@ -105,16 +105,9 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             Comment comment = (Comment) object;
             ParseFile profileImage = (ParseFile) comment.getUser().get(User.KEY_PROFILE_IMAGE);
             if (profileImage != null) {
-                Glide.with(mContext)
-                        .load(profileImage.getUrl())
-                        .placeholder(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
+                Glide.with(mContext).load(profileImage.getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
             } else {
-                Glide.with(mContext)
-                        .load(R.drawable.default_profile_image)
-                        .centerCrop()
-                        .into(ivProfileImage);
+                Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
             }
             tvUsername.setText(comment.getUser().getUsername());
             tvBody.setText(comment.getBody());
@@ -127,13 +120,10 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     Log.i(TAG, "Clicked on "+comment.getUser().getUsername()+"'s profile.");
-                    // Create an intent to display UserDetailsActivity
                     Intent intent = new Intent(mContext, UserDetailsActivity.class);
-                    // Serialize the movie using parceler, use its short name as a key
                     User user = new User();
                     user.setParseUser(comment.getUser());
                     intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
-                    // Start the activity
                     mContext.startActivity(intent);
                 }
             });

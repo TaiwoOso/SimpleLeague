@@ -7,10 +7,9 @@
 
     <SearchView
         android:id="@+id/svSearch"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="false"
-        android:layout_toStartOf="@id/btnSearch" />
+        android:layout_alignParentEnd="true" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvUsers"
@@ -19,13 +18,4 @@
         android:layout_below="@id/svSearch"
         android:padding="8dp" />
 
-    <Button
-        android:id="@+id/btnSearch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="#00FFFFFF"
-        android:text="Search"
-        android:textColor="@color/black" />
 </RelativeLayout>

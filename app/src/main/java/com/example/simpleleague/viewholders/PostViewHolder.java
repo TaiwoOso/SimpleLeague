@@ -43,16 +43,9 @@ public class PostViewHolder extends ViewHolder {
         Post post = (Post) object;
         ParseFile profileImage = (ParseFile) post.getUser().get(User.KEY_PROFILE_IMAGE);
         if (profileImage != null) {
-            Glide.with(mContext)
-                    .load(profileImage.getUrl())
-                    .placeholder(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
+            Glide.with(mContext).load(profileImage.getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
         } else {
-            Glide.with(mContext)
-                    .load(R.drawable.default_profile_image)
-                    .centerCrop()
-                    .into(ivProfileImage);
+            Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
         }
         tvUsername.setText(post.getUser().getUsername());
         tvTitle.setText(post.getTitle());
@@ -66,13 +59,10 @@ public class PostViewHolder extends ViewHolder {
             @Override
             public void onClick(View v) {
                 Log.i(TAG, "Clicked on "+post.getUser().getUsername()+"'s profile.");
-                // Create an intent to display UserDetailsActivity
                 Intent intent = new Intent(mContext, UserDetailsActivity.class);
-                // Serialize the movie using parceler, use its short name as a key
                 User user = new User();
                 user.setParseUser(post.getUser());
                 intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
-                // Start the activity
                 mContext.startActivity(intent);
             }
         });
