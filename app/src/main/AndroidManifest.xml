@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleLeague">
-        <activity android:name=".UserDetailsActivity"/>
+        <activity android:name=".ChampionDetailsActivity"></activity>
+        <activity android:name=".UserDetailsActivity" />
         <activity android:name=".PostDetailsActivity" />
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />

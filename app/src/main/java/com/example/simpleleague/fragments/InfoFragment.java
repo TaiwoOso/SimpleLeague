@@ -23,7 +23,17 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +44,8 @@ public class InfoFragment extends Fragment {
     public static final String CHAMPIONS_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion.json";
     public static final String CHAMPION_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion/";
     public static final String CHAMPION_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/11.14.1/img/champion/";
+    public static final String CHAMPION_SPELL_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/spell/";
+    public static final String CHAMPION_PASSIVE_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/passive/";
     private RecyclerView rvChampions;
     private List<Champion> champions;
     private ChampionsAdapter adapter;
@@ -257,6 +269,92 @@ public class InfoFragment extends Fragment {
 //        });
 //    }
 //
+//private void updateChampionAbilities(Champion champion) {
+//    Thread thread = new Thread(new Runnable() {
+//        @Override
+//        public void run() {
+//            String name = champion.getName();
+//            // JSONObject containing champion's data
+//            String champion_json_url = CHAMPION_JSON+name+".json";
+//            JSONObject champion_data;
+//            try {
+//                champion_data = getJSONObjectFromURL(champion_json_url).getJSONObject("data").getJSONObject(name);
+//            } catch (JSONException | IOException e) {
+//                Log.i(TAG, name+" wasn't updated. - data", e);
+//                return;
+//            }
+//            JSONArray spells;
+//            try {
+//                spells = champion_data.getJSONArray("spells");
+//            } catch (JSONException e) {
+//                Log.i(TAG, name+" wasn't updated. - spells", e);
+//                return;
+//            }
+//            JSONObject passive;
+//            try {
+//                passive = champion_data.getJSONObject("passive");
+//            } catch (JSONException e) {
+//                Log.i(TAG, name+" wasn't updated. - passive", e);
+//                return;
+//            }
+//            // Iterate through spells
+//            for (int i = 0; i < spells.length(); i++) {
+//                try {
+//                    JSONObject spell = spells.getJSONObject(i);
+//                    JSONObject image = spell.getJSONObject("image");
+//                    switch (i) {
+//                        case 0:
+//                            champion.setQName(spell.getString("name"));
+//                            champion.setQImageUrl(CHAMPION_SPELL_URL+image.getString("full"));
+////                                Log.i(TAG, name+"Q: "+spell.getString("name")+" "+CHAMPION_SPELL_URL+image.getString("full"));
+//                            break;
+//                        case 1:
+//                            champion.setWName(spell.getString("name"));
+//                            champion.setWImageUrl(CHAMPION_SPELL_URL+image.getString("full"));
+////                                Log.i(TAG, name+"W: "+spell.getString("name")+" "+CHAMPION_SPELL_URL+image.getString("full"));
+//                            break;
+//                        case 2:
+//                            champion.setEName(spell.getString("name"));
+//                            champion.setEImageUrl(CHAMPION_SPELL_URL+image.getString("full"));
+////                                Log.i(TAG, name+"E: "+spell.getString("name")+" "+CHAMPION_SPELL_URL+image.getString("full"));
+//                            break;
+//                        case 3:
+//                            champion.setRName(spell.getString("name"));
+//                            champion.setRImageUrl(CHAMPION_SPELL_URL+image.getString("full"));
+////                                Log.i(TAG, name+"R: "+spell.getString("name")+" "+CHAMPION_SPELL_URL+image.getString("full"));
+//                            break;
+//                    }
+//                } catch (JSONException e) {
+//                    Log.i(TAG, name+" wasn't updated. - spell", e);
+//                    return;
+//                }
+//            }
+//            // Passive
+//            try {
+//                JSONObject image = passive.getJSONObject("image");
+//                champion.setPName(passive.getString("name"));
+//                champion.setPImageUrl(CHAMPION_PASSIVE_URL+image.getString("full"));
+////                    Log.i(TAG, name+"P: "+passive.getString("name")+" "+CHAMPION_PASSIVE_URL+image.getString("full"));
+//            } catch (JSONException e) {
+//                Log.i(TAG, name+" wasn't updated. - passive", e);
+//                return;
+//            }
+////                Log.i(TAG,  name+" Loaded.");
+//            champion.saveInBackground(new SaveCallback() {
+//                @Override
+//                public void done(ParseException e) {
+//                    if (e != null) {
+//                        Log.i(TAG, name+" wasn't saved.", e);
+//                        return;
+//                    }
+//                    Log.i(TAG, name+" was saved.");
+//                }
+//            });
+//        }
+//    });
+//    thread.start();
+//}
+//
 //    // Creates json objects from url
 //    public static JSONObject getJSONObjectFromURL(String urlString) throws IOException, JSONException {
 //        HttpURLConnection urlConnection = null;
@@ -277,7 +375,7 @@ public class InfoFragment extends Fragment {
 //        br.close();
 //
 //        String jsonString = sb.toString();
-//        System.out.println("JSON: " + jsonString);
+////        System.out.println("JSON: " + jsonString);
 //
 //        return new JSONObject(jsonString);
 //    }

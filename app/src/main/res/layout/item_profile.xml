@@ -157,6 +157,7 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
+        android:gravity="center_horizontal"
         tools:text="SimpleLeague Founder" />
 
 </RelativeLayout>

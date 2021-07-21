@@ -1,6 +1,7 @@
 package com.example.simpleleague.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.ChampionDetailsActivity;
+import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Champion;
+import com.example.simpleleague.models.Post;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -53,7 +59,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private View rootView;
         private ImageView ivProfile;
@@ -66,6 +72,7 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
             ivProfile = (ImageView)itemView.findViewById(R.id.ivProfile);
             tvName = (TextView)itemView.findViewById(R.id.tvName);
             vPalette = itemView.findViewById(R.id.vPalette);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Champion champion) {
@@ -75,6 +82,23 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
                     .load(champion.getImage().getUrl())
                     .centerCrop()
                     .into(ivProfile);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Get the position
+            int position = getAdapterPosition();
+            // Make sure position is valid
+            if (position != RecyclerView.NO_POSITION) {
+                // Get the post at position
+                Champion champion = champions.get(position);
+                // Create an intent to display PostDetailsActivity
+                Intent intent = new Intent(mContext, ChampionDetailsActivity.class);
+                // Serialize the movie using parceler, use its short name as a key
+                intent.putExtra(Champion.class.getSimpleName(), Parcels.wrap(champion));
+                // Show the activity
+                mContext.startActivity(intent);
+            }
         }
     }
 }
