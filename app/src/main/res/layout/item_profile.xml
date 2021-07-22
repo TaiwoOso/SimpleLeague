@@ -137,6 +137,7 @@
             android:layout_width="150dp"
             android:layout_height="150dp"
             tools:src="@tools:sample/avatars" />
+
     </androidx.cardview.widget.CardView>
 
     <Button
@@ -159,5 +160,20 @@
         android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         tools:text="SimpleLeague Founder" />
+
+    <ImageButton
+        android:id="@+id/ibtnAddProfileImage"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignEnd="@id/cvProfileImage"
+        android:layout_alignBottom="@id/cvProfileImage"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginEnd="-5dp"
+        android:layout_marginBottom="-5dp"
+        android:backgroundTint="#00FFFFFF"
+        android:elevation="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_plus" />
 
 </RelativeLayout>

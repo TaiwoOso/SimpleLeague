@@ -37,6 +37,7 @@ public class SignupActivity extends AppCompatActivity {
             String username = credentials[0];
             String password = credentials[1];
             signup(username, password);
+            return;
         }
         // Initialize fields
         etUsername = findViewById(R.id.etUsername);

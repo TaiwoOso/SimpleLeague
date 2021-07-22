@@ -81,7 +81,7 @@ public class SearchPostsFragment extends SearchFragment {
         rvPosts.setLayoutManager(layout);
         // Get the posts from Parse
         queryPosts(0, "");
-        // Load more champions during scrolling
+        // Load more posts during scrolling
         scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {

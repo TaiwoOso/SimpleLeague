@@ -67,7 +67,7 @@ public class SearchFragment extends Fragment {
                 Fragment fragment;
                 if (text.equals("Posts")) {
                     fragment = searchPostsFragment;
-                } else { // default to discover fragment
+                } else { // default to users fragment
                     fragment = searchUsersFragment;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();

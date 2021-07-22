@@ -1,6 +1,9 @@
 package com.example.simpleleague.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,8 +18,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.models.Post;
@@ -31,6 +36,9 @@ import com.parse.ParseUser;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
+import static android.content.Context.CAMERA_SERVICE;
 
 public class ProfileFragment extends Fragment {
 

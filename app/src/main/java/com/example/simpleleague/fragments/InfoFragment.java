@@ -33,11 +33,11 @@ import java.util.List;
 public class InfoFragment extends Fragment {
 
     public static final String TAG = "InfoFragment";
-    public static final String CHAMPIONS_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion.json";
-    public static final String CHAMPION_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion/";
-    public static final String CHAMPION_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/11.14.1/img/champion/";
-    public static final String CHAMPION_SPELL_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/spell/";
-    public static final String CHAMPION_PASSIVE_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/passive/";
+//    public static final String CHAMPIONS_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion.json";
+//    public static final String CHAMPION_JSON = "https://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/champion/";
+//    public static final String CHAMPION_IMAGE_URL = "https://ddragon.leagueoflegends.com/cdn/11.14.1/img/champion/";
+//    public static final String CHAMPION_SPELL_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/spell/";
+//    public static final String CHAMPION_PASSIVE_URL = "https://ddragon.leagueoflegends.com/cdn/11.15.1/img/passive/";
     private RecyclerView rvChampions;
     private List<Champion> champions;
     private ChampionsAdapter adapter;

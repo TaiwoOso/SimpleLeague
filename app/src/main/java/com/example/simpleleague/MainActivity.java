@@ -7,14 +7,18 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.simpleleague.fragments.CreateFragment;
 import com.example.simpleleague.fragments.FeedFragment;
 import com.example.simpleleague.fragments.HomeFragment;
@@ -33,6 +37,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -154,5 +159,27 @@ public class MainActivity extends AppCompatActivity {
 
         GoogleSignInClient googleSignInClient= GoogleSignIn.getClient(this,gso);
         googleSignInClient.signOut();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CameraFunctions.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Load the taken image into a preview
+                Bitmap takenImage = BitmapFactory.decodeFile(CameraFunctions.photoFile.getAbsolutePath());
+                try {
+                    takenImage = CameraFunctions.rotateImage(takenImage, CameraFunctions.photoFile.getAbsolutePath());
+                } catch (IOException e) {
+                    Log.i(TAG, "Image could not be rotated for "+ParseUser.getCurrentUser().getUsername()+".");
+                }
+                ImageView ivProfileImage = findViewById(R.id.ivProfileImage);
+                Glide.with(this).load(takenImage).centerCrop().into(ivProfileImage);
+                // Save the photo to Parse database
+                ParseQueries.saveProfileImage(this, CameraFunctions.photoFile, ivProfileImage);
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

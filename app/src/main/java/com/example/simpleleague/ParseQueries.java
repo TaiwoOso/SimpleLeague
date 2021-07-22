@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.models.Follow;
@@ -19,6 +20,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -193,5 +195,24 @@ public class ParseQueries {
             }
         });
 
+    }
+
+    public static void saveProfileImage(Context context, File photoFile, ImageView ivProfileImage) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put(User.KEY_PROFILE_IMAGE, new ParseFile(photoFile));
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving profile image for " + currentUser.getUsername() + ".", e);
+                    Toast.makeText(context, "Error while saving profile image!", Toast.LENGTH_SHORT).show();
+                    // Load back previous image
+                    loadProfileImage(ivProfileImage, context, currentUser);
+                    return;
+                }
+                Log.i(TAG, "Profile image was saved for "+currentUser.getUsername()+".");
+                Toast.makeText(context, "Image saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -3,11 +3,14 @@ package com.example.simpleleague.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
@@ -91,6 +95,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         private TextView tvFollowing;
         private TextView tvPosts;
         private Button btnFollow;
+        private ImageButton ibtnAddProfileImage;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -101,6 +106,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             tvFollowing = itemView.findViewById(R.id.tvFollowing);
             tvPosts = itemView.findViewById(R.id.tvPosts);
             btnFollow = itemView.findViewById(R.id.btnFollow);
+            ibtnAddProfileImage = itemView.findViewById(R.id.ibtnAddProfileImage);
         }
 
         public void bind(Object object) {
@@ -111,6 +117,10 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             ParseQueries.setFollowers(tvFollowers, user);
             ParseQueries.setFollowing(tvFollowing, user);
             ParseQueries.setNumberPosts(tvPosts, user);
+            // Change visibility of add profile image button
+            if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                ibtnAddProfileImage.setVisibility(View.GONE);
+            }
             // Change appearance of follow button
             if (user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                 btnFollow.setVisibility(View.GONE);
@@ -132,14 +142,26 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                         btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
                         btnFollow.setText(R.string.Followed);
+                        int followers = Integer.parseInt(tvFollowers.getText().toString())+1;
+                        tvFollowers.setText(String.valueOf(followers));
                         Log.i(TAG, "Followed");
                     } else {
                         ParseQueries.unfollowUser(user);
                         btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
                         btnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
                         btnFollow.setText(R.string.Follow);
+                        int followers = Integer.parseInt(tvFollowers.getText().toString())-1;
+                        tvFollowers.setText(String.valueOf(followers));
                         Log.i(TAG, "Unfollowed");
                     }
+                }
+            });
+            ibtnAddProfileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Get the photo
+                    CameraFunctions.launchCamera(mContext);
+                    // Main Activity's onActivityResult() takes care of the rest
                 }
             });
         }

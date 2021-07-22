@@ -38,13 +38,16 @@ public class DiscoverFragment extends FeedFragment {
     }
 
     @Override
-    public void queryPosts() {
+    public void queryPosts(int skips) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         List<String> userTags = (List<String>) currentUser.get(User.KEY_TAGS);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         if (userTags != null && !userTags.isEmpty()) {
             query.whereContainedIn(Post.KEY_TAGS, userTags);
         }
+        int limit = 20;
+        query.setLimit(limit);
+        query.setSkip(skips);
         query.include(Post.KEY_USER);
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -57,7 +60,7 @@ public class DiscoverFragment extends FeedFragment {
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeInserted(skips, skips+limit);
             }
         });
     }

@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
@@ -33,6 +34,7 @@ public class FeedFragment extends Fragment {
     private RecyclerView rvPosts;
     public PostsAdapter adapter;
     private List<Post> posts;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,13 +51,22 @@ public class FeedFragment extends Fragment {
         posts = new ArrayList<Post>();
         adapter = new PostsAdapter(getContext(), posts);
         // RecyclerView
+        LinearLayoutManager layout = new LinearLayoutManager(getContext());
         rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(new LinearLayoutManager(getContext()));
+        rvPosts.setLayoutManager(layout);
         // Get the posts from Parse
-        queryPosts();
+        queryPosts(0);
+        // Load more posts during scrolling
+        scrollListener = new EndlessRecyclerViewScrollListener(layout) {
+            @Override
+            public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
+                queryPosts(skips);
+            }
+        };
+        rvPosts.addOnScrollListener(scrollListener);
     }
 
-    public void queryPosts() {
+    public void queryPosts(int skips) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get list of user IDs that current user follows
         Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
@@ -71,6 +82,9 @@ public class FeedFragment extends Fragment {
         // Query posts where author of post is followed by current user
         query.whereContainedIn(Post.KEY_USER, following);
         query.addDescendingOrder("createdAt");
+        int limit = 20;
+        query.setLimit(limit);
+        query.setSkip(skips);
         query.include(Post.KEY_USER);
         query.findInBackground(new FindCallback<Post>() {
             @Override
@@ -83,7 +97,7 @@ public class FeedFragment extends Fragment {
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeInserted(skips, skips+limit);
             }
         });
     }
