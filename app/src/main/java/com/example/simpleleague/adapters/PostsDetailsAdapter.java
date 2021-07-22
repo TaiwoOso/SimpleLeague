@@ -26,6 +26,7 @@ import com.parse.ParseObject;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -82,8 +83,26 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder {
 
+        private TextView tvTag1;
+        private TextView tvTag2;
+
         public PostViewHolder(@NonNull View itemView) {
             super(itemView, mContext);
+            tvTag1 = itemView.findViewById(R.id.tvTag1);
+            tvTag2 = itemView.findViewById(R.id.tvTag2);
+        }
+
+        @Override
+        public void bind(Object object) {
+            super.bind(object);
+            Post post = (Post) object;
+            List<String> tags = post.getTags();
+            if (tags == null) return;
+            List<TextView> tvTags = Arrays.asList(tvTag1, tvTag2);
+            for (int i = 0; i < tags.size(); i++) {
+                TextView tvTag = tvTags.get(i);
+                tvTag.setText(tags.get(i));
+            }
         }
     }
 

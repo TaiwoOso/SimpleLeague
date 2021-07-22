@@ -164,6 +164,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             if (body.length() > blurbCount) {
                 blurb = body.substring(0, blurbCount)+"...";
                 tvBody.setText(blurb);
+            } else {
+                tvBody.setText(body);
             }
         }
 

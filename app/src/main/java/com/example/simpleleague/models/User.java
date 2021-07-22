@@ -11,6 +11,7 @@ public class User {
     public static final String KEY_PROFILE_IMAGE = "profileImage";
     public static final String KEY_BIO = "bio";
     public static final String KEY_FOLLOW = "follow";
+    public static final String KEY_TAGS = "tags";
     private ParseUser parseUser;
 
     // empty constructor needed by the Parceler library

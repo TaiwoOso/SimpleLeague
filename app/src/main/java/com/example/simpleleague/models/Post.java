@@ -17,6 +17,7 @@ public class Post extends ParseObject {
     public static final String KEY_TITLE = "title";
     public static final String KEY_BODY = "body";
     public static final String KEY_IMAGE = "image";
+    public static final String KEY_TAGS = "tags";
     public static final String KEY_COMMENTS = "comments";
 
     // empty constructor needed by the Parceler library
@@ -44,6 +45,14 @@ public class Post extends ParseObject {
 
     public void setBody(String body) {
         put(KEY_BODY, body);
+    }
+
+    public List<String> getTags() {
+        return (List<String>) get(KEY_TAGS);
+    }
+
+    public void setTags(List<String> tags) {
+        addAllUnique(KEY_TAGS, tags);
     }
 
     public ParseFile getImage() {

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.simpleleague.fragments.CreateFragment;
 import com.example.simpleleague.fragments.FeedFragment;
+import com.example.simpleleague.fragments.HomeFragment;
 import com.example.simpleleague.fragments.InfoFragment;
 import com.example.simpleleague.fragments.ProfileFragment;
 import com.example.simpleleague.fragments.SearchFragment;
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         // Define fragments
         final FragmentManager fragmentManager = getSupportFragmentManager();
         final Fragment infoFragment = new InfoFragment();
-        final Fragment feedFragment = new FeedFragment();
+        final Fragment homeFragment = new HomeFragment();
         final Fragment createFragment = new CreateFragment();
         final Fragment searchFragment = new SearchFragment();
         final Fragment profileFragment = new ProfileFragment();
@@ -67,19 +68,14 @@ public class MainActivity extends AppCompatActivity {
                 int id = item.getItemId();
                 if (id == R.id.action_info) {
                     fragment = infoFragment;
-                    mToolbar.setVisibility(View.VISIBLE);
                 } else if (id == R.id.action_home) {
-                    fragment = feedFragment;
-                    mToolbar.setVisibility(View.VISIBLE);
+                    fragment = homeFragment;
                 } else if (id == R.id.action_create) {
                     fragment = createFragment;
-                    mToolbar.setVisibility(View.VISIBLE);
                 }else if (id == R.id.action_search) {
                     fragment = searchFragment;
-                    mToolbar.setVisibility(View.GONE);
                 } else { // default to profileFragment
                     fragment = profileFragment;
-                    mToolbar.setVisibility(View.VISIBLE);
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
                 return true;

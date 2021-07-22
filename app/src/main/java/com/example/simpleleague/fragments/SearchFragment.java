@@ -4,22 +4,45 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 
 import com.example.simpleleague.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.tabs.TabLayout;
 
 public class SearchFragment extends Fragment {
 
-    private BottomNavigationView topNavigationView;
+    private TabLayout tlSearch;
+    public SearchView svSearch;
+
+    public SearchFragment() {
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        menu.clear();
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_search, menu);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        svSearch = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        svSearch.setQueryHint("Search");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,26 +55,31 @@ public class SearchFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         // Initialize Fields
-        topNavigationView = view.findViewById(R.id.topNavigation);
+        tlSearch = view.findViewById(R.id.tlSearch);
         // Define fragments
         final FragmentManager fragmentManager = getChildFragmentManager();
         final Fragment searchPostsFragment = new SearchPostsFragment();
         final Fragment searchUsersFragment = new SearchUsersFragment();
-        topNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        tlSearch.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                int id = item.getItemId();
+            public void onTabSelected(TabLayout.Tab tab) {
+                String text = tab.getText().toString();
                 Fragment fragment;
-                if (id == R.id.action_users) {
-                    fragment = searchUsersFragment;
-                } else { // default to searchPostsFragment
+                if (text.equals("Posts")) {
                     fragment = searchPostsFragment;
+                } else { // default to discover fragment
+                    fragment = searchUsersFragment;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
             }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {}
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {}
         });
-        // Set default selection
-        topNavigationView.setSelectedItemId(R.id.action_posts);
+        // Set default fragment
+        fragmentManager.beginTransaction().replace(R.id.flContainer, searchPostsFragment).commit();
     }
 }

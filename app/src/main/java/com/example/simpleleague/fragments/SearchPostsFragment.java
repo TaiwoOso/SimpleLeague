@@ -4,17 +4,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.ParseQueries;
@@ -39,28 +41,10 @@ public class SearchPostsFragment extends SearchFragment {
     private PostsAdapter adapter;
     private List<Post> posts;
     private EndlessRecyclerViewScrollListener scrollListener;
-    private SearchView svSearch;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_posts, container, false);
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // Initialize fields
-        rvPosts = view.findViewById(R.id.rvPosts);
-        posts = new ArrayList<Post>();
-        adapter = new PostsAdapter(getContext(), posts);
-        svSearch = view.findViewById(R.id.svSearch);
-        // RecyclerView
-        LinearLayoutManager layout = new LinearLayoutManager(getContext());
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(layout);
-        // Get the posts from Parse
-        queryPosts(0, "");
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         // Search for specific queries
         svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -76,6 +60,27 @@ public class SearchPostsFragment extends SearchFragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_search_posts, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        // Initialize fields
+        rvPosts = view.findViewById(R.id.rvPosts);
+        posts = new ArrayList<Post>();
+        adapter = new PostsAdapter(getContext(), posts);
+        // RecyclerView
+        LinearLayoutManager layout = new LinearLayoutManager(getContext());
+        rvPosts.setAdapter(adapter);
+        rvPosts.setLayoutManager(layout);
+        // Get the posts from Parse
+        queryPosts(0, "");
         // Load more champions during scrolling
         scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
@@ -94,7 +99,6 @@ public class SearchPostsFragment extends SearchFragment {
         int limit = 20;
         query.setLimit(limit);
         query.setSkip(skips);
-        query.addDescendingOrder("createdAt");
         query.include(Post.KEY_USER);
         query.findInBackground(new FindCallback<Post>() {
             @Override

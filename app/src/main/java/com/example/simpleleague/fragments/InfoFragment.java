@@ -11,14 +11,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -28,17 +25,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,7 +52,7 @@ public class InfoFragment extends Fragment {
     public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.menu_info, menu);
+        inflater.inflate(R.menu.menu_search, menu);
     }
 
     @Override
@@ -125,6 +112,7 @@ public class InfoFragment extends Fragment {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
         query.whereContains(Champion.KEY_NAME, search);
+        query.addAscendingOrder(Champion.KEY_NAME);
         int limit = 20;
         query.setLimit(limit);
         query.setSkip(skips);
