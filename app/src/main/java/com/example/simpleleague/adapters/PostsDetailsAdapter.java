@@ -2,12 +2,17 @@ package com.example.simpleleague.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,13 +23,14 @@ import com.example.simpleleague.UserDetailsActivity;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
-import com.example.simpleleague.viewholders.PostViewHolder;
 import com.example.simpleleague.viewholders.ViewHolder;
+import com.parse.GetFileCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 
 import org.parceler.Parcels;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,17 +91,33 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private TextView tvTag1;
         private TextView tvTag2;
+        private VideoView videoView;
+        private ImageButton ibtnPlayVideo;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView, mContext);
             tvTag1 = itemView.findViewById(R.id.tvTag1);
             tvTag2 = itemView.findViewById(R.id.tvTag2);
+            videoView = itemView.findViewById(R.id.videoView);
+            ibtnPlayVideo = itemView.findViewById(R.id.ibtnPlayVideo);
         }
 
         @Override
         public void bind(Object object) {
             super.bind(object);
             Post post = (Post) object;
+            if (post.getVideo() != null) {
+                post.getVideo().getFileInBackground(new GetFileCallback() {
+                    @Override
+                    public void done(File file, ParseException e) {
+                        Uri uri = Uri.fromFile(file);
+                        videoView.setVisibility(View.VISIBLE);
+                        ibtnPlayVideo.setVisibility(View.VISIBLE);
+                        videoView.setVideoURI(uri);
+                        videoView.seekTo(1);
+                    }
+                });
+            }
             List<String> tags = post.getTags();
             if (tags == null) return;
             List<TextView> tvTags = Arrays.asList(tvTag1, tvTag2);
@@ -103,6 +125,29 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 TextView tvTag = tvTags.get(i);
                 tvTag.setText(tags.get(i));
             }
+            // Listeners
+            listeners();
+        }
+
+        private void listeners() {
+            ibtnPlayVideo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (videoView.isPlaying()) {
+                        videoView.pause();
+                        ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                    } else {
+                        videoView.start();
+                        ibtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);
+                    }
+                }
+            });
+            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                }
+            });
         }
     }
 

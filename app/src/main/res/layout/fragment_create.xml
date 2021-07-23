@@ -1,135 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="?actionBarSize"
-    tools:context=".fragments.CreateFragment">
+    tools:context=".fragments.HomeFragment">
 
+    <FrameLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tlCreate" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvTag1"
-        android:layout_width="wrap_content"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tlCreate"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etTag"
-        android:layout_alignStart="@+id/etTag"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="250dp">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
-        <TextView
-            android:id="@+id/tvTag1"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/purple_200"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            tools:text="#Tag1" />
+            android:text="Text" />
 
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cvTag2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cvTag1"
-        android:layout_alignStart="@+id/etTag"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="10dp"
-        app:cardCornerRadius="250dp">
-
-        <TextView
-            android:id="@+id/tvTag2"
+        <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/purple_200"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:visibility="visible"
-            tools:text="#Tag2" />
-
-    </androidx.cardview.widget.CardView>
-
-    <EditText
-        android:id="@+id/etBody"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etTitle"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="false"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_200"
-        android:ems="10"
-        android:gravity="start"
-        android:hint="Body..."
-        android:inputType="textMultiLine"
-        android:lines="14"
-        android:maxLines="16"
-        android:minLines="12"
-        android:scrollbars="vertical" />
-
-    <EditText
-        android:id="@+id/etTitle"
-        android:layout_width="359dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="false"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_200"
-        android:ems="10"
-        android:hint="Title..."
-        android:inputType="textShortMessage"
-        android:scrollbars="horizontal" />
-
-    <Button
-        android:id="@+id/btnPost"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etTag"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_200"
-        android:text="Post" />
-
-    <EditText
-        android:id="@+id/etTag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etBody"
-        android:layout_alignEnd="@+id/btnPost"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/purple_200"
-        android:ems="10"
-        android:hint="Add Tag..."
-        android:inputType="textPersonName" />
-
-    <ImageButton
-        android:id="@+id/ibtnAddTag"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignTop="@+id/etTag"
-        android:layout_marginStart="-40dp"
-        android:layout_toEndOf="@+id/etTag"
-        android:backgroundTint="#00FFFFFF"
-        android:scaleType="centerCrop"
-        android:src="@drawable/ic_add"
-        app:tint="@color/purple_200" />
-
+            android:text="Video" />
+    </com.google.android.material.tabs.TabLayout>
 </RelativeLayout>

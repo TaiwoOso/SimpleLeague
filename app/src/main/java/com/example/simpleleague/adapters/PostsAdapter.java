@@ -76,6 +76,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             String blurb;
             int blurbCount = 125;
             String body = post.getBody();
+            if (body == null) return;
             if (body.length() > blurbCount) {
                 blurb = body.substring(0, blurbCount)+"...";
                 tvBody.setText(blurb);

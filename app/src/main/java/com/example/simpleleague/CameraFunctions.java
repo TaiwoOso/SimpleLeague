@@ -32,14 +32,27 @@ public class CameraFunctions {
 
     public static final String TAG = "CameraFunctions";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 76;
+    public static final int REQUEST_VIDEO_CAPTURE = 1;
     public static String photoFileName = "photo.jpg";
+    public static final String videoFileName = "video.mp4";
     public static File photoFile;
+    public static File videoFile;
+
+    public static void dispatchTakeVideoIntent(Context context) {
+        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        videoFile = getMediaFileUri(context, videoFileName);
+        Uri fileProvider = FileProvider.getUriForFile(context, "com.codepath.fileprovider", videoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+        if (intent.resolveActivity(context.getPackageManager()) != null) {
+            ((Activity)context).startActivityForResult(intent, REQUEST_VIDEO_CAPTURE);
+        }
+    }
 
     public static void launchCamera(Context context) {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
-        photoFile = getPhotoFileUri(context, photoFileName);
+        photoFile = getMediaFileUri(context, photoFileName);
 
         // wrap File object into a content provider
         // required for API >= 24
@@ -52,12 +65,11 @@ public class CameraFunctions {
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             // Start the image capture intent to take photo
             ((Activity)context).startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-
         }
     }
 
     // Returns the File for a photo stored on disk given the fileName
-    public static File getPhotoFileUri(Context context, String fileName) {
+    public static File getMediaFileUri(Context context, String fileName) {
         // Get safe storage directory for photos
         // Use `getExternalFilesDir` on Context to access package-specific directories.
         // This way, we don't need to request external read/write runtime permissions.

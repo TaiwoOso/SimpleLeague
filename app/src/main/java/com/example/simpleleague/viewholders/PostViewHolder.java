@@ -2,10 +2,12 @@ package com.example.simpleleague.viewholders;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,10 +18,14 @@ import com.example.simpleleague.R;
 import com.example.simpleleague.UserDetailsActivity;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
+import com.parse.GetFileCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
 
 import org.parceler.Parcels;
+
+import java.io.File;
 
 public class PostViewHolder extends ViewHolder {
 

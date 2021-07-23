@@ -55,13 +55,13 @@ public class PostDetailsActivity extends AppCompatActivity {
         ParseUser currentUser = ParseUser.getCurrentUser();
         List<String> userTags = (List<String>) currentUser.get(User.KEY_TAGS);
         List<String> postTags = post.getTags();
-        if (postTags == null) return;
+        if (postTags == null || postTags.isEmpty()) return;
         if (userTags == null) {
-            currentUser.addAllUnique(User.KEY_TAGS, postTags);
-        } else if (userTags.size() + postTags.size() <= 5) {
             currentUser.addAllUnique(User.KEY_TAGS, postTags);
         } else if (userTags.containsAll(postTags)) {
             return;
+        } else if (userTags.size() + postTags.size() <= 5) {
+            currentUser.addAllUnique(User.KEY_TAGS, postTags);
         } else {
             ArrayList<String> newUserTags = new ArrayList<>(5);
             int start = userTags.size() - postTags.size() - 1;

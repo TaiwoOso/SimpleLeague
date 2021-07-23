@@ -9,6 +9,8 @@ import androidx.fragment.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.fragments.CreateFragment;
@@ -179,6 +182,18 @@ public class MainActivity extends AppCompatActivity {
                 ParseQueries.saveProfileImage(this, CameraFunctions.photoFile, ivProfileImage);
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == CameraFunctions.REQUEST_VIDEO_CAPTURE) {
+            if (resultCode == RESULT_OK) {
+                Uri videoUri = data.getData();
+                VideoView videoView = findViewById(R.id.videoView);
+                videoView.setVideoURI(videoUri);
+                videoView.setBackgroundColor(Color.TRANSPARENT);
+                videoView.seekTo(1);
+                Log.i(TAG, "Video was set.");
+            } else {
+                Toast.makeText(this, "Video wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
