@@ -51,6 +51,65 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                 tools:text="Body of Post" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/ibtnLike"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/ic_dislike"
+                    android:backgroundTint="@color/black"
+                    android:cropToPadding="false"
+                    android:rotationX="180"
+                    android:scaleType="centerCrop" />
+
+                <TextView
+                    android:id="@+id/tvLikes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:gravity="center_horizontal"
+                    android:text="Like" />
+
+                <ImageButton
+                    android:id="@+id/ibtnDislike"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_horizontal|center_vertical"
+                    android:background="@drawable/ic_dislike"
+                    android:backgroundTint="@color/black"
+                    android:cropToPadding="false"
+                    android:rotationY="180"
+                    android:scaleType="centerCrop" />
+
+                <ImageButton
+                    android:id="@+id/ibtnComment"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="50dp"
+                    android:backgroundTint="#00FFFFFF"
+                    android:clickable="false"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_comment" />
+
+                <TextView
+                    android:id="@+id/tvComments"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="Comment" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

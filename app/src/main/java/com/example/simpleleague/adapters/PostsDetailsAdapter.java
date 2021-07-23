@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -93,6 +94,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
         private TextView tvTag2;
         private VideoView videoView;
         private ImageButton ibtnPlayVideo;
+        private LinearLayout llTags;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView, mContext);
@@ -100,6 +102,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             tvTag2 = itemView.findViewById(R.id.tvTag2);
             videoView = itemView.findViewById(R.id.videoView);
             ibtnPlayVideo = itemView.findViewById(R.id.ibtnPlayVideo);
+            llTags = itemView.findViewById(R.id.llTags);
         }
 
         @Override
@@ -119,7 +122,8 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 });
             }
             List<String> tags = post.getTags();
-            if (tags == null) return;
+            if (tags == null || tags.isEmpty()) return;
+            llTags.setVisibility(View.VISIBLE);
             List<TextView> tvTags = Arrays.asList(tvTag1, tvTag2);
             for (int i = 0; i < tags.size(); i++) {
                 TextView tvTag = tvTags.get(i);

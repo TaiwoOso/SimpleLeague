@@ -72,6 +72,7 @@ public class ProfileFragment extends Fragment {
     private void queryPosts() {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.whereEqualTo(Post.KEY_USER, currentUser);
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.include(Post.KEY_USER);
         query.findInBackground(new FindCallback<Post>() {
             @Override

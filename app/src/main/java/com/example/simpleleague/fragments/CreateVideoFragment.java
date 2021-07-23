@@ -48,6 +48,10 @@ public class CreateVideoFragment extends CreateTextFragment {
         videoView = view.findViewById(R.id.videoView);
         ibtnPlayVideo = view.findViewById(R.id.ibtnPlayVideo);
         // Listeners
+        listeners();
+    }
+
+    private void listeners() {
         ibtnAddVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

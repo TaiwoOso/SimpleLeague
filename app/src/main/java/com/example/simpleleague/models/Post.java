@@ -7,6 +7,8 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Parcel(analyze = Post.class)
@@ -19,6 +21,7 @@ public class Post extends ParseObject {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_VIDEO = "video";
     public static final String KEY_TAGS = "tags";
+    public static final String KEY_LIKES = "likes";
     public static final String KEY_COMMENTS = "comments";
 
     // empty constructor needed by the Parceler library
@@ -72,12 +75,24 @@ public class Post extends ParseObject {
         put(KEY_VIDEO, parseFile);
     }
 
+    public List<String> getLikes() {
+        return (List<String>) get(KEY_LIKES);
+    }
+
+    public void addLike(String userId) {
+        addUnique(KEY_LIKES, userId);
+    }
+
+    public void removeLike(String userId) {
+        removeAll(KEY_LIKES, Collections.singletonList(userId));
+    }
+
     public List<String> getComments() {
         return (List<String>) get(KEY_COMMENTS);
     }
 
-    public void addComment(Comment comment) {
-        addUnique(KEY_COMMENTS, comment);
+    public void addComment(String commentId) {
+        addUnique(KEY_COMMENTS, commentId);
     }
 
 }

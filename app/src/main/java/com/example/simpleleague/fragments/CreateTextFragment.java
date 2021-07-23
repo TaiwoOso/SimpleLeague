@@ -102,8 +102,8 @@ public class CreateTextFragment extends Fragment {
         }
         Post post = new Post();
         post.setUser(currentUser);
-        post.setTitle(title);
-        post.setBody(body);
+        post.setTitle(title.trim());
+        post.setBody(body.trim());
         ArrayList<String> tags = new ArrayList<>(Arrays.asList(tvTag1.getText().toString(), tvTag2.getText().toString()));
         for (int i = 0; i < tags.size(); i++) {
             String tag = tags.get(i);

@@ -5,4 +5,6 @@
     <string name="Followed">Followed</string>
     <string name="Follow">Follow</string>
     <string name="defaultBio">No Bio :(</string>
+    <string name="Like">Like</string>
+    <string name="Comment">Comment</string>
 </resources>

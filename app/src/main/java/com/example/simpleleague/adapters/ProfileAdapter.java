@@ -3,8 +3,10 @@ package com.example.simpleleague.adapters;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -176,6 +178,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public void bind(Object object) {
+            super.bind(object);
             Post post = (Post) object;
             ivProfileImage.setVisibility(View.GONE);
             tvUsername.setVisibility(View.GONE);
@@ -185,7 +188,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             String body = post.getBody();
             if (body == null) return;
             if (body.length() > blurbCount) {
-                blurb = body.substring(0, blurbCount)+"...";
+                blurb = body.substring(0, blurbCount).trim()+"...";
                 tvBody.setText(blurb);
             } else {
                 tvBody.setText(body);

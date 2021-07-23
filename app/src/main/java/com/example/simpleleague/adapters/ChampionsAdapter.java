@@ -64,14 +64,12 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         private View rootView;
         private ImageView ivProfile;
         private TextView tvName;
-        private View vPalette;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
             ivProfile = (ImageView)itemView.findViewById(R.id.ivProfile);
             tvName = (TextView)itemView.findViewById(R.id.tvName);
-            vPalette = itemView.findViewById(R.id.vPalette);
             itemView.setOnClickListener(this);
         }
 

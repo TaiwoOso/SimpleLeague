@@ -114,9 +114,7 @@ public class ParseQueries {
             return false;
         }
         List<String> following = follow.getFollowing();
-        if (following == null) {
-            return false;
-        }
+        if (following == null) return false;
         return following.contains(parseUser.getObjectId());
     }
 
@@ -212,6 +210,43 @@ public class ParseQueries {
                 }
                 Log.i(TAG, "Profile image was saved for "+currentUser.getUsername()+".");
                 Toast.makeText(context, "Image saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static boolean userLikesPost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        List<String> likesUserIds = post.getLikes();
+        if (likesUserIds == null) return false;
+        return likesUserIds.contains(currentUser.getObjectId());
+    }
+
+    public static void likePost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        post.addLike(currentUser.getObjectId());
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to like "+post.getUser().getUsername()+"'s post.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" liked "+post.getUser().getUsername()+"'s post.");
+            }
+        });
+    }
+
+    public static void unlikePost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        post.removeLike(currentUser.getObjectId());
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to unlike "+post.getUser().getUsername()+"'s post.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" unliked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
