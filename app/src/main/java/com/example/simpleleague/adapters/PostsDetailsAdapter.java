@@ -143,7 +143,6 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                     if (videoView.isPlaying()) {
                         videoView.pause();
                         ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
-                        Log.i(TAG, "Play Button Clicked!");
                     } else {
                         videoView.start();
                         ibtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);

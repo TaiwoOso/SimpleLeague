@@ -61,7 +61,7 @@ public class DiscoverFragment extends FeedFragment {
                     return;
                 }
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
-                // Sort posts by # of likes; most likes at top
+                // Sort posts by # of likes; most likes on top
                 Collections.sort(posts);
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);

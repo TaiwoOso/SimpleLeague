@@ -101,7 +101,7 @@ public class SearchUsersFragment extends SearchFragment {
             public void done(List<ParseUser> parseUsers, ParseException e) {
                 // error checking
                 if (e != null) {
-                    Log.e(TAG, "Issue with retrieving parse users.", e);
+                    Log.e(TAG, "Issue with retrieving parse users for "+currentUser.getUsername()+".", e);
                     return;
                 }
                 Log.i(TAG, "Retrieved "+parseUsers.size()+" parse user(s) for "+currentUser.getUsername()+".");

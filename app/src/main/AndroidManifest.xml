@@ -5,7 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <uses-feature android:name="android.hardware.camera"
+    <uses-feature
+        android:name="android.hardware.camera"
         android:required="false" />
 
     <queries>
@@ -22,6 +23,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleLeague">
+        <activity android:name=".UserFollowingActivity"></activity>
+        <activity android:name=".UserFollowersActivity" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.codepath.fileprovider"
@@ -31,7 +35,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
-        <activity android:name=".ChampionDetailsActivity"/>
+
+        <activity android:name=".ChampionDetailsActivity" />
         <activity android:name=".UserDetailsActivity" />
         <activity android:name=".PostDetailsActivity" />
         <activity android:name=".SignupActivity" />

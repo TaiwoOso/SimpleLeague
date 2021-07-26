@@ -81,7 +81,7 @@ public class FeedFragment extends Fragment {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         // Query posts where author of post is followed by current user
         query.whereContainedIn(Post.KEY_USER, following);
-        query.addDescendingOrder("createdAt");
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         int limit = 20;
         query.setLimit(limit);
         query.setSkip(skips);

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -24,6 +25,9 @@ import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
+import com.example.simpleleague.UserDetailsActivity;
+import com.example.simpleleague.UserFollowersActivity;
+import com.example.simpleleague.UserFollowingActivity;
 import com.example.simpleleague.fragments.ProfileFragment;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
@@ -98,6 +102,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         private TextView tvPosts;
         private Button btnFollow;
         private ImageButton ibtnAddProfileImage;
+        private CardView cvFollowers;
+        private CardView cvFollowing;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -109,6 +115,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             tvPosts = itemView.findViewById(R.id.tvPosts);
             btnFollow = itemView.findViewById(R.id.btnFollow);
             ibtnAddProfileImage = itemView.findViewById(R.id.ibtnAddProfileImage);
+            cvFollowers = itemView.findViewById(R.id.cvFollowers);
+            cvFollowing = itemView.findViewById(R.id.cvFollowing);
         }
 
         public void bind(Object object) {
@@ -135,12 +143,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             listeners(user);
         }
 
-        private void listeners(ParseUser user) {
+        private void listeners(ParseUser parseUser) {
             btnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (btnFollow.getText().equals("Follow")) {
-                        ParseQueries.followUser(user);
+                        ParseQueries.followUser(parseUser);
                         btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
                         btnFollow.setText(R.string.Followed);
@@ -148,7 +156,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                         tvFollowers.setText(String.valueOf(followers));
                         Log.i(TAG, "Followed");
                     } else {
-                        ParseQueries.unfollowUser(user);
+                        ParseQueries.unfollowUser(parseUser);
                         btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
                         btnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
                         btnFollow.setText(R.string.Follow);
@@ -164,6 +172,26 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                     // Get the photo
                     CameraFunctions.launchCamera(mContext);
                     // Main Activity's onActivityResult() takes care of the rest
+                }
+            });
+            cvFollowers.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, UserFollowersActivity.class);
+                    User user = new User();
+                    user.setParseUser(parseUser);
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    mContext.startActivity(intent);
+                }
+            });
+            cvFollowing.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, UserFollowingActivity.class);
+                    User user = new User();
+                    user.setParseUser(parseUser);
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    mContext.startActivity(intent);
                 }
             });
         }

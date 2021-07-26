@@ -50,7 +50,7 @@ public class ChampionDetailsActivity extends AppCompatActivity {
         ivRImage = findViewById(R.id.ivChampionRImage);
         ivPImage = findViewById(R.id.ivChampionPImage);
         // Unwrap the champion passed via intent
-        champion = (Champion) Parcels.unwrap(getIntent().getParcelableExtra(Champion.class.getSimpleName()));
+        champion = Parcels.unwrap(getIntent().getParcelableExtra(Champion.class.getSimpleName()));
         Log.d(TAG, String.format("Showing champion details for %s", champion.getName())+".");
         // Set the fields
         Glide.with(this).load(champion.getImage().getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(ivChampionImage);

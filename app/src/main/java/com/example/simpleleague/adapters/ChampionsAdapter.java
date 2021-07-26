@@ -68,8 +68,8 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             rootView = itemView;
-            ivProfile = (ImageView)itemView.findViewById(R.id.ivProfile);
-            tvName = (TextView)itemView.findViewById(R.id.tvName);
+            ivProfile = itemView.findViewById(R.id.ivProfile);
+            tvName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
         }
 
