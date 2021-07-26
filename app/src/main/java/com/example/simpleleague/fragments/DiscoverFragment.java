@@ -21,6 +21,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DiscoverFragment extends FeedFragment {
@@ -49,6 +50,8 @@ public class DiscoverFragment extends FeedFragment {
         query.setLimit(limit);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
+        // Sort posts by dates they were created at; most recent on top
+        query.addDescendingOrder(Post.KEY_CREATED_AT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -58,6 +61,8 @@ public class DiscoverFragment extends FeedFragment {
                     return;
                 }
                 Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
+                // Sort posts by # of likes; most likes at top
+                Collections.sort(posts);
                 // save received posts to list and notify adapter of new data
                 adapter.addAll(posts);
                 adapter.notifyItemRangeInserted(skips, skips+limit);

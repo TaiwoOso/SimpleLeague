@@ -13,7 +13,7 @@ import java.util.List;
 
 @Parcel(analyze = Post.class)
 @ParseClassName("Post")
-public class Post extends ParseObject {
+public class Post extends ParseObject implements Comparable<Post> {
 
     public static final String KEY_USER = "user";
     public static final String KEY_TITLE = "title";
@@ -95,4 +95,11 @@ public class Post extends ParseObject {
         addUnique(KEY_COMMENTS, commentId);
     }
 
+    @Override
+    public int compareTo(Post o) {
+        if (this.getLikes() == null && o.getLikes() == null) return 0;
+        if (this.getLikes() == null) return o.getLikes().size();
+        if (o.getLikes() == null) return -(this.getLikes().size());
+        return -(this.getLikes().size()-o.getLikes().size());
+    }
 }

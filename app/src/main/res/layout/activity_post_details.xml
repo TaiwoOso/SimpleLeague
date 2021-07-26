@@ -10,5 +10,25 @@
         android:id="@+id/rvPostDetails"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@id/cvAddComment"
         android:padding="8dp" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvAddComment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardElevation="30dp"
+        app:cardMaxElevation="50dp"
+        app:contentPadding="10dp">
+
+        <EditText
+            android:id="@+id/etComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Comment..."
+            android:inputType="textPersonName" />
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
@@ -250,4 +251,42 @@ public class ParseQueries {
             }
         });
     }
+
+    public static boolean userLikesComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        List<String> likesUserIds = comment.getLikes();
+        if (likesUserIds == null) return false;
+        return likesUserIds.contains(currentUser.getObjectId());
+    }
+
+    public static void likeComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        comment.addLike(currentUser.getObjectId());
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to like "+comment.getUser().getUsername()+"'s comment.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" liked "+comment.getUser().getUsername()+"'s comment.");
+            }
+        });
+    }
+
+    public static void unlikeComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        comment.removeLike(currentUser.getObjectId());
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to unlike "+comment.getUser().getUsername()+"'s comment.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" unliked "+comment.getUser().getUsername()+"'s comment.");
+            }
+        });
+    }
 }
+

@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.simpleleague.adapters.PostsDetailsAdapter;
 import com.example.simpleleague.models.Comment;
@@ -13,7 +17,6 @@ import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -30,6 +33,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private Post post;
     private List<Comment> comments;
     private PostsDetailsAdapter adapter;
+    private EditText etComment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         rvPostDetails = findViewById(R.id.rvPostDetails);
         comments = new ArrayList<>();
         adapter = new PostsDetailsAdapter(this, comments);
+        etComment = findViewById(R.id.etComment);
         // Unwrap the post passed via intent
         post = (Post) Parcels.unwrap(getIntent().getParcelableExtra(Post.class.getSimpleName()));
         Log.d(TAG, String.format("Showing post details for %s", post.getUser().getUsername())+".");
@@ -49,6 +54,56 @@ public class PostDetailsActivity extends AppCompatActivity {
         queryPostDetails();
         // Add post's tags to current user
         addTagsToUser();
+        // Listeners
+        listeners();
+    }
+
+    private void listeners() {
+        etComment.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    comment();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void comment() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        String body = etComment.getText().toString();
+        if (body.isEmpty()) {
+            Toast.makeText(this, "Comment cannot be empty!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Comment comment = new Comment();
+        comment.setUser(currentUser);
+        comment.setBody(body.trim());
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Toast.makeText(PostDetailsActivity.this, "Error: Try Again!", Toast.LENGTH_SHORT).show();
+                    Log.i(TAG, "Error while commenting for "+currentUser.getUsername()+".", e);
+                }
+                post.addComment(comment.getObjectId());
+                post.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        if (e != null) {
+                            Toast.makeText(PostDetailsActivity.this, "Error: Try Again!", Toast.LENGTH_SHORT).show();
+                            Log.i(TAG, "Error while commenting for "+currentUser.getUsername()+".", e);
+                        }
+                        Toast.makeText(PostDetailsActivity.this, "Commented!", Toast.LENGTH_SHORT).show();
+                        etComment.setText("");
+                        comments.add(comment);
+                        adapter.notifyItemInserted(comments.size());
+                    }
+                });
+            }
+        });
     }
 
     private void addTagsToUser() {
