@@ -23,8 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleLeague">
-        <activity android:name=".UserFollowingActivity"></activity>
-        <activity android:name=".UserFollowersActivity" />
+        <activity android:name=".activities.UserFollowingActivity"></activity>
+        <activity android:name=".activities.UserFollowersActivity" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -36,12 +36,12 @@
                 android:resource="@xml/fileprovider" />
         </provider>
 
-        <activity android:name=".ChampionDetailsActivity" />
-        <activity android:name=".UserDetailsActivity" />
-        <activity android:name=".PostDetailsActivity" />
-        <activity android:name=".SignupActivity" />
-        <activity android:name=".MainActivity" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".activities.ChampionDetailsActivity" />
+        <activity android:name=".activities.UserDetailsActivity" />
+        <activity android:name=".activities.PostDetailsActivity" />
+        <activity android:name=".activities.SignupActivity" />
+        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

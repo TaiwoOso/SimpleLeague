@@ -1,4 +1,4 @@
-package com.example.simpleleague;
+package com.example.simpleleague.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,16 +16,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.CameraFunctions;
+import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.R;
+import com.example.simpleleague.activities.LoginActivity;
 import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.fragments.CreateFragment;
 import com.example.simpleleague.fragments.CreateImageFragment;
-import com.example.simpleleague.fragments.FeedFragment;
 import com.example.simpleleague.fragments.HomeFragment;
 import com.example.simpleleague.fragments.InfoFragment;
 import com.example.simpleleague.fragments.ProfileFragment;
@@ -64,12 +66,12 @@ public class MainActivity extends AppCompatActivity {
         // Check if logged in user has Follow and proceed accordingly
         validateFollow();
         // Define fragments
-        final FragmentManager fragmentManager = getSupportFragmentManager();
-        final Fragment infoFragment = new InfoFragment();
-        final Fragment homeFragment = new HomeFragment();
-        final Fragment createFragment = new CreateFragment();
-        final Fragment searchFragment = new SearchFragment();
-        final Fragment profileFragment = new ProfileFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment infoFragment = new InfoFragment();
+        Fragment homeFragment = new HomeFragment();
+        Fragment createFragment = new CreateFragment();
+        Fragment searchFragment = new SearchFragment();
+        Fragment profileFragment = new ProfileFragment();
         // Navigate through fragments
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

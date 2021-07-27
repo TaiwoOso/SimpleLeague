@@ -4,34 +4,23 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.ParseQueries;
-import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
-import com.example.simpleleague.UserDetailsActivity;
+import com.example.simpleleague.activities.UserDetailsActivity;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
-import com.google.android.gms.common.util.NumberUtils;
-import com.parse.GetFileCallback;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseUser;
 
 import org.parceler.Parcels;
-
-import java.io.File;
-import java.text.NumberFormat;
 
 public class PostViewHolder extends ViewHolder {
 

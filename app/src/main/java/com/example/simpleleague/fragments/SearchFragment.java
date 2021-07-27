@@ -57,9 +57,9 @@ public class SearchFragment extends Fragment {
         // Initialize Fields
         tlSearch = view.findViewById(R.id.tlSearch);
         // Define fragments
-        final FragmentManager fragmentManager = getChildFragmentManager();
-        final Fragment searchPostsFragment = new SearchPostsFragment();
-        final Fragment searchUsersFragment = new SearchUsersFragment();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        Fragment searchPostsFragment = new SearchPostsFragment();
+        Fragment searchUsersFragment = new SearchUsersFragment();
         tlSearch.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

@@ -1,4 +1,4 @@
-package com.example.simpleleague;
+package com.example.simpleleague.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.R;
 import com.example.simpleleague.models.Champion;
 import com.example.simpleleague.models.Post;
 

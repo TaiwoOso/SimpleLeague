@@ -1,4 +1,4 @@
-package com.example.simpleleague;
+package com.example.simpleleague.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.example.simpleleague.EndlessRecyclerViewScrollListener;
+import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.adapters.UsersAdapter;
 import com.example.simpleleague.models.Follow;

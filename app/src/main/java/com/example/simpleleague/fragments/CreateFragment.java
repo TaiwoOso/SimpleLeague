@@ -48,10 +48,10 @@ public class CreateFragment extends Fragment {
         // Initialize fields
          tlCreate = view.findViewById(R.id.tlCreate);
         // Define fragments
-        final FragmentManager fragmentManager = getChildFragmentManager();
-        final Fragment textFragment = new CreateTextFragment();
-        final Fragment imageFragment = new CreateImageFragment();
-        final Fragment videoFragment = new CreateVideoFragment();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        Fragment textFragment = new CreateTextFragment();
+        Fragment imageFragment = new CreateImageFragment();
+        Fragment videoFragment = new CreateVideoFragment();
         tlCreate.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

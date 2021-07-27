@@ -34,9 +34,9 @@ public class HomeFragment extends Fragment {
         // Initialize fields
         tlHome = view.findViewById(R.id.tlHome);
         // Define fragments
-        final FragmentManager fragmentManager = getChildFragmentManager();
-        final Fragment feedFragment = new FeedFragment();
-        final Fragment discoverFragment = new DiscoverFragment();
+        FragmentManager fragmentManager = getChildFragmentManager();
+        Fragment feedFragment = new FeedFragment();
+        Fragment discoverFragment = new DiscoverFragment();
         tlHome.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

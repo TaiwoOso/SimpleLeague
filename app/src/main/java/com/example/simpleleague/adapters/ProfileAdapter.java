@@ -1,11 +1,8 @@
 package com.example.simpleleague.adapters;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -23,20 +20,15 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.ParseQueries;
-import com.example.simpleleague.PostDetailsActivity;
+import com.example.simpleleague.activities.PostDetailsActivity;
 import com.example.simpleleague.R;
-import com.example.simpleleague.UserDetailsActivity;
-import com.example.simpleleague.UserFollowersActivity;
-import com.example.simpleleague.UserFollowingActivity;
-import com.example.simpleleague.fragments.ProfileFragment;
+import com.example.simpleleague.activities.UserFollowersActivity;
+import com.example.simpleleague.activities.UserFollowingActivity;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
-import com.example.simpleleague.viewholders.PostViewHolder;
 import com.example.simpleleague.viewholders.ViewHolder;
-import com.parse.ParseFile;
 import com.parse.ParseUser;
 import com.pedromassango.doubleclick.DoubleClick;
 import com.pedromassango.doubleclick.DoubleClickListener;

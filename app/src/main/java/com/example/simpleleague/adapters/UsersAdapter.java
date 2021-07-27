@@ -12,13 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.simpleleague.ParseQueries;
-import com.example.simpleleague.PostDetailsActivity;
 import com.example.simpleleague.R;
-import com.example.simpleleague.UserDetailsActivity;
-import com.example.simpleleague.models.Champion;
-import com.example.simpleleague.models.Post;
+import com.example.simpleleague.activities.UserDetailsActivity;
 import com.example.simpleleague.models.User;
 import com.parse.ParseUser;
 

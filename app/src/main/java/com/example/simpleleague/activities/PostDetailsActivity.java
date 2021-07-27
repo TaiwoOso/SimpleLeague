@@ -1,4 +1,4 @@
-package com.example.simpleleague;
+package com.example.simpleleague.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsDetailsAdapter;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Post;

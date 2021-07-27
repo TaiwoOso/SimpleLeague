@@ -11,25 +11,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
-import com.bumptech.glide.Glide;
 import com.example.simpleleague.ParseQueries;
-import com.example.simpleleague.PostDetailsActivity;
+import com.example.simpleleague.activities.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Post;
-import com.example.simpleleague.models.User;
 import com.example.simpleleague.viewholders.PostViewHolder;
-import com.parse.ParseFile;
 import com.pedromassango.doubleclick.DoubleClick;
 import com.pedromassango.doubleclick.DoubleClickListener;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 import java.util.List;
 

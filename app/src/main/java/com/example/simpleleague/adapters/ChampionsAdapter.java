@@ -12,11 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.simpleleague.ChampionDetailsActivity;
-import com.example.simpleleague.PostDetailsActivity;
+import com.example.simpleleague.activities.ChampionDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Champion;
-import com.example.simpleleague.models.Post;
 
 import org.parceler.Parcels;
 
