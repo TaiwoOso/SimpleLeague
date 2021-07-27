@@ -18,6 +18,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
 
         // should correspond to key/value pairs inside the file
         buildConfigField("String", "RIOT_KEY", apikeyProperties['RIOT_KEY'])

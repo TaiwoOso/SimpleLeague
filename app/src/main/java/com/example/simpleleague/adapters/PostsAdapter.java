@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.ParseQueries;
@@ -69,8 +72,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     class ViewHolder extends PostViewHolder implements DoubleClickListener {
 
+        private ImageView ivLike;
+        private AnimatedVectorDrawableCompat avdc;
+        private AnimatedVectorDrawable avd;
+
         public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
+            ivLike = itemView.findViewById(R.id.ivLike);
             itemView.setOnClickListener(new DoubleClick(this));
         }
 
@@ -101,6 +109,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         @Override
         public void onDoubleClick(View view) {
+            Drawable drawable = ivLike.getDrawable();
+            ivLike.setAlpha(0.70f);
+            if (drawable instanceof AnimatedVectorDrawableCompat) {
+                avdc = (AnimatedVectorDrawableCompat) drawable;
+                avdc.start();
+            } else if (drawable instanceof AnimatedVectorDrawable) {
+                avd = (AnimatedVectorDrawable) drawable;
+                avd.start();
+            }
             if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
