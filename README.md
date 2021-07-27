@@ -32,8 +32,6 @@ SimpleLeague is an application centered primarily around the popular MMO, League
 
 * User can view a list of champions in the game
 * User can expose champion details
-* User can view a list of objectives in the game
-* User can expose objective details
 * User can create a new account
 * User can login
 * User can create a post or comment on a post
@@ -48,6 +46,7 @@ SimpleLeague is an application centered primarily around the popular MMO, League
 * User can view a feed of posts of their own and users they follow (hometimeline)
 * User can view profile page with number of posts, followers and following
 * User can upload custom profile image and change display name
+* User can view a discover page to find posts by different creators
 
 ### 2. Screen Archetypes
 
