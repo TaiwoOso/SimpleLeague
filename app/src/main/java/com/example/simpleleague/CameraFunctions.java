@@ -31,7 +31,6 @@ import static android.app.Activity.RESULT_OK;
 public class CameraFunctions {
 
     public static final String TAG = "CameraFunctions";
-    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 76;
     public static final int REQUEST_VIDEO_CAPTURE = 1;
     public static String photoFileName = "photo.jpg";
     public static final String videoFileName = "video.mp4";
@@ -48,7 +47,7 @@ public class CameraFunctions {
         }
     }
 
-    public static void launchCamera(Context context) {
+    public static void launchCamera(Context context, int requestCode) {
         // create Intent to take a picture and return control to the calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Create a File reference for future access
@@ -64,7 +63,7 @@ public class CameraFunctions {
         // So as long as the result is not null, it's safe to use the intent.
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             // Start the image capture intent to take photo
-            ((Activity)context).startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+            ((Activity)context).startActivityForResult(intent, requestCode);
         }
     }
 

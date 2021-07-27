@@ -94,6 +94,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private TextView tvTag1;
         private TextView tvTag2;
+        private ImageView imageView;
         private VideoView videoView;
         private ImageButton ibtnPlayVideo;
         private LinearLayout llTags;
@@ -102,6 +103,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(itemView, mContext);
             tvTag1 = itemView.findViewById(R.id.tvTag1);
             tvTag2 = itemView.findViewById(R.id.tvTag2);
+            imageView = itemView.findViewById(R.id.imageView);
             videoView = itemView.findViewById(R.id.videoView);
             ibtnPlayVideo = itemView.findViewById(R.id.ibtnPlayVideo);
             llTags = itemView.findViewById(R.id.llTags);
@@ -111,6 +113,10 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
         public void bind(Object object) {
             super.bind(object);
             Post post = (Post) object;
+            if (post.getImage() != null) {
+                Glide.with(mContext).load(post.getImage().getUrl()).centerCrop().into(imageView);
+                imageView.setVisibility(View.VISIBLE);
+            }
             if (post.getVideo() != null) {
                 post.getVideo().getFileInBackground(new GetFileCallback() {
                     @Override

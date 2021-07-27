@@ -44,6 +44,7 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "ProfileAdapter";
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 76;
     private Context mContext;
     private List<ParseUser> user;
     private List<Post> posts;
@@ -170,7 +171,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                 @Override
                 public void onClick(View v) {
                     // Get the photo
-                    CameraFunctions.launchCamera(mContext);
+                    CameraFunctions.launchCamera(mContext, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
                     // Main Activity's onActivityResult() takes care of the rest
                 }
             });

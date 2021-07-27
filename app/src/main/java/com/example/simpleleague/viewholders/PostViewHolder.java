@@ -71,7 +71,12 @@ public class PostViewHolder extends ViewHolder {
         }
         tvUsername.setText(post.getUser().getUsername());
         tvTitle.setText(post.getTitle());
-        tvBody.setText(post.getBody());
+        if (post.getBody() != null && !post.getBody().isEmpty()) {
+            tvBody.setVisibility(View.VISIBLE);
+            tvBody.setText(post.getBody());
+        } else {
+            tvBody.setVisibility(View.GONE);
+        }
         if (post.getLikes() != null && !post.getLikes().isEmpty()) {
             tvLikes.setText(String.valueOf(post.getLikes().size()));
         } else {

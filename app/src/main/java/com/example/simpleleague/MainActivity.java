@@ -22,7 +22,9 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.fragments.CreateFragment;
+import com.example.simpleleague.fragments.CreateImageFragment;
 import com.example.simpleleague.fragments.FeedFragment;
 import com.example.simpleleague.fragments.HomeFragment;
 import com.example.simpleleague.fragments.InfoFragment;
@@ -167,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CameraFunctions.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == ProfileAdapter.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 // Load the taken image into a preview
                 Bitmap takenImage = BitmapFactory.decodeFile(CameraFunctions.photoFile.getAbsolutePath());
@@ -180,6 +182,22 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(this).load(takenImage).centerCrop().into(ivProfileImage);
                 // Save the photo to Parse database
                 ParseQueries.saveProfileImage(this, CameraFunctions.photoFile, ivProfileImage);
+            } else { // Result was a failure
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (requestCode == CreateImageFragment.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                // Load the taken image into a preview
+                Bitmap takenImage = BitmapFactory.decodeFile(CameraFunctions.photoFile.getAbsolutePath());
+                try {
+                    takenImage = CameraFunctions.rotateImage(takenImage, CameraFunctions.photoFile.getAbsolutePath());
+                } catch (IOException e) {
+                    Log.i(TAG, "Image could not be rotated for "+ParseUser.getCurrentUser().getUsername()+".");
+                }
+                ImageView imageView = findViewById(R.id.imageView);
+                Glide.with(this).load(takenImage).centerCrop().into(imageView);
+                imageView.setTag("NonEmpty");
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }

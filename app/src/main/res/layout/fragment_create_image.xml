@@ -6,29 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".fragments.CreateVideoFragment">
 
-    <RelativeLayout
-        android:id="@+id/rlVideoView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_below="@id/etTitle"
-        android:padding="10dp">
-
-        <ImageButton
-            android:id="@+id/ibtnPlayVideo"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="50dp"
-            android:layout_height="75dp"
-            android:layout_centerInParent="true"
-            android:background="@drawable/ic_play_button"
-            android:elevation="20dp"
-            android:scaleType="centerCrop"
-            android:visibility="visible" />
-
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="match_parent"
-            android:layout_height="300dp" />
-    </RelativeLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:scaleType="centerCrop"
+        android:tag="Empty"
+        app:srcCompat="@drawable/image_placeholder" />
 
     <Button
         android:id="@+id/btnPost"
@@ -57,7 +44,7 @@
         android:id="@+id/etTag"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/ibtnAddVideo"
+        android:layout_below="@id/ibtnAddImage"
         android:layout_alignEnd="@+id/btnPost"
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
@@ -133,16 +120,16 @@
         android:scrollbars="horizontal" />
 
     <ImageButton
-        android:id="@+id/ibtnAddVideo"
+        android:id="@+id/ibtnAddImage"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="75dp"
         android:layout_height="50dp"
-        android:layout_below="@id/rlVideoView"
+        android:layout_below="@id/imageView"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="false"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_video" />
+        android:src="@drawable/ic_add_image" />
 </RelativeLayout>

@@ -50,6 +50,7 @@ public class CreateFragment extends Fragment {
         // Define fragments
         final FragmentManager fragmentManager = getChildFragmentManager();
         final Fragment textFragment = new CreateTextFragment();
+        final Fragment imageFragment = new CreateImageFragment();
         final Fragment videoFragment = new CreateVideoFragment();
         tlCreate.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -58,6 +59,8 @@ public class CreateFragment extends Fragment {
                 Fragment fragment;
                 if (text.equals("Text")) {
                     fragment = textFragment;
+                } else if (text.equals("Image")) {
+                    fragment = imageFragment;
                 } else { // default to video fragment
                     fragment = videoFragment;
                 }
