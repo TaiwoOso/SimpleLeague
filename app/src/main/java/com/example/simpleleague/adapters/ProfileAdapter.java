@@ -35,6 +35,8 @@ import com.example.simpleleague.viewholders.PostViewHolder;
 import com.example.simpleleague.viewholders.ViewHolder;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.pedromassango.doubleclick.DoubleClick;
+import com.pedromassango.doubleclick.DoubleClickListener;
 
 import org.parceler.Parcels;
 
@@ -198,11 +200,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
     }
 
-    class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder implements View.OnClickListener {
+    class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder implements DoubleClickListener {
 
         public PostViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
-            itemView.setOnClickListener(this);
+            itemView.setOnClickListener(new DoubleClick(this));
         }
 
         @Override
@@ -225,13 +227,33 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         }
 
         @Override
-        public void onClick(View v) {
+        public void onSingleClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
                 Post post = posts.get(position-1);
                 Intent intent = new Intent(mContext, PostDetailsActivity.class);
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
                 mContext.startActivity(intent);
+            }
+        }
+
+        @Override
+        public void onDoubleClick(View view) {
+            if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
+                int position = getAdapterPosition();
+                if (position != RecyclerView.NO_POSITION) {
+                    Post post = posts.get(position-1);
+                    ParseQueries.likePost(post);
+                    int likes;
+                    try {
+                        likes = Integer.parseInt(tvLikes.getText().toString())+1;
+                    } catch (NumberFormatException e) {
+                        likes = 1;
+                    }
+                    tvLikes.setText(String.valueOf(likes));
+                    ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+                    Log.i(TAG, "Liked");
+                }
             }
         }
     }
