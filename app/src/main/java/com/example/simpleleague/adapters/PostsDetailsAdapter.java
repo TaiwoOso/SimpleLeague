@@ -236,7 +236,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                         ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
                         Log.i(TAG, "Liked");
                     } else {
-                        ParseQueries.unlikeComment(comment);
+                        ParseQueries.removeLikeComment(comment);
                         int likes = Integer.parseInt(tvLikes.getText().toString())-1;
                         if (likes == 0) {
                             tvLikes.setText(R.string.Like);

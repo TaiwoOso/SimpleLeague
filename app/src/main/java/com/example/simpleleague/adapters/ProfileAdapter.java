@@ -261,7 +261,6 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                     }
                     tvLikes.setText(String.valueOf(likes));
                     ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
-                    Log.i(TAG, "Liked");
                 }
             }
         }

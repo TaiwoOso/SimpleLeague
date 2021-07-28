@@ -22,6 +22,7 @@ public class Post extends ParseObject implements Comparable<Post> {
     public static final String KEY_VIDEO = "video";
     public static final String KEY_TAGS = "tags";
     public static final String KEY_LIKES = "likes";
+    public static final String KEY_DISLIKES = "dislikes";
     public static final String KEY_COMMENTS = "comments";
 
     // empty constructor needed by the Parceler library
@@ -85,6 +86,18 @@ public class Post extends ParseObject implements Comparable<Post> {
 
     public void removeLike(String userId) {
         removeAll(KEY_LIKES, Collections.singletonList(userId));
+    }
+
+    public List<String> getDislikes() {
+        return (List<String>) get(KEY_DISLIKES);
+    }
+
+    public void addDislike(String userId) {
+        addUnique(KEY_DISLIKES, userId);
+    }
+
+    public void removeDislike(String userId) {
+        removeAll(KEY_DISLIKES, Collections.singletonList(userId));
     }
 
     public List<String> getComments() {

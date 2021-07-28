@@ -33,6 +33,7 @@ public class PostViewHolder extends ViewHolder {
     public ImageButton ibtnLike;
     public TextView tvLikes;
     public ImageButton ibtnDislike;
+    public TextView tvDislikes;
     public ImageButton ibtnComment;
     public TextView tvComments;
 
@@ -46,6 +47,7 @@ public class PostViewHolder extends ViewHolder {
         ibtnLike = itemView.findViewById(R.id.ibtnLike);
         tvLikes = itemView.findViewById(R.id.tvLikes);
         ibtnDislike = itemView.findViewById(R.id.ibtnDislike);
+        tvDislikes = itemView.findViewById(R.id.tvDislikes);
         ibtnComment = itemView.findViewById(R.id.ibtnComment);
         tvComments = itemView.findViewById(R.id.tvComments);
     }
@@ -66,21 +68,36 @@ public class PostViewHolder extends ViewHolder {
         } else {
             tvBody.setVisibility(View.GONE);
         }
-        if (post.getLikes() != null && !post.getLikes().isEmpty()) {
+        if (post.getLikes() != null) {
             tvLikes.setText(String.valueOf(post.getLikes().size()));
         } else {
-            tvLikes.setText(R.string.Like);
+            tvLikes.setText(String.valueOf(0));
         }
-        if (post.getComments() != null) {
+        if (post.getDislikes() != null) {
+            tvDislikes.setText(String.valueOf(post.getDislikes().size()));
+        } else {
+            tvDislikes.setText(String.valueOf(0));
+        }
+        if (post.getComments() != null && !post.getLikes().isEmpty()) {
             tvComments.setText(String.valueOf(post.getComments().size()));
         } else {
             tvComments.setText(R.string.Comment);
         }
         // Change appearance of like button
         if (ParseQueries.userLikesPost(post)) {
+            ibtnLike.setTag("Liked");
             ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
         } else {
+            ibtnLike.setTag("NotLiked");
             ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+        }
+        // Change appearance of dislike button
+        if (ParseQueries.userDislikesPost(post)) {
+            ibtnDislike.setTag("Disliked");
+            ibtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
+        } else {
+            ibtnDislike.setTag("NotDisliked");
+            ibtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
         }
         // Listeners
         listeners(post);
@@ -101,27 +118,50 @@ public class PostViewHolder extends ViewHolder {
         ibtnLike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
+                if (ibtnLike.getTag().equals("NotLiked")) {
                     ParseQueries.likePost(post);
-                    int likes;
-                    try {
-                        likes = Integer.parseInt(tvLikes.getText().toString())+1;
-                    } catch (NumberFormatException e) {
-                        likes = 1;
-                    }
+                    int likes = Integer.parseInt(tvLikes.getText().toString())+1;
                     tvLikes.setText(String.valueOf(likes));
+                    ibtnLike.setTag("Liked");
                     ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
-                    Log.i(TAG, "Liked");
-                } else {
-                    ParseQueries.unlikePost(post);
-                    int likes = Integer.parseInt(tvLikes.getText().toString())-1;
-                    if (likes == 0) {
-                        tvLikes.setText(R.string.Like);
-                    } else {
-                        tvLikes.setText(String.valueOf(likes));
+                    if (ibtnDislike.getTag().equals("Disliked")) {
+                        ParseQueries.removeDislikePost(post);
+                        int dislikes = Integer.parseInt(tvDislikes.getText().toString())-1;
+                        tvDislikes.setText(String.valueOf(dislikes));
+                        ibtnDislike.setTag("NotDisliked");
+                        ibtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
                     }
+                } else {
+                    ParseQueries.removeLikePost(post);
+                    int likes = Integer.parseInt(tvLikes.getText().toString())-1;
+                    tvLikes.setText(String.valueOf(likes));
+                    ibtnLike.setTag("NotLiked");
                     ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-                    Log.i(TAG, "Unliked");
+                }
+            }
+        });
+        ibtnDislike.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ibtnDislike.getTag().equals("NotDisliked")) {
+                    ParseQueries.dislikePost(post);
+                    int dislikes = Integer.parseInt(tvDislikes.getText().toString())+1;
+                    tvDislikes.setText(String.valueOf(dislikes));
+                    ibtnDislike.setTag("Disliked");
+                    ibtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
+                    if (ibtnLike.getTag().equals("Liked")) {
+                        ParseQueries.removeLikePost(post);
+                        int likes = Integer.parseInt(tvLikes.getText().toString())-1;
+                        tvLikes.setText(String.valueOf(likes));
+                        ibtnLike.setTag("NotLiked");
+                        ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                    }
+                } else {
+                    ParseQueries.removeDislikePost(post);
+                    int dislikes = Integer.parseInt(tvDislikes.getText().toString())-1;
+                    tvDislikes.setText(String.valueOf(dislikes));
+                    ibtnDislike.setTag("NotDisliked");
+                    ibtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
                 }
             }
         });

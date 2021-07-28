@@ -237,7 +237,7 @@ public class ParseQueries {
         });
     }
 
-    public static void unlikePost(Post post) {
+    public static void removeLikePost(Post post) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         post.removeLike(currentUser.getObjectId());
         post.saveInBackground(new SaveCallback() {
@@ -248,6 +248,43 @@ public class ParseQueries {
                     return;
                 }
                 Log.i(TAG, currentUser.getUsername()+" unliked "+post.getUser().getUsername()+"'s post.");
+            }
+        });
+    }
+
+    public static boolean userDislikesPost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        List<String> dislikesUserIds = post.getDislikes();
+        if (dislikesUserIds == null) return false;
+        return dislikesUserIds.contains(currentUser.getObjectId());
+    }
+
+    public static void dislikePost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        post.addDislike(currentUser.getObjectId());
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to dislike "+post.getUser().getUsername()+"'s post.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" disliked "+post.getUser().getUsername()+"'s post.");
+            }
+        });
+    }
+
+    public static void removeDislikePost(Post post) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        post.removeDislike(currentUser.getObjectId());
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to un-dislike "+post.getUser().getUsername()+"'s post.", e);
+                    return;
+                }
+                Log.i(TAG, currentUser.getUsername()+" un-disliked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
@@ -274,7 +311,7 @@ public class ParseQueries {
         });
     }
 
-    public static void unlikeComment(Comment comment) {
+    public static void removeLikeComment(Comment comment) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         comment.removeLike(currentUser.getObjectId());
         comment.saveInBackground(new SaveCallback() {
