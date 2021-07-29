@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:elevation="100dp"
     android:outlineProvider="none"
     tools:context=".fragments.ProfileFragment">
 
@@ -175,5 +176,29 @@
         android:elevation="20dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_plus" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvEditProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/cvProfileImage"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@id/cvProfileImage"
+        app:cardCornerRadius="250dp">
+
+        <ImageButton
+            android:id="@+id/ibtnEditProfile"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="0dp"
+            android:layout_marginBottom="0dp"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_pen" />
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

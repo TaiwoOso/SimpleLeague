@@ -109,6 +109,7 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     private void addTagsToUser() {
         ParseUser currentUser = ParseUser.getCurrentUser();
+        int maxTagsSize = 10;
         List<String> userTags = (List<String>) currentUser.get(User.KEY_TAGS);
         List<String> postTags = post.getTags();
         if (postTags == null || postTags.isEmpty()) return;
@@ -116,10 +117,10 @@ public class PostDetailsActivity extends AppCompatActivity {
             currentUser.addAllUnique(User.KEY_TAGS, postTags);
         } else if (userTags.containsAll(postTags)) {
             return;
-        } else if (userTags.size() + postTags.size() <= 5) {
+        } else if (userTags.size() + postTags.size() <= maxTagsSize) {
             currentUser.addAllUnique(User.KEY_TAGS, postTags);
         } else {
-            ArrayList<String> newUserTags = new ArrayList<>(5);
+            ArrayList<String> newUserTags = new ArrayList<>(maxTagsSize);
             int start = userTags.size() - postTags.size() - 1;
             for (int i = start; i < userTags.size(); i++) {
                 newUserTags.add(userTags.get(i));

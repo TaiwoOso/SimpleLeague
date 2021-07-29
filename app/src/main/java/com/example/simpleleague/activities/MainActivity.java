@@ -44,13 +44,18 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.io.IOException;
 import java.util.List;
+
+import nl.joery.animatedbottombar.AnimatedBottomBar;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
-    private BottomNavigationView bottomNavigationView;
+    private AnimatedBottomBar bottomBar;
     private Toolbar mToolbar;
 
     @Override
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Initialize fields
-        bottomNavigationView = findViewById(R.id.bottomNavigation);
+        bottomBar = findViewById(R.id.bottomBar);
         mToolbar = findViewById(R.id.toolbar_main);
         setSupportActionBar(mToolbar);
         // Log current user
@@ -73,28 +78,36 @@ public class MainActivity extends AppCompatActivity {
         Fragment searchFragment = new SearchFragment();
         Fragment profileFragment = new ProfileFragment();
         // Navigate through fragments
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+        bottomBar.setOnTabSelectListener(new AnimatedBottomBar.OnTabSelectListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            public void onTabSelected(int i, @Nullable AnimatedBottomBar.Tab tab, int i1, @NotNull AnimatedBottomBar.Tab tab1) {
                 Fragment fragment;
-                int id = item.getItemId();
-                if (id == R.id.action_info) {
-                    fragment = infoFragment;
-                } else if (id == R.id.action_home) {
-                    fragment = homeFragment;
-                } else if (id == R.id.action_create) {
-                    fragment = createFragment;
-                }else if (id == R.id.action_search) {
-                    fragment = searchFragment;
-                } else { // default to profileFragment
-                    fragment = profileFragment;
+                String title = tab1.getTitle();
+                switch (title) {
+                    case "Wiki":
+                        fragment = infoFragment;
+                        break;
+                    case "Home":
+                        fragment = homeFragment;
+                        break;
+                    case "Create":
+                        fragment = createFragment;
+                        break;
+                    case "Search":
+                        fragment = searchFragment;
+                        break;
+                    default:  // default to profileFragment
+                        fragment = profileFragment;
+                        break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
-                return true;
             }
+
+            @Override
+            public void onTabReselected(int i, @NotNull AnimatedBottomBar.Tab tab) {}
         });
-        // Set default selection
-        bottomNavigationView.setSelectedItemId(R.id.action_profile);
+        // Set default fragment
+        fragmentManager.beginTransaction().replace(R.id.flContainer, profileFragment).commit();
     }
 
     private void validateFollow() {
@@ -184,6 +197,7 @@ public class MainActivity extends AppCompatActivity {
                 Glide.with(this).load(takenImage).centerCrop().into(ivProfileImage);
                 // Save the photo to Parse database
                 ParseQueries.saveProfileImage(this, CameraFunctions.photoFile, ivProfileImage);
+                Toast.makeText(this, "Profile Updated!", Toast.LENGTH_SHORT).show();
             } else { // Result was a failure
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }

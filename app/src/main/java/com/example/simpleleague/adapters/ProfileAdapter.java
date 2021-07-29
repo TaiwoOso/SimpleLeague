@@ -22,6 +22,7 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.activities.EditProfileActivity;
 import com.example.simpleleague.activities.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserFollowersActivity;
@@ -102,6 +103,8 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         private ImageButton ibtnAddProfileImage;
         private CardView cvFollowers;
         private CardView cvFollowing;
+        private CardView cvEditProfile;
+        private ImageButton ibtnEditProfile;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -115,30 +118,33 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
             ibtnAddProfileImage = itemView.findViewById(R.id.ibtnAddProfileImage);
             cvFollowers = itemView.findViewById(R.id.cvFollowers);
             cvFollowing = itemView.findViewById(R.id.cvFollowing);
+            cvEditProfile = itemView.findViewById(R.id.cvEditProfile);
+            ibtnEditProfile = itemView.findViewById(R.id.ibtnEditProfile);
         }
 
         public void bind(Object object) {
-            ParseUser user = (ParseUser) object;
-            ParseQueries.loadProfileImage(ivProfileImage, mContext, user);
-            tvUsername.setText(user.getUsername());
-            ParseQueries.setBio(tvBio, user);
-            ParseQueries.setFollowers(tvFollowers, user);
-            ParseQueries.setFollowing(tvFollowing, user);
-            ParseQueries.setNumberPosts(tvPosts, user);
-            // Change visibility of add profile image button
-            if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+            ParseUser parseUser = (ParseUser) object;
+            ParseQueries.loadProfileImage(ivProfileImage, mContext, parseUser);
+            tvUsername.setText(parseUser.getUsername());
+            ParseQueries.setBio(tvBio, parseUser);
+            ParseQueries.setFollowers(tvFollowers, parseUser);
+            ParseQueries.setFollowing(tvFollowing, parseUser);
+            ParseQueries.setNumberPosts(tvPosts, parseUser);
+            // Change visibilities of views
+            if (!parseUser.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                 ibtnAddProfileImage.setVisibility(View.GONE);
+                cvEditProfile.setVisibility(View.GONE);
             }
             // Change appearance of follow button
-            if (user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+            if (parseUser.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
                 btnFollow.setVisibility(View.GONE);
-            } else if (ParseQueries.userFollows(user)){
+            } else if (ParseQueries.userFollows(parseUser)){
                 btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                 btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
                 btnFollow.setText(R.string.Followed);
             }
             // Listeners
-            listeners(user);
+            listeners(parseUser);
         }
 
         private void listeners(ParseUser parseUser) {
@@ -189,6 +195,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                     User user = new User();
                     user.setParseUser(parseUser);
                     intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    mContext.startActivity(intent);
+                }
+            });
+            ibtnEditProfile.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext, EditProfileActivity.class);
                     mContext.startActivity(intent);
                 }
             });
@@ -260,6 +273,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                         likes = 1;
                     }
                     tvLikes.setText(String.valueOf(likes));
+                    ibtnLike.setTag("Liked");
                     ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
                 }
             }

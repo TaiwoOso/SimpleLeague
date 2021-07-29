@@ -21,7 +21,7 @@
     <item
         android:id="@+id/action_info"
         android:icon="@drawable/ic_info"
-        android:title="Info"
+        android:title="Wiki"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"

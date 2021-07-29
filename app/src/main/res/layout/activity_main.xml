@@ -16,7 +16,8 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_main"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize" />
+            android:layout_height="?actionBarSize"
+            android:duplicateParentState="false" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -24,16 +25,21 @@
         android:id="@+id/flContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottomNavigation" />
+        android:layout_above="@id/bottomBar" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigation"
+    <nl.joery.animatedbottombar.AnimatedBottomBar
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:backgroundTint="@color/white"
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/black"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/menu_bottom_navigation" />
+        android:background="#FFFFFF"
+        android:elevation="20dp"
+        android:visibility="visible"
+        app:abb_indicatorAppearance="square"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorMargin="16dp"
+        app:abb_selectedIndex="4"
+        app:abb_selectedTabType="text"
+        app:abb_tabs="@menu/menu_bottom_bar" />
+
 </RelativeLayout>

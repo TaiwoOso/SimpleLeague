@@ -125,6 +125,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                         likes = 1;
                     }
                     tvLikes.setText(String.valueOf(likes));
+                    ibtnLike.setTag("Liked");
                     ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
                 }
             }

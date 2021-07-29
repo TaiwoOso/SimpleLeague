@@ -23,7 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SimpleLeague">
-        <activity android:name=".activities.UserFollowingActivity"></activity>
+        <activity android:name=".activities.EditProfileActivity"></activity>
+        <activity android:name=".activities.UserFollowingActivity" />
         <activity android:name=".activities.UserFollowersActivity" />
 
         <provider

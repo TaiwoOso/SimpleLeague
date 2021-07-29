@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.activities.EditProfileActivity;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
@@ -203,14 +204,43 @@ public class ParseQueries {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Error while saving profile image for " + currentUser.getUsername() + ".", e);
+                    Log.e(TAG, "Error while saving profile image for "+currentUser.getUsername()+".", e);
                     Toast.makeText(context, "Error while saving profile image!", Toast.LENGTH_SHORT).show();
                     // Load back previous image
                     loadProfileImage(ivProfileImage, context, currentUser);
                     return;
                 }
                 Log.i(TAG, "Profile image was saved for "+currentUser.getUsername()+".");
-                Toast.makeText(context, "Image saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public static void saveUsername(Context context, String username) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put(User.KEY_USERNAME, username.trim());
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving username for "+currentUser.getUsername()+".", e);
+                    Toast.makeText(context, "Error while saving username!", Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Username was saved for "+currentUser.getUsername()+".");
+            }
+        });
+    }
+
+    public static void saveBio(Context context, String bio) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        currentUser.put(User.KEY_BIO, bio.trim());
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Error while saving bio for "+currentUser.getUsername()+".", e);
+                    Toast.makeText(context, "Error while saving bio!", Toast.LENGTH_SHORT).show();
+                }
+                Log.i(TAG, "Bio was saved for "+currentUser.getUsername()+".");
             }
         });
     }
