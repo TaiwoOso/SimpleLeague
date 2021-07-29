@@ -110,9 +110,31 @@ public class Post extends ParseObject implements Comparable<Post> {
 
     @Override
     public int compareTo(Post o) {
-        if (this.getLikes() == null && o.getLikes() == null) return 0;
-        if (this.getLikes() == null) return o.getLikes().size();
-        if (o.getLikes() == null) return -(this.getLikes().size());
+        if (this.getLikes() == null && o.getLikes() == null) {
+            return compareDislikes(o);
+        }
+        if (this.getLikes() == null) {
+            if (o.getLikes().isEmpty()) {
+                return compareDislikes(o);
+            }
+            return o.getLikes().size();
+        }
+        if (o.getLikes() == null)  {
+            if (this.getLikes().isEmpty()) {
+                return compareDislikes(o);
+            }
+            return -(this.getLikes().size());
+        }
+        if (this.getLikes().size()-o.getLikes().size() == 0) {
+            return compareDislikes(o);
+        }
         return -(this.getLikes().size()-o.getLikes().size());
+    }
+
+    private int compareDislikes(Post o) {
+        if (this.getDislikes() == null && o.getDislikes() == null) return 0;
+        if (this.getDislikes() == null) return -(o.getDislikes().size());
+        if (o.getDislikes() == null) return this.getDislikes().size();
+        return this.getDislikes().size()-o.getDislikes().size();
     }
 }
