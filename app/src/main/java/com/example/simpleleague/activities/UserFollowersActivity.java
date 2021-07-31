@@ -2,7 +2,6 @@ package com.example.simpleleague.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
@@ -10,10 +9,8 @@ import android.util.Log;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
-import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.adapters.UsersAdapter;
 import com.example.simpleleague.models.Follow;
-import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -28,61 +25,56 @@ import java.util.List;
 public class UserFollowersActivity extends AppCompatActivity {
 
     public static final String TAG = "UserFollowersActivity";
-    private ParseUser user;
-    private RecyclerView rvFollowers;
-    private List<ParseUser> followers;
-    private UsersAdapter adapter;
-    private EndlessRecyclerViewScrollListener scrollListener;
+
+    private ParseUser mUser;
+    private RecyclerView mRvFollowers;
+    private List<ParseUser> mFollowersUsers;
+    private UsersAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_followers);
-        // Initialize fields
-        rvFollowers = findViewById(R.id.rvFollowers);
-        followers = new ArrayList<>();
-        adapter = new UsersAdapter(this, followers);
-        // Unwrap the user passed via intent
-        user = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
-        Log.i(TAG, String.format("Showing followers for %s", user.getUsername())+".");
-        // Recycler View
+        mRvFollowers = findViewById(R.id.rvFollowers);
+        mFollowersUsers = new ArrayList<>();
+        mAdapter = new UsersAdapter(this, mFollowersUsers);
+        mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
         GridLayoutManager layout = new GridLayoutManager(this, 2);
-        rvFollowers.setAdapter(adapter);
-        rvFollowers.setLayoutManager(layout);
-        // Query user's followers from Parse
+        mRvFollowers.setAdapter(mAdapter);
+        mRvFollowers.setLayoutManager(layout);
         queryFollowers(0);
-        // Load more users during scrolling
-        scrollListener = new EndlessRecyclerViewScrollListener(layout) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
                 queryFollowers(skips);
             }
         };
-        rvFollowers.addOnScrollListener(scrollListener);
+        mRvFollowers.addOnScrollListener(scrollListener);
     }
 
+    /**
+     * Queries list of users that follow current user
+     * @param skips - tells Parse how much data to skip
+     */
     private void queryFollowers(int skips) {
-        Follow follow = (Follow) user.get(User.KEY_FOLLOW);
+        Follow follow = (Follow) mUser.get(User.KEY_FOLLOW);
         if (follow == null) return;
-        List<String> followers = follow.getFollowers();
-        if (followers == null) return;
+        List<String> followersIds = follow.getFollowers();
+        if (followersIds == null) return;
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.whereContainedIn(ParseUser.KEY_OBJECT_ID, followers);
-        int limit = 20;
-        query.setLimit(limit);
+        query.whereContainedIn(ParseUser.KEY_OBJECT_ID, followersIds);
+        query.setLimit(20);
         query.setSkip(skips);
+        query.include(User.KEY_FOLLOW);
         query.findInBackground(new FindCallback<ParseUser>() {
             @Override
-            public void done(List<ParseUser> parseUsers, ParseException e) {
-                // error checking
+            public void done(List<ParseUser> users, ParseException e) {
                 if (e != null) {
-                    Log.e(TAG, "Issue with retrieving followers for "+user.getUsername()+".", e);
+                    Log.e(TAG, "Issue with retrieving followers for "+mUser.getUsername()+".", e);
                     return;
                 }
-                Log.i(TAG, "Retrieved "+parseUsers.size()+" follower(s) for "+user.getUsername()+".");
-                // save received posts to list and notify adapter of new data
-                adapter.addAll(parseUsers);
-                adapter.notifyItemRangeInserted(skips, skips+limit);
+                mAdapter.addAll(users);
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), users.size());
             }
         });
     }

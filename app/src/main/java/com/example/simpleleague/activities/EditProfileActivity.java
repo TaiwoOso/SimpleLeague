@@ -16,48 +16,41 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.CameraFunctions;
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.ProfileAdapter;
 import com.example.simpleleague.models.User;
-import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseUser;
 
 import java.io.IOException;
 
 public class EditProfileActivity extends AppCompatActivity {
 
-    private static final String TAG = "EditProfileActivity";
-    private ParseUser currentUser = ParseUser.getCurrentUser();
-    private ImageView ivProfileImage;
-    private TextView tvChangeProfile;
-    private TextView tvCancel;
-    private TextView tvDone;
-    private EditText etUsername;
-    private EditText etBio;
-    private boolean profileImageChanged = false;
+    public static final String TAG = "EditProfileActivity";
+
+    private ParseUser mCurrentUser = ParseUser.getCurrentUser();
+    private ImageView mIvProfileImage;
+    private TextView mTvChangeProfile;
+    private TextView mTvCancel;
+    private TextView mTvDone;
+    private EditText mEtUsername;
+    private EditText mEtBio;
+    private boolean mProfileImageChanged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-        // Initialize Fields
-        ivProfileImage = findViewById(R.id.ivProfileImage);
-        tvChangeProfile = findViewById(R.id.tvChangeProfile);
-        tvCancel = findViewById(R.id.tvCancel);
-        tvDone = findViewById(R.id.tvDone);
-        etUsername = findViewById(R.id.etUsername);
-        etBio = findViewById(R.id.etBio);
-        // Load user information
-        ParseQueries.loadProfileImage(ivProfileImage, this, currentUser);
-        etUsername.setText(currentUser.getUsername());
-        ParseQueries.setBio(etBio, currentUser);
-        // Listeners
-        listeners();
-    }
-
-    private void listeners() {
-        tvChangeProfile.setOnClickListener(new View.OnClickListener() {
+        mIvProfileImage = findViewById(R.id.ivProfileImage);
+        mTvChangeProfile = findViewById(R.id.tvChangeProfile);
+        mTvCancel = findViewById(R.id.tvCancel);
+        mTvDone = findViewById(R.id.tvDone);
+        mEtUsername = findViewById(R.id.etUsername);
+        mEtBio = findViewById(R.id.etBio);
+        ParseFunctions.loadProfileImage(mIvProfileImage, this, mCurrentUser);
+        mEtUsername.setText(mCurrentUser.getUsername());
+        ParseFunctions.setBio(mEtBio, mCurrentUser);
+        mTvChangeProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Get the photo
@@ -65,23 +58,23 @@ public class EditProfileActivity extends AppCompatActivity {
                 // onActivityResult() takes care of the rest
             }
         });
-        tvCancel.setOnClickListener(new View.OnClickListener() {
+        mTvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        tvDone.setOnClickListener(new View.OnClickListener() {
+        mTvDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (profileImageChanged) {
-                    ParseQueries.saveProfileImage(EditProfileActivity.this, CameraFunctions.photoFile, ivProfileImage);
+                if (mProfileImageChanged) {
+                    ParseFunctions.saveProfileImage(EditProfileActivity.this, CameraFunctions.photoFile, mIvProfileImage);
                 }
-                if (!etUsername.getText().toString().equals(currentUser.getUsername())) {
-                    ParseQueries.saveUsername(EditProfileActivity.this, etUsername.getText().toString());
+                if (!mEtUsername.getText().toString().equals(mCurrentUser.getUsername())) {
+                    ParseFunctions.saveUsername(EditProfileActivity.this, mEtUsername.getText().toString());
                 }
-                if (!etBio.getText().toString().equals(currentUser.getString(User.KEY_BIO))) {
-                    ParseQueries.saveBio(EditProfileActivity.this, etBio.getText().toString());
+                if (!mEtBio.getText().toString().equals(mCurrentUser.getString(User.KEY_BIO))) {
+                    ParseFunctions.saveBio(EditProfileActivity.this, mEtBio.getText().toString());
                 }
                 Toast.makeText(EditProfileActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
                 finish();
@@ -94,17 +87,14 @@ public class EditProfileActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ProfileAdapter.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // Load the taken image into a preview
                 Bitmap takenImage = BitmapFactory.decodeFile(CameraFunctions.photoFile.getAbsolutePath());
                 try {
                     takenImage = CameraFunctions.rotateImage(takenImage, CameraFunctions.photoFile.getAbsolutePath());
-                } catch (IOException e) {
-                    Log.i(TAG, "Image could not be rotated for "+ ParseUser.getCurrentUser().getUsername()+".");
-                }
+                } catch (IOException ignored) {}
                 ImageView ivProfileImage = findViewById(R.id.ivProfileImage);
                 Glide.with(this).load(takenImage).centerCrop().into(ivProfileImage);
-                profileImageChanged = true;
-            } else { // Result was a failure
+                mProfileImageChanged = true;
+            } else {
                 Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }

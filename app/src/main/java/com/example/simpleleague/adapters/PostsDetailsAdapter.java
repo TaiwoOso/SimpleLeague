@@ -20,7 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserDetailsActivity;
 import com.example.simpleleague.models.Comment;
@@ -41,14 +41,17 @@ import java.util.List;
 public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "PostsDetailsAdapter";
-    private Context mContext;
-    private List<Post> post;
-    private List<Comment> comments;
 
-    public PostsDetailsAdapter(Context mContext, List<Comment> comments) {
+    private Context mContext;
+    private List<Post> mPosts;
+    private List<Comment> mComments;
+
+    public PostsDetailsAdapter(Context mContext, Post post, List<Comment> comments) {
         this.mContext = mContext;
-        this.post = new ArrayList<>();
-        this.comments = comments;
+        this.mPosts = new ArrayList<>();
+        this.mPosts.add(post);
+        this.mComments = comments;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -66,16 +69,16 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position == 0) {
-            holder.bind(post.get(position));
+            holder.bind(mPosts.get(position));
         } else {
-            Comment comment = comments.get(position-1);
+            Comment comment = mComments.get(position-1);
             holder.bind(comment);
         }
     }
 
     @Override
     public int getItemCount() {
-        return post.size()+comments.size();
+        return mPosts.size()+mComments.size();
     }
 
     @Override
@@ -83,30 +86,28 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
         return position;
     }
 
-    public void addAll(Post p, List<Comment> list) {
-        post.add(p);
-        comments.addAll(list);
-        notifyDataSetChanged();
+    public void addAll(List<Comment> list) {
+        mComments.addAll(list);
     }
 
 
     class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder {
 
-        private TextView tvTag1;
-        private TextView tvTag2;
-        private ImageView imageView;
-        private VideoView videoView;
-        private ImageButton ibtnPlayVideo;
-        private LinearLayout llTags;
+        private TextView mTvTag1;
+        private TextView mTvTag2;
+        private ImageView mImageView;
+        private VideoView mVideoView;
+        private ImageButton mIbtnPlayVideo;
+        private LinearLayout mLLTags;
 
         public PostViewHolder(@NonNull View itemView) {
-            super(itemView, mContext);
-            tvTag1 = itemView.findViewById(R.id.tvTag1);
-            tvTag2 = itemView.findViewById(R.id.tvTag2);
-            imageView = itemView.findViewById(R.id.imageView);
-            videoView = itemView.findViewById(R.id.videoView);
-            ibtnPlayVideo = itemView.findViewById(R.id.ibtnPlayVideo);
-            llTags = itemView.findViewById(R.id.llTags);
+            super(itemView, PostsDetailsAdapter.this.mContext);
+            mTvTag1 = itemView.findViewById(R.id.tvTag1);
+            mTvTag2 = itemView.findViewById(R.id.tvTag2);
+            mImageView = itemView.findViewById(R.id.imageView);
+            mVideoView = itemView.findViewById(R.id.videoView);
+            mIbtnPlayVideo = itemView.findViewById(R.id.ibtnPlayVideo);
+            mLLTags = itemView.findViewById(R.id.llTags);
         }
 
         @Override
@@ -114,51 +115,50 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             super.bind(object);
             Post post = (Post) object;
             if (post.getImage() != null) {
-                Glide.with(mContext).load(post.getImage().getUrl()).centerCrop().into(imageView);
-                imageView.setVisibility(View.VISIBLE);
+                Glide.with(mContext).load(post.getImage().getUrl()).centerCrop().into(mImageView);
+                mImageView.setVisibility(View.VISIBLE);
             }
             if (post.getVideo() != null) {
                 post.getVideo().getFileInBackground(new GetFileCallback() {
                     @Override
                     public void done(File file, ParseException e) {
                         Uri uri = Uri.fromFile(file);
-                        videoView.setVisibility(View.VISIBLE);
-                        ibtnPlayVideo.setVisibility(View.VISIBLE);
-                        videoView.setVideoURI(uri);
-                        videoView.seekTo(1);
+                        mVideoView.setVisibility(View.VISIBLE);
+                        mIbtnPlayVideo.setVisibility(View.VISIBLE);
+                        mVideoView.setVideoURI(uri);
+                        mVideoView.seekTo(1);
                     }
                 });
             }
             List<String> tags = post.getTags();
             if (tags != null && !tags.isEmpty()) {
-                llTags.setVisibility(View.VISIBLE);
-                List<TextView> tvTags = Arrays.asList(tvTag1, tvTag2);
+                mLLTags.setVisibility(View.VISIBLE);
+                List<TextView> tvTags = Arrays.asList(mTvTag1, mTvTag2);
                 for (int i = 0; i < tags.size(); i++) {
                     TextView tvTag = tvTags.get(i);
                     tvTag.setText(tags.get(i));
                 }
             }
-            // Listeners
             listeners();
         }
 
         private void listeners() {
-            ibtnPlayVideo.setOnClickListener(new View.OnClickListener() {
+            mIbtnPlayVideo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (videoView.isPlaying()) {
-                        videoView.pause();
-                        ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                    if (mVideoView.isPlaying()) {
+                        mVideoView.pause();
+                        mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
                     } else {
-                        videoView.start();
-                        ibtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);
+                        mVideoView.start();
+                        mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);
                     }
                 }
             });
-            videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                    mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
                 }
             });
         }
@@ -166,21 +166,23 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     class CommentViewHolder extends ViewHolder {
 
-        private ImageView ivProfileImage;
-        private TextView tvUsername;
-        private TextView tvBody;
-        public ImageButton ibtnLike;
-        private TextView tvLikes;
-        private ImageButton ibtnDislike;
+        private ImageView mIvProfileImage;
+        private TextView mTvUsername;
+        private TextView mTvBody;
+        public ImageButton mIbtnLike;
+        private TextView mTvLikes;
+        private ImageButton mIbtnDislike;
+        private TextView mTvDislikes;
 
         public CommentViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvBody = itemView.findViewById(R.id.tvBody);
-            ibtnLike = itemView.findViewById(R.id.ibtnLike);
-            tvLikes = itemView.findViewById(R.id.tvLikes);
-            ibtnDislike = itemView.findViewById(R.id.ibtnDislike);
+            mIvProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            mTvUsername = itemView.findViewById(R.id.tvUsername);
+            mTvBody = itemView.findViewById(R.id.tvBody);
+            mIbtnLike = itemView.findViewById(R.id.ibtnLike);
+            mTvLikes = itemView.findViewById(R.id.tvLikes);
+            mIbtnDislike = itemView.findViewById(R.id.ibtnDislike);
+            mTvDislikes = itemView.findViewById(R.id.tvDislikes);
         }
 
         @Override
@@ -188,63 +190,97 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             Comment comment = (Comment) object;
             ParseFile profileImage = (ParseFile) comment.getUser().get(User.KEY_PROFILE_IMAGE);
             if (profileImage != null) {
-                Glide.with(mContext).load(profileImage.getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
+                Glide.with(mContext).load(profileImage.getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(mIvProfileImage);
             } else {
-                Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(ivProfileImage);
+                Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(mIvProfileImage);
             }
-            tvUsername.setText(comment.getUser().getUsername());
-            tvBody.setText(comment.getBody());
-            if (comment.getLikes() != null && !comment.getLikes().isEmpty()) {
-                tvLikes.setText(String.valueOf(comment.getLikes().size()));
+            mTvUsername.setText(comment.getUser().getUsername());
+            mTvBody.setText(comment.getBody());
+            if (comment.getLikes() != null) {
+                mTvLikes.setText(String.valueOf(comment.getLikes().size()));
             } else {
-                tvLikes.setText(R.string.Like);
+                mTvLikes.setText(String.valueOf(0));
+            }
+            if (comment.getDislikes() != null) {
+                mTvDislikes.setText(String.valueOf(comment.getDislikes().size()));
+            } else {
+                mTvDislikes.setText(String.valueOf(0));
             }
             // Change appearance of like button
-            if (ParseQueries.userLikesComment(comment)) {
-                ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+            if (ParseFunctions.userLikesComment(comment)) {
+                mIbtnLike.setTag("Liked");
+                mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
             } else {
-                ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                mIbtnLike.setTag("NotLiked");
+                mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
             }
-            // Listeners
+            // Change appearance of dislike button
+            if (ParseFunctions.userDislikesComment(comment)) {
+                mIbtnDislike.setTag("Disliked");
+                mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
+            } else {
+                mIbtnDislike.setTag("NotDisliked");
+                mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+            }
             listeners(comment);
         }
 
         private void listeners(Comment comment) {
-            ivProfileImage.setOnClickListener(new View.OnClickListener() {
+            mIvProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.i(TAG, "Clicked on "+comment.getUser().getUsername()+"'s profile.");
                     Intent intent = new Intent(mContext, UserDetailsActivity.class);
-                    User user = new User();
-                    user.setParseUser(comment.getUser());
-                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(new User(comment.getUser())));
                     mContext.startActivity(intent);
                 }
             });
-            ibtnLike.setOnClickListener(new View.OnClickListener() {
+            mIbtnLike.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
-                        ParseQueries.likeComment(comment);
-                        int likes;
-                        try {
-                            likes = Integer.parseInt(tvLikes.getText().toString())+1;
-                        } catch (NumberFormatException e) {
-                            likes = 1;
+                    if (mIbtnLike.getTag().equals("NotLiked")) {
+                        ParseFunctions.likeComment(comment);
+                        int likes = Integer.parseInt(mTvLikes.getText().toString())+1;
+                        mTvLikes.setText(String.valueOf(likes));
+                        mIbtnLike.setTag("Liked");
+                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+                        if (mIbtnDislike.getTag().equals("Disliked")) {
+                            ParseFunctions.removeDislikeComment(comment);
+                            int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
+                            mTvDislikes.setText(String.valueOf(dislikes));
+                            mIbtnDislike.setTag("NotDisliked");
+                            mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
                         }
-                        tvLikes.setText(String.valueOf(likes));
-                        ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
-                        Log.i(TAG, "Liked");
                     } else {
-                        ParseQueries.removeLikeComment(comment);
-                        int likes = Integer.parseInt(tvLikes.getText().toString())-1;
-                        if (likes == 0) {
-                            tvLikes.setText(R.string.Like);
-                        } else {
-                            tvLikes.setText(String.valueOf(likes));
+                        ParseFunctions.removeLikeComment(comment);
+                        int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
+                        mTvLikes.setText(String.valueOf(likes));
+                        mIbtnLike.setTag("NotLiked");
+                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                    }
+                }
+            });
+            mIbtnDislike.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mIbtnDislike.getTag().equals("NotDisliked")) {
+                        ParseFunctions.dislikeComment(comment);
+                        int dislikes = Integer.parseInt(mTvDislikes.getText().toString())+1;
+                        mTvDislikes.setText(String.valueOf(dislikes));
+                        mIbtnDislike.setTag("Disliked");
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
+                        if (mIbtnLike.getTag().equals("Liked")) {
+                            ParseFunctions.removeLikeComment(comment);
+                            int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
+                            mTvLikes.setText(String.valueOf(likes));
+                            mIbtnLike.setTag("NotLiked");
+                            mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
                         }
-                        ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
-                        Log.i(TAG, "Unliked");
+                    } else {
+                        ParseFunctions.removeDislikeComment(comment);
+                        int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
+                        mTvDislikes.setText(String.valueOf(dislikes));
+                        mIbtnDislike.setTag("NotDisliked");
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
                     }
                 }
             });

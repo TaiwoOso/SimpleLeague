@@ -7,7 +7,6 @@ import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,6 +20,7 @@ public class Post extends ParseObject implements Comparable<Post> {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_VIDEO = "video";
     public static final String KEY_TAGS = "tags";
+    public static final String KEY_VIEWS = "views";
     public static final String KEY_LIKES = "likes";
     public static final String KEY_DISLIKES = "dislikes";
     public static final String KEY_COMMENTS = "comments";
@@ -52,14 +52,6 @@ public class Post extends ParseObject implements Comparable<Post> {
         put(KEY_BODY, body);
     }
 
-    public List<String> getTags() {
-        return (List<String>) get(KEY_TAGS);
-    }
-
-    public void setTags(List<String> tags) {
-        addAllUnique(KEY_TAGS, tags);
-    }
-
     public ParseFile getImage() {
         return getParseFile(KEY_IMAGE);
     }
@@ -74,6 +66,22 @@ public class Post extends ParseObject implements Comparable<Post> {
 
     public void setVideo(ParseFile parseFile) {
         put(KEY_VIDEO, parseFile);
+    }
+
+    public List<String> getTags() {
+        return (List<String>) get(KEY_TAGS);
+    }
+
+    public void setTags(List<String> tags) {
+        addAllUnique(KEY_TAGS, tags);
+    }
+
+    public List<String> getViews() {
+        return (List<String>) get(KEY_VIEWS);
+    }
+
+    public void addView(String userId) {
+        addUnique(KEY_VIEWS, userId);
     }
 
     public List<String> getLikes() {
@@ -108,33 +116,55 @@ public class Post extends ParseObject implements Comparable<Post> {
         addUnique(KEY_COMMENTS, commentId);
     }
 
+    /**
+     * Sorts post where posts that are updated recently,
+     * have more views, more likes, less dislikes, and more comments
+     * are placed closer to the top of the list
+     * @param o post that is being compared to this post
+     * @return 0 if the posts are considered equal;
+     * a value less than 0 if this post is ranked higher than post argument;
+     * a value greater than 0 if this post is ranked lower than post argument
+     */
     @Override
     public int compareTo(Post o) {
-        if (this.getLikes() == null && o.getLikes() == null) {
-            return compareDislikes(o);
-        }
-        if (this.getLikes() == null) {
-            if (o.getLikes().isEmpty()) {
-                return compareDislikes(o);
-            }
-            return o.getLikes().size();
-        }
-        if (o.getLikes() == null)  {
-            if (this.getLikes().isEmpty()) {
-                return compareDislikes(o);
-            }
-            return -(this.getLikes().size());
-        }
-        if (this.getLikes().size()-o.getLikes().size() == 0) {
-            return compareDislikes(o);
-        }
-        return -(this.getLikes().size()-o.getLikes().size());
+        double score = -(this.getUpdatedAt().compareTo(o.getUpdatedAt()));
+        score += compareViews(o)*1.5;
+        score += compareLikes(o)*2;
+        score -= compareDislikes(o)*1.2;
+        score += compareComments(o)*1.2;
+        score *= 100;
+        return (int)score;
     }
 
-    private int compareDislikes(Post o) {
+    public int compareViews(Post o) {
+        if (this.getViews() == null && o.getViews() == null) return 0;
+        if (this.getViews() == null) return 1;
+        if (o.getViews() == null) return -1;
+        int val = -(this.getViews().size()-o.getViews().size());
+        return Integer.compare(val, 0);
+    }
+
+    public int compareLikes(Post o) {
+        if (this.getLikes() == null && o.getLikes() == null) return 0;
+        if (this.getLikes() == null) return 1;
+        if (o.getLikes() == null) return -1;
+        int val = -(this.getLikes().size()-o.getLikes().size());
+        return Integer.compare(val, 0);
+    }
+
+    public int compareDislikes(Post o) {
         if (this.getDislikes() == null && o.getDislikes() == null) return 0;
-        if (this.getDislikes() == null) return -(o.getDislikes().size());
-        if (o.getDislikes() == null) return this.getDislikes().size();
-        return this.getDislikes().size()-o.getDislikes().size();
+        if (this.getDislikes() == null) return 1;
+        if (o.getDislikes() == null) return -1;
+        int val = -(this.getDislikes().size()-o.getDislikes().size());
+        return Integer.compare(val, 0);
+    }
+
+    public int compareComments(Post o) {
+        if (this.getComments() == null && o.getComments() == null) return 0;
+        if (this.getComments() == null) return 1;
+        if (o.getComments() == null) return -1;
+        int val = -(this.getComments().size()-o.getComments().size());
+        return Integer.compare(val, 0);
     }
 }

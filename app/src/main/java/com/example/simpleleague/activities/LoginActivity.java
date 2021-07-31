@@ -25,39 +25,38 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
 
     public static final String TAG = "LoginActivity";
+
     private static final int RC_SIGN_IN = 100;
     private GoogleSignInClient mGoogleSignInClient;
-    private EditText etUsername;
-    private EditText etPassword;
-    private Button btnLogIn;
-    private Button btnSignUp;
+    private EditText mEtUsername;
+    private EditText mEtPassword;
+    private Button mBtnLogIn;
+    private Button mBtnSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // Google Sign In
-        googleSignIn();
         // User Persistence
         if (ParseUser.getCurrentSessionToken() != null) {
             goMainActivity();
         }
-        // Initialize fields
-        etUsername = findViewById(R.id.etUsername);
-        etPassword = findViewById(R.id.etPassword);
-        btnLogIn = findViewById(R.id.btnLogIn);
-        btnSignUp = findViewById(R.id.btnSignUp);
+        googleSignIn();
+        mEtUsername = findViewById(R.id.etUsername);
+        mEtPassword = findViewById(R.id.etPassword);
+        mBtnLogIn = findViewById(R.id.btnLogIn);
+        mBtnSignUp = findViewById(R.id.btnSignUp);
         // Login --> MainActivity
-        btnLogIn.setOnClickListener(new View.OnClickListener() {
+        mBtnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = etUsername.getText().toString();
-                String password = etPassword.getText().toString();
+                String username = mEtUsername.getText().toString();
+                String password = mEtPassword.getText().toString();
                 login(username, password, false);
             }
         });
         // Signup --> SignupActivity
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
+        mBtnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup();
@@ -66,18 +65,21 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
+            handleSignInResult(task);
+        }
+    }
+
     private void googleSignIn() {
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        // Build a GoogleSignInClient with the options specified by gso.
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        // Listener
         SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,22 +94,9 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            handleSignInResult(task);
-        }
-    }
-
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
             if (acct != null) {
                 String name = acct.getDisplayName();
@@ -115,9 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                 login(name, id, true);
             }
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.d(TAG, e.toString());
+            Log.e(TAG, e.toString());
         }
     }
 
@@ -138,13 +125,13 @@ public class LoginActivity extends AppCompatActivity {
         ParseUser.logInInBackground(username, password, new LogInCallback() {
             @Override
             public void done(ParseUser user, ParseException e) {
-                if (e == null) {
-                    Toast.makeText(LoginActivity.this, "Logged in!", Toast.LENGTH_SHORT).show();
-                    goMainActivity();
-                } else {
+                if (e != null) {
                     Log.e(TAG, "Login failed.", e);
                     if (fromGoogle) signup(username, password);
+                    return;
                 }
+                Toast.makeText(LoginActivity.this, "Logged In!", Toast.LENGTH_SHORT).show();
+                goMainActivity();
             }
         });
     }

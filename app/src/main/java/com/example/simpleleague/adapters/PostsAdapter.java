@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.activities.PostDetailsActivity;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Post;
@@ -31,11 +30,11 @@ import java.util.List;
 public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Post> posts;
+    private List<Post> mPosts;
 
     public PostsAdapter(Context mContext, List<Post> posts) {
         this.mContext = mContext;
-        this.posts = posts;
+        this.mPosts = posts;
     }
 
     @NonNull
@@ -47,33 +46,33 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull PostsAdapter.ViewHolder holder, int position) {
-        Post post = posts.get(position);
+        Post post = mPosts.get(position);
         holder.bind(post);
     }
 
     @Override
     public int getItemCount() {
-        return posts.size();
+        return mPosts.size();
     }
 
     public void addAll(List<Post> list) {
-        posts.addAll(list);
+        mPosts.addAll(list);
     }
 
     public void clear() {
-        posts.clear();
+        mPosts.clear();
         notifyDataSetChanged();
     }
 
     class ViewHolder extends PostViewHolder implements DoubleClickListener {
 
-        private ImageView ivLike;
-        private AnimatedVectorDrawableCompat avdc;
-        private AnimatedVectorDrawable avd;
+        private ImageView mIvLike;
+        private AnimatedVectorDrawableCompat mAvdc;
+        private AnimatedVectorDrawable mAvd;
 
         public ViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
-            ivLike = itemView.findViewById(R.id.ivLike);
+            mIvLike = itemView.findViewById(R.id.ivLike);
             itemView.setOnClickListener(new DoubleClick(this));
         }
 
@@ -87,7 +86,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             if (body == null) return;
             if (body.length() > blurbCount) {
                 blurb = body.substring(0, blurbCount).trim()+"...";
-                tvBody.setText(blurb);
+                mTvBody.setText(blurb);
             }
         }
 
@@ -95,7 +94,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
         public void onSingleClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Post post = posts.get(position);
+                Post post = mPosts.get(position);
                 Intent intent = new Intent(mContext, PostDetailsActivity.class);
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
                 mContext.startActivity(intent);
@@ -104,29 +103,24 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
 
         @Override
         public void onDoubleClick(View view) {
-            Drawable drawable = ivLike.getDrawable();
-            ivLike.setAlpha(0.70f);
+            Drawable drawable = mIvLike.getDrawable();
+            mIvLike.setAlpha(0.70f);
             if (drawable instanceof AnimatedVectorDrawableCompat) {
-                avdc = (AnimatedVectorDrawableCompat) drawable;
-                avdc.start();
+                mAvdc = (AnimatedVectorDrawableCompat) drawable;
+                mAvdc.start();
             } else if (drawable instanceof AnimatedVectorDrawable) {
-                avd = (AnimatedVectorDrawable) drawable;
-                avd.start();
+                mAvd = (AnimatedVectorDrawable) drawable;
+                mAvd.start();
             }
-            if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
+            if (mIbtnLike.getTag().equals("NotLiked")) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Post post = posts.get(position);
-                    ParseQueries.likePost(post);
-                    int likes;
-                    try {
-                        likes = Integer.parseInt(tvLikes.getText().toString())+1;
-                    } catch (NumberFormatException e) {
-                        likes = 1;
-                    }
-                    tvLikes.setText(String.valueOf(likes));
-                    ibtnLike.setTag("Liked");
-                    ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+                    Post post = mPosts.get(position);
+                    ParseFunctions.likePost(post);
+                    int likes = Integer.parseInt(mTvLikes.getText().toString())+1;
+                    mTvLikes.setText(String.valueOf(likes));
+                    mIbtnLike.setTag("Liked");
+                    mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
                 }
             }
         }

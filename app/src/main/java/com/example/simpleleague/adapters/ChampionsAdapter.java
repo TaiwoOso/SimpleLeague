@@ -23,11 +23,11 @@ import java.util.List;
 public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.ViewHolder> {
 
     private Context mContext;
-    private List<Champion> champions;
+    private List<Champion> mChampions;
 
     public ChampionsAdapter(Context mContext, List<Champion> champions) {
         this.mContext = mContext;
-        this.champions = champions;
+        this.mChampions = champions;
     }
 
     @NonNull
@@ -39,49 +39,46 @@ public class ChampionsAdapter extends RecyclerView.Adapter<ChampionsAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull ChampionsAdapter.ViewHolder holder, int position) {
-        Champion champion = champions.get(position);
+        Champion champion = mChampions.get(position);
         holder.bind(champion);
     }
 
     @Override
     public int getItemCount() {
-        return champions.size();
+        return mChampions.size();
     }
 
     public void addAll(List<Champion> list) {
-        champions.addAll(list);
+        mChampions.addAll(list);
     }
 
     public void clear() {
-        champions.clear();
+        mChampions.clear();
         notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private View rootView;
-        private ImageView ivProfile;
-        private TextView tvName;
+        private ImageView mIvProfile;
+        private TextView mTvName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootView = itemView;
-            ivProfile = itemView.findViewById(R.id.ivProfile);
-            tvName = itemView.findViewById(R.id.tvName);
+            mIvProfile = itemView.findViewById(R.id.ivProfile);
+            mTvName = itemView.findViewById(R.id.tvName);
             itemView.setOnClickListener(this);
         }
 
         public void bind(Champion champion) {
-            rootView.setTag(champion.getName());
-            tvName.setText(champion.getName());
-            Glide.with(mContext).load(champion.getImage().getUrl()).centerCrop().into(ivProfile);
+            mTvName.setText(champion.getName());
+            Glide.with(mContext).load(champion.getImage().getUrl()).centerCrop().into(mIvProfile);
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Champion champion = champions.get(position);
+                Champion champion = mChampions.get(position);
                 Intent intent = new Intent(mContext, ChampionDetailsActivity.class);
                 intent.putExtra(Champion.class.getSimpleName(), Parcels.wrap(champion));
                 mContext.startActivity(intent);

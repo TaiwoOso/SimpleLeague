@@ -31,28 +31,22 @@ import java.util.Arrays;
 public class CreateImageFragment extends CreateTextFragment {
 
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 56;
-    private ImageButton ibtnAddImage;
-    private ImageView imageView;
+
+    private ImageButton mIbtnAddImage;
+    private ImageView mImageView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_image, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize Fields
-        ibtnAddImage = view.findViewById(R.id.ibtnAddImage);
-        imageView = view.findViewById(R.id.imageView);
-        // Listeners
-        listeners();
-    }
-
-    private void listeners() {
-        ibtnAddImage.setOnClickListener(new View.OnClickListener() {
+        mIbtnAddImage = view.findViewById(R.id.ibtnAddImage);
+        mImageView = view.findViewById(R.id.imageView);
+        mIbtnAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CameraFunctions.launchCamera(getContext(), CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -63,9 +57,8 @@ public class CreateImageFragment extends CreateTextFragment {
     @Override
     public void post() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        String title = etTitle.getText().toString();
-        // Check for empty fields
-        if (title.isEmpty() || imageView.getTag().equals("Empty")) {
+        String title = mEtTitle.getText().toString();
+        if (title.isEmpty() || mImageView.getTag().equals("Empty")) {
             Toast.makeText(getContext(), "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -73,7 +66,7 @@ public class CreateImageFragment extends CreateTextFragment {
         post.setUser(currentUser);
         post.setTitle(title);
         post.setImage(new ParseFile(CameraFunctions.photoFile));
-        ArrayList<String> tags = new ArrayList<>(Arrays.asList(tvTag1.getText().toString(), tvTag2.getText().toString()));
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList(mTvTag1.getText().toString(), mTvTag2.getText().toString()));
         for (int i = 0; i < tags.size(); i++) {
             String tag = tags.get(i);
             if (tag.isEmpty()) {
@@ -85,18 +78,18 @@ public class CreateImageFragment extends CreateTextFragment {
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(getContext(), "Posted!", Toast.LENGTH_SHORT).show();
-                    etTitle.setText("");
-                    imageView.setTag("Empty");
-                    Glide.with(getContext()).load(R.drawable.image_placeholder).into(imageView);
-                    etTag.setText("");
-                    tvTag1.setText("");
-                    tvTag2.setText("");
-                } else {
+                if (e != null) {
+                    Log.e(TAG, "Error while posting for "+currentUser.getUsername()+".", e);
                     Toast.makeText(getContext(), "Error: Try Again!", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "Error while posting for "+currentUser.getUsername()+".", e);
+                    return;
                 }
+                Toast.makeText(getContext(), "Posted!", Toast.LENGTH_SHORT).show();
+                mEtTitle.setText("");
+                mImageView.setTag("Empty");
+                Glide.with(getContext()).load(R.drawable.image_placeholder).into(mImageView);
+                mEtTag.setText("");
+                mTvTag1.setText("");
+                mTvTag2.setText("");
             }
         });
     }

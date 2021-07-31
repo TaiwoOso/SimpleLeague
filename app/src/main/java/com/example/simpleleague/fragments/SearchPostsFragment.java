@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.MenuItemCompat;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,19 +12,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
+
 import androidx.appcompat.widget.SearchView;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
-import com.example.simpleleague.ParseQueries;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
-import com.example.simpleleague.models.Champion;
-import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
-import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
+import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -37,20 +31,19 @@ import java.util.List;
 public class SearchPostsFragment extends SearchFragment {
 
     public static final String TAG = "SearchPostsFragment";
-    RecyclerView rvPosts;
-    private PostsAdapter adapter;
-    private List<Post> posts;
-    private EndlessRecyclerViewScrollListener scrollListener;
+
+    private RecyclerView mRvPosts;
+    private PostsAdapter mAdapter;
+    private List<Post> mPosts;
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        // Search for specific queries
-        svSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        mSvSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                adapter.clear();
-                String search = svSearch.getQuery().toString();
+                mAdapter.clear();
+                String search = mSvSearch.getQuery().toString();
                 queryPosts(0, search);
                 return true;
             }
@@ -65,53 +58,56 @@ public class SearchPostsFragment extends SearchFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search_posts, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        // Initialize fields
-        rvPosts = view.findViewById(R.id.rvPosts);
-        posts = new ArrayList<Post>();
-        adapter = new PostsAdapter(getContext(), posts);
-        // RecyclerView
+        mRvPosts = view.findViewById(R.id.rvPosts);
+        mPosts = new ArrayList<Post>();
+        mAdapter = new PostsAdapter(getContext(), mPosts);
         LinearLayoutManager layout = new LinearLayoutManager(getContext());
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(layout);
-        // Get the posts from Parse
+        mRvPosts.setAdapter(mAdapter);
+        mRvPosts.setLayoutManager(layout);
         queryPosts(0, "");
-        // Load more posts during scrolling
-        scrollListener = new EndlessRecyclerViewScrollListener(layout) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
-                String search = svSearch.getQuery().toString();
+                String search = mSvSearch.getQuery().toString();
                 queryPosts(skips, search);
             }
         };
-        rvPosts.addOnScrollListener(scrollListener);
+        mRvPosts.addOnScrollListener(scrollListener);
     }
 
+    /**
+     * Queries posts with most views
+     * @param skips - tells Parse how much data to skip
+     * @param search - tells Parse to show only data with this param
+     */
     private void queryPosts(int skips, String search) {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.whereContains(Post.KEY_TITLE, search);
-        int limit = 20;
-        query.setLimit(limit);
-        query.setSkip(skips);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
+        ParseQuery<Post> titleQuery = ParseQuery.getQuery(Post.class);
+        titleQuery.whereContains(Post.KEY_TITLE, search);
+        ParseQuery<Post> bodyQuery = ParseQuery.getQuery(Post.class);
+        bodyQuery.whereContains(Post.KEY_BODY, search);
+        List<ParseQuery<Post>> queries = new ArrayList<>();
+        queries.add(titleQuery);
+        queries.add(bodyQuery);
+        ParseQuery<Post> mainQuery = ParseQuery.or(queries);
+        mainQuery.setLimit(20);
+        mainQuery.setSkip(skips);
+        mainQuery.include(Post.KEY_USER);
+        mainQuery.addDescendingOrder(Post.KEY_VIEWS);
+        mainQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
-                // error checking
                 if (e != null) {
                     Log.e(TAG, "Issue with retrieving posts for "+currentUser.getUsername()+".", e);
                     return;
                 }
-                Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
-                // save received posts to list and notify adapter of new data
-                adapter.addAll(posts);
-                adapter.notifyItemRangeInserted(skips, skips+limit);
+                mAdapter.addAll(posts);
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
             }
         });
     }

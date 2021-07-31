@@ -21,7 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.example.simpleleague.CameraFunctions;
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.activities.EditProfileActivity;
 import com.example.simpleleague.activities.PostDetailsActivity;
 import com.example.simpleleague.R;
@@ -43,14 +43,17 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     public static final String TAG = "ProfileAdapter";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 76;
-    private Context mContext;
-    private List<ParseUser> user;
-    private List<Post> posts;
 
-    public ProfileAdapter(Context mContext, List<Post> posts) {
+    private Context mContext;
+    private List<ParseUser> mUsers;
+    private List<Post> mPosts;
+
+    public ProfileAdapter(Context mContext, ParseUser user, List<Post> mPosts) {
         this.mContext = mContext;
-        this.user = new ArrayList<>();
-        this.posts = posts;
+        this.mUsers = new ArrayList<>();
+        this.mUsers.add(user);
+        this.mPosts = mPosts;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -68,16 +71,16 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         if (position == 0) {
-             holder.bind(user.get(position));
+             holder.bind(mUsers.get(position));
         } else {
-            Post post = posts.get(position-1);
+            Post post = mPosts.get(position-1);
             holder.bind(post);
         }
     }
 
     @Override
     public int getItemCount() {
-        return user.size()+posts.size();
+        return mUsers.size()+mPosts.size();
     }
 
     @Override
@@ -85,92 +88,87 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         return position;
     }
 
-    public void addAll(ParseUser parseUser, List<Post> list) {
-        user.add(parseUser);
-        posts.addAll(list);
-        notifyDataSetChanged();
+    public void addAll(List<Post> list) {
+        mPosts.addAll(list);
     }
 
     class UserViewHolder extends ViewHolder {
 
-        private ImageView ivProfileImage;
-        private TextView tvUsername;
-        private TextView tvBio;
-        private TextView tvFollowers;
-        private TextView tvFollowing;
-        private TextView tvPosts;
-        private Button btnFollow;
-        private ImageButton ibtnAddProfileImage;
-        private CardView cvFollowers;
-        private CardView cvFollowing;
-        private CardView cvEditProfile;
-        private ImageButton ibtnEditProfile;
+        private ImageView mIvProfileImage;
+        private TextView mTvUsername;
+        private TextView mTvBio;
+        private TextView mTvFollowers;
+        private TextView mTvFollowing;
+        private TextView mTvPosts;
+        private Button mBtnFollow;
+        private ImageButton mIbtnAddProfileImage;
+        private CardView mCvFollowers;
+        private CardView mCvFollowing;
+        private CardView mCvEditProfile;
+        private ImageButton mIbtnEditProfile;
 
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvUsername = itemView.findViewById(R.id.tvUsername);
-            tvBio = itemView.findViewById(R.id.tvBio);
-            tvFollowers = itemView.findViewById(R.id.tvFollowers);
-            tvFollowing = itemView.findViewById(R.id.tvFollowing);
-            tvPosts = itemView.findViewById(R.id.tvPosts);
-            btnFollow = itemView.findViewById(R.id.btnFollow);
-            ibtnAddProfileImage = itemView.findViewById(R.id.ibtnAddProfileImage);
-            cvFollowers = itemView.findViewById(R.id.cvFollowers);
-            cvFollowing = itemView.findViewById(R.id.cvFollowing);
-            cvEditProfile = itemView.findViewById(R.id.cvEditProfile);
-            ibtnEditProfile = itemView.findViewById(R.id.ibtnEditProfile);
+            mIvProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            mTvUsername = itemView.findViewById(R.id.tvUsername);
+            mTvBio = itemView.findViewById(R.id.tvBio);
+            mTvFollowers = itemView.findViewById(R.id.tvFollowers);
+            mTvFollowing = itemView.findViewById(R.id.tvFollowing);
+            mTvPosts = itemView.findViewById(R.id.tvPosts);
+            mBtnFollow = itemView.findViewById(R.id.btnFollow);
+            mIbtnAddProfileImage = itemView.findViewById(R.id.ibtnAddProfileImage);
+            mCvFollowers = itemView.findViewById(R.id.cvFollowers);
+            mCvFollowing = itemView.findViewById(R.id.cvFollowing);
+            mCvEditProfile = itemView.findViewById(R.id.cvEditProfile);
+            mIbtnEditProfile = itemView.findViewById(R.id.ibtnEditProfile);
         }
 
         public void bind(Object object) {
-            ParseUser parseUser = (ParseUser) object;
-            ParseQueries.loadProfileImage(ivProfileImage, mContext, parseUser);
-            tvUsername.setText(parseUser.getUsername());
-            ParseQueries.setBio(tvBio, parseUser);
-            ParseQueries.setFollowers(tvFollowers, parseUser);
-            ParseQueries.setFollowing(tvFollowing, parseUser);
-            ParseQueries.setNumberPosts(tvPosts, parseUser);
+            ParseUser user = (ParseUser) object;
+            ParseFunctions.loadProfileImage(mIvProfileImage, mContext, user);
+            mTvUsername.setText(user.getUsername());
+            ParseFunctions.setBio(mTvBio, user);
+            ParseFunctions.setFollowers(mTvFollowers, user);
+            ParseFunctions.setFollowing(mTvFollowing, user);
+            ParseFunctions.setNumberPosts(mTvPosts, user);
             // Change visibilities of views
-            if (!parseUser.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-                ibtnAddProfileImage.setVisibility(View.GONE);
-                cvEditProfile.setVisibility(View.GONE);
+            if (!user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                mIbtnAddProfileImage.setVisibility(View.GONE);
+                mCvEditProfile.setVisibility(View.GONE);
             }
             // Change appearance of follow button
-            if (parseUser.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
-                btnFollow.setVisibility(View.GONE);
-            } else if (ParseQueries.userFollows(parseUser)){
-                btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
-                btnFollow.setText(R.string.Followed);
+            if (user.getUsername().equals(ParseUser.getCurrentUser().getUsername())) {
+                mBtnFollow.setVisibility(View.GONE);
+            } else if (ParseFunctions.userFollows(user)){
+                mBtnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                mBtnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
+                mBtnFollow.setText(R.string.Followed);
             }
-            // Listeners
-            listeners(parseUser);
+            listeners(user);
         }
 
-        private void listeners(ParseUser parseUser) {
-            btnFollow.setOnClickListener(new View.OnClickListener() {
+        private void listeners(ParseUser user) {
+            mBtnFollow.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (btnFollow.getText().equals("Follow")) {
-                        ParseQueries.followUser(parseUser);
-                        btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        btnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
-                        btnFollow.setText(R.string.Followed);
-                        int followers = Integer.parseInt(tvFollowers.getText().toString())+1;
-                        tvFollowers.setText(String.valueOf(followers));
-                        Log.i(TAG, "Followed");
+                    if (mBtnFollow.getText().equals("Follow")) {
+                        ParseFunctions.followUser(user);
+                        mBtnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        mBtnFollow.setTextColor(mContext.getResources().getColor(R.color.black));
+                        mBtnFollow.setText(R.string.Followed);
+                        int followers = Integer.parseInt(mTvFollowers.getText().toString())+1;
+                        mTvFollowers.setText(String.valueOf(followers));
                     } else {
-                        ParseQueries.unfollowUser(parseUser);
-                        btnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
-                        btnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
-                        btnFollow.setText(R.string.Follow);
-                        int followers = Integer.parseInt(tvFollowers.getText().toString())-1;
-                        tvFollowers.setText(String.valueOf(followers));
-                        Log.i(TAG, "Unfollowed");
+                        ParseFunctions.unfollowUser(user);
+                        mBtnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
+                        mBtnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
+                        mBtnFollow.setText(R.string.Follow);
+                        int followers = Integer.parseInt(mTvFollowers.getText().toString())-1;
+                        mTvFollowers.setText(String.valueOf(followers));
                     }
                 }
             });
-            ibtnAddProfileImage.setOnClickListener(new View.OnClickListener() {
+            mIbtnAddProfileImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     // Get the photo
@@ -178,27 +176,23 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                     // Main Activity's onActivityResult() takes care of the rest
                 }
             });
-            cvFollowers.setOnClickListener(new View.OnClickListener() {
+            mCvFollowers.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, UserFollowersActivity.class);
-                    User user = new User();
-                    user.setParseUser(parseUser);
-                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(new User(user)));
                     mContext.startActivity(intent);
                 }
             });
-            cvFollowing.setOnClickListener(new View.OnClickListener() {
+            mCvFollowing.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, UserFollowingActivity.class);
-                    User user = new User();
-                    user.setParseUser(parseUser);
-                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
+                    intent.putExtra(User.class.getSimpleName(), Parcels.wrap(new User(user)));
                     mContext.startActivity(intent);
                 }
             });
-            ibtnEditProfile.setOnClickListener(new View.OnClickListener() {
+            mIbtnEditProfile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, EditProfileActivity.class);
@@ -210,13 +204,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
     class PostViewHolder extends com.example.simpleleague.viewholders.PostViewHolder implements DoubleClickListener {
 
-        private ImageView ivLike;
-        private AnimatedVectorDrawableCompat avdc;
-        private AnimatedVectorDrawable avd;
+        private ImageView mIvLike;
+        private AnimatedVectorDrawableCompat mAvdc;
+        private AnimatedVectorDrawable mAvd;
 
         public PostViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
-            ivLike = itemView.findViewById(R.id.ivLike);
+            mIvLike = itemView.findViewById(R.id.ivLike);
             itemView.setOnClickListener(new DoubleClick(this));
         }
 
@@ -224,18 +218,17 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         public void bind(Object object) {
             super.bind(object);
             Post post = (Post) object;
-            ivProfileImage.setVisibility(View.GONE);
-            tvUsername.setVisibility(View.GONE);
-            tvTitle.setText(post.getTitle());
+            mIvProfileImage.setVisibility(View.GONE);
+            mTvUsername.setVisibility(View.GONE);
             String blurb;
             int blurbCount = 125;
             String body = post.getBody();
             if (body == null) return;
             if (body.length() > blurbCount) {
                 blurb = body.substring(0, blurbCount).trim()+"...";
-                tvBody.setText(blurb);
+                mTvBody.setText(blurb);
             } else {
-                tvBody.setText(body);
+                mTvBody.setText(body);
             }
         }
 
@@ -243,7 +236,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         public void onSingleClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                Post post = posts.get(position-1);
+                Post post = mPosts.get(position-1);
                 Intent intent = new Intent(mContext, PostDetailsActivity.class);
                 intent.putExtra(Post.class.getSimpleName(), Parcels.wrap(post));
                 mContext.startActivity(intent);
@@ -252,29 +245,24 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         @Override
         public void onDoubleClick(View view) {
-            Drawable drawable = ivLike.getDrawable();
-            ivLike.setAlpha(0.70f);
+            Drawable drawable = mIvLike.getDrawable();
+            mIvLike.setAlpha(0.70f);
             if (drawable instanceof AnimatedVectorDrawableCompat) {
-                avdc = (AnimatedVectorDrawableCompat) drawable;
-                avdc.start();
+                mAvdc = (AnimatedVectorDrawableCompat) drawable;
+                mAvdc.start();
             } else if (drawable instanceof AnimatedVectorDrawable) {
-                avd = (AnimatedVectorDrawable) drawable;
-                avd.start();
+                mAvd = (AnimatedVectorDrawable) drawable;
+                mAvd.start();
             }
-            if (ibtnLike.getBackgroundTintList().equals(ColorStateList.valueOf(Color.BLACK))) {
+            if (mIbtnLike.getTag().equals("NotLiked")) {
                 int position = getAdapterPosition();
                 if (position != RecyclerView.NO_POSITION) {
-                    Post post = posts.get(position-1);
-                    ParseQueries.likePost(post);
-                    int likes;
-                    try {
-                        likes = Integer.parseInt(tvLikes.getText().toString())+1;
-                    } catch (NumberFormatException e) {
-                        likes = 1;
-                    }
-                    tvLikes.setText(String.valueOf(likes));
-                    ibtnLike.setTag("Liked");
-                    ibtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+                    Post post = mPosts.get(position-1);
+                    ParseFunctions.likePost(post);
+                    int likes = Integer.parseInt(mTvLikes.getText().toString())+1;
+                    mTvLikes.setText(String.valueOf(likes));
+                    mIbtnLike.setTag("Liked");
+                    mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
                 }
             }
         }

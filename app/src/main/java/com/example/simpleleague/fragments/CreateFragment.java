@@ -33,21 +33,17 @@ import java.util.List;
 public class CreateFragment extends Fragment {
 
     public static final String TAG = "CreateFragment";
-    private TabLayout tlCreate;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize fields
-         tlCreate = view.findViewById(R.id.tlCreate);
-        // Define fragments
+        TabLayout tlCreate = view.findViewById(R.id.tlCreate);
         FragmentManager fragmentManager = getChildFragmentManager();
         Fragment textFragment = new CreateTextFragment();
         Fragment imageFragment = new CreateImageFragment();
@@ -61,7 +57,7 @@ public class CreateFragment extends Fragment {
                     fragment = textFragment;
                 } else if (text.equals("Image")) {
                     fragment = imageFragment;
-                } else { // default to video fragment
+                } else {
                     fragment = videoFragment;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
@@ -73,8 +69,6 @@ public class CreateFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-        // Set default fragment
         fragmentManager.beginTransaction().replace(R.id.flContainer, textFragment).commit();
     }
-
 }

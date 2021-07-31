@@ -12,7 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserDetailsActivity;
 import com.example.simpleleague.models.User;
@@ -25,12 +25,13 @@ import java.util.List;
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
 
     public static final String TAG ="UsersAdapter";
-    private Context mContext;
-    private List<ParseUser> parseUsers;
 
-    public UsersAdapter(Context mContext, List<ParseUser> parseUsers) {
+    private Context mContext;
+    private List<ParseUser> mUsers;
+
+    public UsersAdapter(Context mContext, List<ParseUser> users) {
         this.mContext = mContext;
-        this.parseUsers = parseUsers;
+        this.mUsers = users;
     }
 
     @NonNull
@@ -42,55 +43,48 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.ViewHolder holder, int position) {
-        ParseUser parseUser = parseUsers.get(position);
-        holder.bind(parseUser);
+        holder.bind(mUsers.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return parseUsers.size();
+        return mUsers.size();
     }
 
     public void addAll(List<ParseUser> list) {
-        parseUsers.addAll(list);
+        mUsers.addAll(list);
     }
 
     public void clear() {
-        parseUsers.clear();
+        mUsers.clear();
         notifyDataSetChanged();
     }
 
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private View rootView;
-        private ImageView ivProfileImage;
-        private TextView tvUserName;
+        private ImageView mIvProfileImage;
+        private TextView mTvUserName;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            rootView = itemView;
-            ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
-            tvUserName = itemView.findViewById(R.id.tvUsername);
-            rootView.setOnClickListener(this);
+            mIvProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            mTvUserName = itemView.findViewById(R.id.tvUsername);
+            itemView.setOnClickListener(this);
         }
 
         public void bind(ParseUser parseUser) {
-            rootView.setTag(parseUser.getUsername());
-            ParseQueries.loadProfileImage(ivProfileImage, mContext, parseUser);
-            tvUserName.setText(parseUser.getUsername());
+            ParseFunctions.loadProfileImage(mIvProfileImage, mContext, parseUser);
+            mTvUserName.setText(parseUser.getUsername());
         }
 
         @Override
         public void onClick(View v) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-                ParseUser parseUser = parseUsers.get(position);
+                ParseUser user = mUsers.get(position);
                 Intent intent = new Intent(mContext, UserDetailsActivity.class);
-                User user = new User();
-                user.setParseUser(parseUser);
-                intent.putExtra(User.class.getSimpleName(), Parcels.wrap(user));
-                Log.i(TAG, "Clicked on " + parseUser.getUsername() + "'s profile.");
+                intent.putExtra(User.class.getSimpleName(), Parcels.wrap(new User(user)));
                 mContext.startActivity(intent);
             }
         }

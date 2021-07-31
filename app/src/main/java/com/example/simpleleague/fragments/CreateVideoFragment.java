@@ -29,52 +29,45 @@ import java.util.Arrays;
 
 public class CreateVideoFragment extends CreateTextFragment {
 
-    private ImageButton ibtnAddVideo;
-    private VideoView videoView;
-    private ImageButton ibtnPlayVideo;
+    private ImageButton mIbtnAddVideo;
+    private VideoView mVideoView;
+    private ImageButton mIbtnPlayVideo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_create_video, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize Fields
-        ibtnAddVideo = view.findViewById(R.id.ibtnAddVideo);
-        videoView = view.findViewById(R.id.videoView);
-        ibtnPlayVideo = view.findViewById(R.id.ibtnPlayVideo);
-        // Listeners
-        listeners();
-    }
-
-    private void listeners() {
-        ibtnAddVideo.setOnClickListener(new View.OnClickListener() {
+        mIbtnAddVideo = view.findViewById(R.id.ibtnAddVideo);
+        mVideoView = view.findViewById(R.id.videoView);
+        mIbtnPlayVideo = view.findViewById(R.id.ibtnPlayVideo);
+        mIbtnAddVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 CameraFunctions.dispatchTakeVideoIntent(getContext());
-                ibtnPlayVideo.setVisibility(View.VISIBLE);
+                mIbtnPlayVideo.setVisibility(View.VISIBLE);
             }
         });
-        ibtnPlayVideo.setOnClickListener(new View.OnClickListener() {
+        mIbtnPlayVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (videoView.isPlaying()) {
-                    videoView.pause();
-                    ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                if (mVideoView.isPlaying()) {
+                    mVideoView.pause();
+                    mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
                 } else {
-                    videoView.start();
-                    ibtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);
+                    mVideoView.start();
+                    mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_pause_button);
                 }
             }
         });
-        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                ibtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
             }
         });
     }
@@ -82,9 +75,8 @@ public class CreateVideoFragment extends CreateTextFragment {
     @Override
     public void post() {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        String title = etTitle.getText().toString();
-        // Check for empty fields
-        if (title.isEmpty() || videoView.getDuration() == -1) {
+        String title = mEtTitle.getText().toString();
+        if (title.isEmpty() || mVideoView.getDuration() == -1) {
             Toast.makeText(getContext(), "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -92,7 +84,7 @@ public class CreateVideoFragment extends CreateTextFragment {
         post.setUser(currentUser);
         post.setTitle(title);
         post.setVideo(new ParseFile(CameraFunctions.videoFile));
-        ArrayList<String> tags = new ArrayList<>(Arrays.asList(tvTag1.getText().toString(), tvTag2.getText().toString()));
+        ArrayList<String> tags = new ArrayList<>(Arrays.asList(mTvTag1.getText().toString(), mTvTag2.getText().toString()));
         for (int i = 0; i < tags.size(); i++) {
             String tag = tags.get(i);
             if (tag.isEmpty()) {
@@ -104,19 +96,19 @@ public class CreateVideoFragment extends CreateTextFragment {
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Toast.makeText(getContext(), "Posted!", Toast.LENGTH_SHORT).show();
-                    etTitle.setText("");
-                    videoView.stopPlayback();
-                    videoView.setBackgroundColor(Color.BLACK);
-                    videoView.start();
-                    etTag.setText("");
-                    tvTag1.setText("");
-                    tvTag2.setText("");
-                } else {
+                if (e != null) {
+                    Log.e(TAG, "Error while posting for "+currentUser.getUsername()+".", e);
                     Toast.makeText(getContext(), "Error: Try Again!", Toast.LENGTH_SHORT).show();
-                    Log.i(TAG, "Error while posting for "+currentUser.getUsername()+".", e);
+                    return;
                 }
+                Toast.makeText(getContext(), "Posted!", Toast.LENGTH_SHORT).show();
+                mEtTitle.setText("");
+                mVideoView.stopPlayback();
+                mVideoView.setBackgroundColor(Color.BLACK);
+                mVideoView.start();
+                mEtTag.setText("");
+                mTvTag1.setText("");
+                mTvTag2.setText("");
             }
         });
     }

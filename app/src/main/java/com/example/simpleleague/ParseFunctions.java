@@ -26,21 +26,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParseQueries {
+public class ParseFunctions {
 
     public static final String TAG = "ParseQueries";
 
     public static Follow createFollow(ParseUser parseUser) {
-        // Create Follow object for new User
         Follow follow = new Follow();
         follow.setUser(parseUser);
         follow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, "Follow created for "+parseUser.getUsername()+".");
-                } else {
-                    Log.i(TAG, "Follow wasn't created for "+parseUser.getUsername()+".", e);
+                if (e != null) {
+                    Log.e(TAG, "Follow wasn't created for "+parseUser.getUsername()+".", e);
                 }
             }
         });
@@ -99,11 +96,11 @@ public class ParseQueries {
         query.countInBackground(new CountCallback() {
             @Override
             public void done(int count, ParseException e) {
-                if (e == null) {
-                    tvPosts.setText(String.valueOf(count));
-                } else {
-                    Log.i(TAG, "Error getting # of posts for "+parseUser.getUsername()+".", e);
+                if (e != null) {
+                    Log.e(TAG, "Error getting # of posts for "+parseUser.getUsername()+".", e);
+                    return;
                 }
+                tvPosts.setText(String.valueOf(count));
             }
         });
     }
@@ -111,10 +108,6 @@ public class ParseQueries {
     public static boolean userFollows(ParseUser parseUser) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
-        if (follow == null) {
-            Log.i(TAG, "Null Follow - Unable to check if "+currentUser.getUsername()+" follows "+parseUser.getUsername()+".");
-            return false;
-        }
         List<String> following = follow.getFollowing();
         if (following == null) return false;
         return following.contains(parseUser.getObjectId());
@@ -122,20 +115,14 @@ public class ParseQueries {
 
     public static void followUser(ParseUser parseUser) {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        // Get users that current user follows
+        // Get users that current user follow
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
-        if (currentUserFollow == null) {
-            Log.i(TAG, "Null Follow - "+currentUser.getUsername()+" cannot follow "+parseUser.getUsername()+".");
-            return;
-        }
         currentUserFollow.addFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, currentUser.getUsername()+" followed "+parseUser.getUsername()+".");
-                } else {
-                    Log.i(TAG, currentUser.getUsername()+" couldn't follow "+parseUser.getUsername()+".", e);
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" couldn't follow "+parseUser.getUsername()+".", e);
                 }
             }
         });
@@ -149,10 +136,8 @@ public class ParseQueries {
         userFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, parseUser.getUsername()+" has "+currentUser.getUsername()+" as a follower.");
-                } else {
-                    Log.i(TAG, parseUser.getUsername()+" didn't receive "+currentUser.getUsername()+" as a follower.", e);
+                if (e != null) {
+                    Log.e(TAG, parseUser.getUsername()+" didn't receive "+currentUser.getUsername()+" as a follower.", e);
                 }
             }
         });
@@ -162,17 +147,11 @@ public class ParseQueries {
         ParseUser currentUser = ParseUser.getCurrentUser();
         // Get users that current user follows
         Follow currentUserFollow = (Follow) currentUser.get(User.KEY_FOLLOW);
-        if (currentUserFollow == null) {
-            Log.i(TAG, "Null Follow - "+currentUser.getUsername()+" cannot unfollow "+parseUser.getUsername()+".");
-            return;
-        }
         currentUserFollow.removeFollowing(parseUser);
         currentUserFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, currentUser.getUsername()+" unfollowed "+parseUser.getUsername()+".");
-                } else {
+                if (e != null) {
                     Log.i(TAG, currentUser.getUsername()+" couldn't unfollow "+parseUser.getUsername()+".", e);
                 }
             }
@@ -187,14 +166,11 @@ public class ParseQueries {
         userFollow.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (e == null) {
-                    Log.i(TAG, parseUser.getUsername()+" doesn't have "+currentUser.getUsername()+" as a follower now.");
-                } else {
-                    Log.i(TAG, parseUser.getUsername()+" didn't have "+currentUser.getUsername()+" removed from follower.", e);
+                if (e != null) {
+                    Log.i(TAG, parseUser.getUsername()+" didn't have "+currentUser.getUsername()+" removed from followers.", e);
                 }
             }
         });
-
     }
 
     public static void saveProfileImage(Context context, File photoFile, ImageView ivProfileImage) {
@@ -208,9 +184,7 @@ public class ParseQueries {
                     Toast.makeText(context, "Error while saving profile image!", Toast.LENGTH_SHORT).show();
                     // Load back previous image
                     loadProfileImage(ivProfileImage, context, currentUser);
-                    return;
                 }
-                Log.i(TAG, "Profile image was saved for "+currentUser.getUsername()+".");
             }
         });
     }
@@ -225,7 +199,6 @@ public class ParseQueries {
                     Log.e(TAG, "Error while saving username for "+currentUser.getUsername()+".", e);
                     Toast.makeText(context, "Error while saving username!", Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Username was saved for "+currentUser.getUsername()+".");
             }
         });
     }
@@ -240,7 +213,6 @@ public class ParseQueries {
                     Log.e(TAG, "Error while saving bio for "+currentUser.getUsername()+".", e);
                     Toast.makeText(context, "Error while saving bio!", Toast.LENGTH_SHORT).show();
                 }
-                Log.i(TAG, "Bio was saved for "+currentUser.getUsername()+".");
             }
         });
     }
@@ -262,7 +234,6 @@ public class ParseQueries {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to like "+post.getUser().getUsername()+"'s post.", e);
                     return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" liked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
@@ -275,9 +246,7 @@ public class ParseQueries {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to unlike "+post.getUser().getUsername()+"'s post.", e);
-                    return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" unliked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
@@ -297,9 +266,7 @@ public class ParseQueries {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to dislike "+post.getUser().getUsername()+"'s post.", e);
-                    return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" disliked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
@@ -312,9 +279,7 @@ public class ParseQueries {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to un-dislike "+post.getUser().getUsername()+"'s post.", e);
-                    return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" un-disliked "+post.getUser().getUsername()+"'s post.");
             }
         });
     }
@@ -334,9 +299,7 @@ public class ParseQueries {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to like "+comment.getUser().getUsername()+"'s comment.", e);
-                    return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" liked "+comment.getUser().getUsername()+"'s comment.");
             }
         });
     }
@@ -349,9 +312,57 @@ public class ParseQueries {
             public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, currentUser.getUsername()+" wasn't able to unlike "+comment.getUser().getUsername()+"'s comment.", e);
-                    return;
                 }
-                Log.i(TAG, currentUser.getUsername()+" unliked "+comment.getUser().getUsername()+"'s comment.");
+            }
+        });
+    }
+
+    public static boolean userDislikesComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        List<String> dislikesUserIds = comment.getDislikes();
+        if (dislikesUserIds == null) return false;
+        return dislikesUserIds.contains(currentUser.getObjectId());
+    }
+
+    public static void dislikeComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        comment.addDislike(currentUser.getObjectId());
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to dislike "+comment.getUser().getUsername()+"'s post.", e);
+                }
+            }
+        });
+    }
+
+    public static void removeDislikeComment(Comment comment) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        comment.removeDislike(currentUser.getObjectId());
+        comment.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, currentUser.getUsername()+" wasn't able to un-dislike "+comment.getUser().getUsername()+"'s post.", e);
+                }
+            }
+        });
+    }
+
+    public static void saveFollowersCount(Follow follow) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        try {
+            currentUser.put(User.KEY_FOLLOWERS_COUNT, follow.getFollowers().size());
+        } catch (NullPointerException e) {
+            currentUser.put(User.KEY_FOLLOWERS_COUNT, 0);
+        }
+        currentUser.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Couldn't save # of followers for "+currentUser.getUsername()+".");
+                }
             }
         });
     }

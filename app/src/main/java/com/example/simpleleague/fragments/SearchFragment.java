@@ -23,8 +23,7 @@ import com.google.android.material.tabs.TabLayout;
 
 public class SearchFragment extends Fragment {
 
-    private TabLayout tlSearch;
-    public SearchView svSearch;
+    public SearchView mSvSearch;
 
     public SearchFragment() {
         setHasOptionsMenu(true);
@@ -40,23 +39,20 @@ public class SearchFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        svSearch = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
-        svSearch.setQueryHint("Search");
+        mSvSearch = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.action_search));
+        mSvSearch.setQueryHint("Search");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_search, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize Fields
-        tlSearch = view.findViewById(R.id.tlSearch);
-        // Define fragments
+        TabLayout tlSearch = view.findViewById(R.id.tlSearch);
         FragmentManager fragmentManager = getChildFragmentManager();
         Fragment searchPostsFragment = new SearchPostsFragment();
         Fragment searchUsersFragment = new SearchUsersFragment();
@@ -67,7 +63,7 @@ public class SearchFragment extends Fragment {
                 Fragment fragment;
                 if (text.equals("Posts")) {
                     fragment = searchPostsFragment;
-                } else { // default to users fragment
+                } else {
                     fragment = searchUsersFragment;
                 }
                 fragmentManager.beginTransaction().replace(R.id.flContainer, fragment).commit();
@@ -79,7 +75,6 @@ public class SearchFragment extends Fragment {
             @Override
             public void onTabReselected(TabLayout.Tab tab) {}
         });
-        // Set default fragment
         fragmentManager.beginTransaction().replace(R.id.flContainer, searchPostsFragment).commit();
     }
 }

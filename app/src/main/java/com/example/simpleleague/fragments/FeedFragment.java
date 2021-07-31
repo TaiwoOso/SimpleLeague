@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
-import com.example.simpleleague.ParseQueries;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
 import com.example.simpleleague.models.Follow;
@@ -26,78 +26,88 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment";
-    private RecyclerView rvPosts;
-    public PostsAdapter adapter;
-    private List<Post> posts;
-    private EndlessRecyclerViewScrollListener scrollListener;
+
+    public RecyclerView mRvPosts;
+    public PostsAdapter mAdapter;
+    public List<Post> mPosts;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_feed, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // Initialize fields
-        rvPosts = view.findViewById(R.id.rvPosts);
-        posts = new ArrayList<Post>();
-        adapter = new PostsAdapter(getContext(), posts);
-        // RecyclerView
+        mRvPosts = view.findViewById(R.id.rvPosts);
+        mPosts = new ArrayList<>();
+        mAdapter = new PostsAdapter(getContext(), mPosts);
         LinearLayoutManager layout = new LinearLayoutManager(getContext());
-        rvPosts.setAdapter(adapter);
-        rvPosts.setLayoutManager(layout);
-        // Get the posts from Parse
+        mRvPosts.setAdapter(mAdapter);
+        mRvPosts.setLayoutManager(layout);
         queryPosts(0);
-        // Load more posts during scrolling
-        scrollListener = new EndlessRecyclerViewScrollListener(layout) {
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
                 queryPosts(skips);
             }
         };
-        rvPosts.addOnScrollListener(scrollListener);
+        mRvPosts.addOnScrollListener(scrollListener);
     }
 
+    // TODO: Suggest accounts with high following for users with no following
+    /**
+     * Queries posts by users who current user follows
+     * and sorts by custom algorithm - Comparator
+     * @param skips - tells Parse how much data to skip
+     */
     public void queryPosts(int skips) {
         ParseUser currentUser = ParseUser.getCurrentUser();
-        // Get list of user IDs that current user follows
         Follow follow = (Follow) currentUser.get(User.KEY_FOLLOW);
         if (follow == null) {
-            follow = ParseQueries.createFollow(currentUser);
-        }
-        List<String> following = follow.getFollowing();
-        // Error handling
-        if (following == null) {
-            following = new ArrayList<>();
+            follow = ParseFunctions.createFollow(currentUser);
         }
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        // Query posts where author of post is followed by current user
-        query.whereContainedIn(Post.KEY_USER, following);
-        query.addDescendingOrder(Post.KEY_CREATED_AT);
-        int limit = 20;
-        query.setLimit(limit);
+        List<String> followingIds = follow.getFollowing();
+        if (followingIds != null) {
+            query.whereContainedIn(Post.KEY_USER, followingIds);
+        }
+        query.setLimit(20);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
-                // error checking
                 if (e != null) {
                     Log.e(TAG, "Issue with retrieving posts for "+currentUser.getUsername()+".", e);
                     return;
                 }
-                Log.i(TAG, "Retrieved "+posts.size()+" post(s) for "+currentUser.getUsername()+".");
-                // save received posts to list and notify adapter of new data
-                adapter.addAll(posts);
-                adapter.notifyItemRangeInserted(skips, skips+limit);
+                Collections.sort(posts, new Comparator<Post>() {
+                    /* Sorts post where posts that are created earlier,
+                     * have more views, more likes, less dislikes, and more comments
+                     * are placed closer to the top of the list
+                     */
+                    @Override
+                    public int compare(Post o1, Post o2) {
+                        double score = -(o1.getCreatedAt().compareTo(o2.getCreatedAt())*2);
+                        score += o1.compareViews(o2)*1.5;
+                        score += o1.compareLikes(o2)*1.5;
+                        score -= o1.compareDislikes(o2)*1.2;
+                        score += o1.compareComments(o2)*1.2;
+                        score *= 100;
+                        return (int)score;
+                    }
+                });
+                mAdapter.addAll(posts);
+                mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
             }
         });
     }
