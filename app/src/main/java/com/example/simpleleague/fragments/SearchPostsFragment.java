@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -51,6 +53,19 @@ public class SearchPostsFragment extends SearchFragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+        ImageView closeButton = (ImageView)mSvSearch.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText et = (EditText) mSvSearch.findViewById(R.id.search_src_text);
+                et.setText("");
+                mSvSearch.setQuery("", false);
+                mSvSearch.onActionViewCollapsed();
+                menu.findItem(R.id.action_search).collapseActionView();
+                mAdapter.clear();
+                queryPosts(0, "");
             }
         });
     }

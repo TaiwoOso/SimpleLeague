@@ -16,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -67,6 +69,19 @@ public class InfoFragment extends Fragment {
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
+            }
+        });
+        ImageView closeButton = (ImageView)mSvSearch.findViewById(R.id.search_close_btn);
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText et = (EditText) mSvSearch.findViewById(R.id.search_src_text);
+                et.setText("");
+                mSvSearch.setQuery("", false);
+                mSvSearch.onActionViewCollapsed();
+                menu.findItem(R.id.action_search).collapseActionView();
+                mAdapter.clear();
+                queryChampions(0, "");
             }
         });
     }

@@ -121,6 +121,13 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
                     mTvLikes.setText(String.valueOf(likes));
                     mIbtnLike.setTag("Liked");
                     mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
+                    if (mIbtnDislike.getTag().equals("Disliked")) {
+                        ParseFunctions.removeDislikePost(post);
+                        int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
+                        mTvDislikes.setText(String.valueOf(dislikes));
+                        mIbtnDislike.setTag("NotDisliked");
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                    }
                 }
             }
         }
