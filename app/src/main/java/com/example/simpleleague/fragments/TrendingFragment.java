@@ -82,6 +82,7 @@ public class TrendingFragment extends FeedFragment {
      * Queries posts with most views and activity that have user's tags
      * then sorts by custom algorithm in Post's compareTo
      * @param skips - tells Parse how much data to skip
+     * @param userTags - tags that the user frequently clicks on
      */
     private void queryPostsWithTags(int skips, List<String> userTags) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
@@ -108,6 +109,7 @@ public class TrendingFragment extends FeedFragment {
      * Queries posts with most views and activity that don't have user's tags
      * then sorts by custom algorithm in Post's compareTo
      * @param skips - tells Parse how much data to skip
+     * @param userTags - tags that the user frequently clicks on
      */
     private void queryPostsWithoutTags(int skips, List<String> userTags) {
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);

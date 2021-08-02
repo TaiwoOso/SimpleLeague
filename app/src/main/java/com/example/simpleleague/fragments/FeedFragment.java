@@ -62,10 +62,8 @@ public class FeedFragment extends Fragment {
         mRvPosts.addOnScrollListener(scrollListener);
     }
 
-    // TODO: Suggest accounts with high following for users with no following
     /**
-     * Queries posts by users who current user follows
-     * and sorts by custom algorithm - Comparator
+     * Queries posts for the user's Feed page
      * @param skips - tells Parse how much data to skip
      */
     public void queryPosts(int skips) {
@@ -76,9 +74,23 @@ public class FeedFragment extends Fragment {
         }
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         List<String> followingIds = follow.getFollowing();
-        if (followingIds != null) {
-            query.whereContainedIn(Post.KEY_USER, followingIds);
+        if (followingIds == null || followingIds.isEmpty()) {
+            queryPostsWithoutFollowing(skips/4);
+            return;
         }
+        queryPostsWithFollowing(skips, followingIds);
+    }
+
+    /**
+     * Queries posts by users who current user follows
+     * and sorts by custom algorithm - Comparator
+     * @param skips - tells Parse how much data to skip
+     * @param followingIds - list of user ids who current user follows
+     */
+    private void queryPostsWithFollowing(int skips, List<String> followingIds) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
+        query.whereContainedIn(Post.KEY_USER, followingIds);
         query.setLimit(20);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
@@ -107,6 +119,45 @@ public class FeedFragment extends Fragment {
                 });
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+            }
+        });
+    }
+
+    /**
+     * Queries posts with most views from users with most followers
+     * for users who don't follow any other users
+     * @param skips - tells Parse how much data to skip
+     */
+    private void queryPostsWithoutFollowing(int skips) {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        ParseQuery<ParseUser> usersQuery = ParseQuery.getQuery(ParseUser.class);
+        usersQuery.setLimit(5);
+        usersQuery.setSkip(skips);
+        usersQuery.include(User.KEY_FOLLOW);
+        usersQuery.addDescendingOrder(User.KEY_FOLLOWERS_COUNT);
+        usersQuery.findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> users, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Issue with retrieving parse users for "+currentUser.getUsername()+".", e);
+                    return;
+                }
+                ParseQuery<Post> postsQuery = ParseQuery.getQuery(Post.class);
+                postsQuery.whereContainedIn(Post.KEY_USER, users);
+                postsQuery.setLimit(20);
+                postsQuery.include(Post.KEY_USER);
+                postsQuery.addDescendingOrder(Post.KEY_VIEWS);
+                postsQuery.findInBackground(new FindCallback<Post>() {
+                    @Override
+                    public void done(List<Post> posts, ParseException e) {
+                        if (e != null) {
+                            Log.e(TAG, "Issue with retrieving posts for "+currentUser.getUsername()+".", e);
+                            return;
+                        }
+                        mAdapter.addAll(posts);
+                        mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                    }
+                });
             }
         });
     }

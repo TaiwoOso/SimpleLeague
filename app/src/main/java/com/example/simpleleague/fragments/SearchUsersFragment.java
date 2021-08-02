@@ -20,7 +20,6 @@ import androidx.appcompat.widget.SearchView;
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.UsersAdapter;
-import com.example.simpleleague.models.Champion;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
