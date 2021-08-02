@@ -120,7 +120,7 @@ public class InfoFragment extends Fragment {
     private void queryChampions(int skips, String search) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
-        query.whereContains(Champion.KEY_NAME, search);
+        query.whereMatches(Champion.KEY_NAME, search, "i");
         query.addAscendingOrder(Champion.KEY_NAME);
         query.setLimit(20);
         query.setSkip(skips);

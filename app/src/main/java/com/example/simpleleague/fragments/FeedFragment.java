@@ -33,7 +33,6 @@ import java.util.List;
 public class FeedFragment extends Fragment {
 
     public static final String TAG = "FeedFragment";
-
     public RecyclerView mRvPosts;
     public PostsAdapter mAdapter;
     public List<Post> mPosts;

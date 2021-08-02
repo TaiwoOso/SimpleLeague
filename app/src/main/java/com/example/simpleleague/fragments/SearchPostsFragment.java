@@ -21,6 +21,7 @@ import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsAdapter;
 import com.example.simpleleague.models.Post;
+import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
@@ -103,9 +104,9 @@ public class SearchPostsFragment extends SearchFragment {
     private void queryPosts(int skips, String search) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<Post> titleQuery = ParseQuery.getQuery(Post.class);
-        titleQuery.whereContains(Post.KEY_TITLE, search);
+        titleQuery.whereMatches(Post.KEY_TITLE, search, "i");
         ParseQuery<Post> bodyQuery = ParseQuery.getQuery(Post.class);
-        bodyQuery.whereContains(Post.KEY_BODY, search);
+        bodyQuery.whereMatches(Post.KEY_BODY, search, "i");
         List<ParseQuery<Post>> queries = new ArrayList<>();
         queries.add(titleQuery);
         queries.add(bodyQuery);

@@ -20,6 +20,7 @@ import androidx.appcompat.widget.SearchView;
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.UsersAdapter;
+import com.example.simpleleague.models.Champion;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -102,7 +103,7 @@ public class SearchUsersFragment extends SearchFragment {
     private void queryUsers(int skips, String search) {
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
-        query.whereContains(User.KEY_USERNAME, search);
+        query.whereMatches(User.KEY_USERNAME, search, "i");
         query.setLimit(20);
         query.setSkip(skips);
         query.include(User.KEY_FOLLOW);
