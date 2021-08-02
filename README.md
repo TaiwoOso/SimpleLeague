@@ -133,29 +133,48 @@ username|String|name of user
 password|String|password for user
 profileImage|File|profile image for user
 biography|String|custom bio for user
-followers|Array|array of users that follow current user
-following|Array|array of users that current user follows
+follow|Pointer|pointer to user's Follow object
+followersCount|Number|number of followers the user has
+tags|Array|tags that the user frequently clicks on
 createdAt|DateTime|date when post is created (default field)
-updatedAt|DateTime|	date when post is last updated (default field)
+updatedAt|DateTime|date when post is last updated (default field)
+
+#### Follow
+Property|Type|Description
+---|---|---
+objectID|String|unique id for the user follow (default field)
+user|Pointer to User|user of follow
+followers|Array|followers of user
+following|Array|users who user follows
+createdAt|DateTime|date when post is created (default field)
+updatedAt|DateTime|date when post is last updated (default field)
 
 #### Post
 Property|Type|Description
 ---|---|---
 objectID|String|unique id for the user post (default field)
 author|Pointer to User|image author
+title|String|title of post
+body|String|body of post
 image|File|image that user posts
+video|File|video that user posts
+tags|Array|tags of the post
+views|Array|users who have clicked on post
+likes|Array|users who have liked the post
+dislikes|Array|users who have disliked the post
 comments|Array|array of comments to post
-upvotesCount|Number|number of upvotes on post
 createdAt|DateTime|date when post is created (default field)
-updatedAt|DateTime|	date when post is last updated (default field)
+updatedAt|DateTime|date when post is last updated (default field)
 
 #### Comment
 Property|Type|Description
 ---|---|---
 objectID|String|unique id for the user comment (default field)
 author|Pointer to User|image author
+body|String|body of comment
+likes|Array|users who have liked the post
+dislikes|Array|users who have disliked the post
 replies|Array|array of replies(comments) to comment
-upvotesCount|Number|number of upvotes on comment
 createdAt|DateTime|date when post is created (default field)
 updatedAt|DateTime|date when post is last updated (default field)
 
@@ -166,24 +185,16 @@ objectID|String|unique id for the champion (default field)
 name|String|name of champion
 image|File|image of champion
 lore|String|champion's lore/story
-abilities|Pointer to ChampionAbilities|champion's abilities
-
-#### ChampionAbilities
-Property|Type|Description
----|---|---
-objectID|String|unique id for the champion (default field)
-name|String|name of champion
-abilityQ|String|name of champion's Q ability
-abilityQImage|File|image of champion's Q ability
-abilityW|String|name of champion's W ability
-abilityWImage|File|image of champion's W ability
-abilityE|String|name of champion's E ability
-abilityEImage|File|image of champion's E ability
-abilityR|String|name of champion's R ability
-abilityRImage|File|image of champion's R ability
-abilityP|String|name of champion's P ability
-abilityPImage|File|image of champion's P ability
-
+QName|String|name of champion's Q ability
+QImageUrl|String|image of champion's Q ability
+WName|String|name of champion's W ability
+WImageUrl|String|image of champion's W ability
+EName|String|name of champion's E ability
+EImageUrl|String|image of champion's E ability
+RName|String|name of champion's R ability
+RImageUrl|String|image of champion's R ability
+PName|String|name of champion's P ability
+PImageUrl|String|image of champion's P ability
 
 #### Objectives (Optional)
 Property|Type|Description
