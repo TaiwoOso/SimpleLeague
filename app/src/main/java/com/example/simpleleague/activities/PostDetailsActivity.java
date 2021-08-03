@@ -184,6 +184,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                         mEtComment.setText("");
                         mComments.add(comment);
                         mAdapter.notifyItemInserted(mAdapter.getItemCount());
+                        mRvPostDetails.getLayoutManager().scrollToPosition(mAdapter.getItemCount()-1);
                     }
                 });
             }

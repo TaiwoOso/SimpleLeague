@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/cvAddComment"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:scrollbars="vertical" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvAddComment"

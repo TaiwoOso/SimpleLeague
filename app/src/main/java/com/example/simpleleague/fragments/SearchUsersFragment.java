@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -92,6 +93,20 @@ public class SearchUsersFragment extends SearchFragment {
             }
         };
         mRvUsers.addOnScrollListener(scrollListener);
+        SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mAdapter.clear();
+                String search = mSvSearch.getQuery().toString();
+                queryUsers(0, search);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     /**

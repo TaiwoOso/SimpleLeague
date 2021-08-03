@@ -93,6 +93,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         mPosts.addAll(list);
     }
 
+    public void clear() {
+        mPosts.clear();
+        notifyDataSetChanged();
+    }
+
     class UserViewHolder extends ViewHolder {
 
         private ImageView mIvProfileImage;
