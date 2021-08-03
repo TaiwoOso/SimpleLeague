@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simpleleague.ParseFunctions;
@@ -26,7 +27,7 @@ public class SignupActivity extends AppCompatActivity {
     private EditText mEtUsername;
     private EditText mEtPassword;
     private EditText mEtConfirmPassword;
-    private Button mBtnLogIn;
+    private TextView mTvLogIn;
     private Button mBtnSignUp;
 
     @Override
@@ -44,7 +45,7 @@ public class SignupActivity extends AppCompatActivity {
         mEtUsername = findViewById(R.id.etUsername);
         mEtPassword = findViewById(R.id.etPassword);
         mEtConfirmPassword = findViewById(R.id.etConfirmPassword);
-        mBtnLogIn = findViewById(R.id.btnLogIn);
+        mTvLogIn = findViewById(R.id.tvLogIn);
         mBtnSignUp = findViewById(R.id.btnSignUp);
         // Signup --> MainActivity
         mBtnSignUp.setOnClickListener(new View.OnClickListener() {
@@ -54,7 +55,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
         // Login --> LoginActivity
-        mBtnLogIn.setOnClickListener(new View.OnClickListener() {
+        mTvLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 login();
@@ -63,8 +64,6 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void login() {
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -107,7 +106,6 @@ public class SignupActivity extends AppCompatActivity {
                         }
                     }
                 });
-                Toast.makeText(SignupActivity.this, "Signed In!", Toast.LENGTH_SHORT).show();
                 goMainActivity();
             }
         });

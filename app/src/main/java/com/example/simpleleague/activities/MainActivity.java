@@ -204,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
     private void logout() {
         ParseUser.logOut();
         logoutGoogle();
-        Toast.makeText(this, "Logged Out!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

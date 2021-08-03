@@ -8,6 +8,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simpleleague.R;
@@ -31,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mEtUsername;
     private EditText mEtPassword;
     private Button mBtnLogIn;
-    private Button mBtnSignUp;
+    private TextView mTvSignUp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         mEtUsername = findViewById(R.id.etUsername);
         mEtPassword = findViewById(R.id.etPassword);
         mBtnLogIn = findViewById(R.id.btnLogIn);
-        mBtnSignUp = findViewById(R.id.btnSignUp);
+        mTvSignUp = findViewById(R.id.tvSignUp);
         // Login --> MainActivity
         mBtnLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         // Signup --> SignupActivity
-        mBtnSignUp.setOnClickListener(new View.OnClickListener() {
+        mTvSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 signup();
@@ -80,7 +82,7 @@ public class LoginActivity extends AppCompatActivity {
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        ImageButton signInButton = findViewById(R.id.ibGoogleSignIn);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,14 +113,12 @@ public class LoginActivity extends AppCompatActivity {
     private void signup() {
         Intent intent = new Intent(this, SignupActivity.class);
         startActivity(intent);
-        finish();
     }
 
     private void signup(String username, String password) {
         Intent intent = new Intent(this, SignupActivity.class);
         intent.putExtra(LoginActivity.class.getSimpleName(), new String[] {username, password});
         startActivity(intent);
-        finish();
     }
 
     private void login(String username, String password, boolean fromGoogle) {
@@ -128,9 +128,9 @@ public class LoginActivity extends AppCompatActivity {
                 if (e != null) {
                     Log.e(TAG, "Login failed.", e);
                     if (fromGoogle) signup(username, password);
+                    Toast.makeText(LoginActivity.this, "Invalid Username/Password!", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Toast.makeText(LoginActivity.this, "Logged In!", Toast.LENGTH_SHORT).show();
                 goMainActivity();
             }
         });
