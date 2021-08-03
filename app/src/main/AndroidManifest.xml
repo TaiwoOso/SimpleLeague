@@ -39,9 +39,11 @@
 
         <activity android:name=".activities.ChampionDetailsActivity" />
         <activity android:name=".activities.UserDetailsActivity" />
-        <activity android:name=".activities.PostDetailsActivity" />
+        <activity android:name=".activities.PostDetailsActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activities.SignupActivity" />
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name=".activities.MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

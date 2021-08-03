@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -13,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.DateFunctions;
 import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserDetailsActivity;
@@ -36,12 +36,14 @@ public class PostViewHolder extends ViewHolder {
     public TextView mTvDislikes;
     public ImageButton mIbtnComment;
     public TextView mTvComments;
+    public TextView mTvTimestamp;
 
     public PostViewHolder(@NonNull View itemView, Context context) {
         super(itemView);
         mContext = context;
         mIvProfileImage = itemView.findViewById(R.id.ivProfileImage);
         mTvUsername = itemView.findViewById(R.id.tvUsername);
+        mTvTimestamp = itemView.findViewById(R.id.tvTimestamp);
         mTvTitle = itemView.findViewById(R.id.tvTitle);
         mTvBody = itemView.findViewById(R.id.tvBody);
         mIbtnLike = itemView.findViewById(R.id.ibtnLike);
@@ -61,6 +63,7 @@ public class PostViewHolder extends ViewHolder {
             Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(mIvProfileImage);
         }
         mTvUsername.setText(post.getUser().getUsername());
+        mTvTimestamp.setText(DateFunctions.calculateTimeAgo(post.getCreatedAt()));
         mTvTitle.setText(post.getTitle());
         if (post.getBody() != null && !post.getBody().isEmpty()) {
             mTvBody.setVisibility(View.VISIBLE);

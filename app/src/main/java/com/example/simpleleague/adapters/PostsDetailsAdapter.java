@@ -20,6 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.simpleleague.DateFunctions;
 import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserDetailsActivity;
@@ -168,6 +169,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private ImageView mIvProfileImage;
         private TextView mTvUsername;
+        private TextView mTvTimestamp;
         private TextView mTvBody;
         public ImageButton mIbtnLike;
         private TextView mTvLikes;
@@ -178,6 +180,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
             super(itemView);
             mIvProfileImage = itemView.findViewById(R.id.ivProfileImage);
             mTvUsername = itemView.findViewById(R.id.tvUsername);
+            mTvTimestamp = itemView.findViewById(R.id.tvTimestamp);
             mTvBody = itemView.findViewById(R.id.tvBody);
             mIbtnLike = itemView.findViewById(R.id.ibtnLike);
             mTvLikes = itemView.findViewById(R.id.tvLikes);
@@ -195,6 +198,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 Glide.with(mContext).load(R.drawable.default_profile_image).centerCrop().into(mIvProfileImage);
             }
             mTvUsername.setText(comment.getUser().getUsername());
+            mTvTimestamp.setText(DateFunctions.calculateTimeAgo(comment.getCreatedAt()));
             mTvBody.setText(comment.getBody());
             if (comment.getLikes() != null) {
                 mTvLikes.setText(String.valueOf(comment.getLikes().size()));

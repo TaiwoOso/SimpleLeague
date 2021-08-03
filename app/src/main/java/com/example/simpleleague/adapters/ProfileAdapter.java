@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -207,10 +208,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         private ImageView mIvLike;
         private AnimatedVectorDrawableCompat mAvdc;
         private AnimatedVectorDrawable mAvd;
+        private LinearLayout mLlPostHeader;
 
         public PostViewHolder(@NonNull View itemView, Context context) {
             super(itemView, context);
             mIvLike = itemView.findViewById(R.id.ivLike);
+            mLlPostHeader = itemView.findViewById(R.id.llPostHeader);
             itemView.setOnClickListener(new DoubleClick(this));
         }
 
@@ -218,8 +221,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
         public void bind(Object object) {
             super.bind(object);
             Post post = (Post) object;
-            mIvProfileImage.setVisibility(View.GONE);
-            mTvUsername.setVisibility(View.GONE);
+            mLlPostHeader.setVisibility(View.GONE);
             String blurb;
             int blurbCount = 125;
             String body = post.getBody();
