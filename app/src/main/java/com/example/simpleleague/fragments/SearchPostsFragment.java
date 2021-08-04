@@ -127,7 +127,7 @@ public class SearchPostsFragment extends SearchFragment {
         mainQuery.setLimit(20);
         mainQuery.setSkip(skips);
         mainQuery.include(Post.KEY_USER);
-        mainQuery.addDescendingOrder(Post.KEY_VIEWS);
+        mainQuery.addDescendingOrder(Post.KEY_VIEWS_COUNT);
         mainQuery.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

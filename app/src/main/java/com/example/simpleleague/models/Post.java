@@ -21,6 +21,7 @@ public class Post extends ParseObject implements Comparable<Post> {
     public static final String KEY_VIDEO = "video";
     public static final String KEY_TAGS = "tags";
     public static final String KEY_VIEWS = "views";
+    public static final String KEY_VIEWS_COUNT = "viewsCount";
     public static final String KEY_LIKES = "likes";
     public static final String KEY_DISLIKES = "dislikes";
     public static final String KEY_COMMENTS = "comments";
@@ -82,6 +83,12 @@ public class Post extends ParseObject implements Comparable<Post> {
 
     public void addView(String userId) {
         addUnique(KEY_VIEWS, userId);
+    }
+
+    public int getViewsCount() {
+        Number count = getNumber(KEY_VIEWS_COUNT);
+        if (count == null) return 0;
+        return (int) count;
     }
 
     public List<String> getLikes() {

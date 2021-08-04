@@ -1,9 +1,5 @@
 package com.example.simpleleague.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -13,7 +9,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
@@ -23,7 +22,6 @@ import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -64,6 +62,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         queryPostDetails(0);
         addTagsToUser();
         addUserToView();
+        ParseFunctions.savePostViewsCount(mPost);
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
             public void onLoadMore(int skips, int totalItemsCount, RecyclerView view) {
@@ -135,8 +134,7 @@ public class PostDetailsActivity extends AppCompatActivity {
             currentUser.addAllUnique(User.KEY_TAGS, postTags);
         } else {
             ArrayList<String> newUserTags = new ArrayList<>(maxTagsSize);
-            int start = userTags.size() - postTags.size() - 1;
-            for (int i = start; i < userTags.size(); i++) {
+            for (int i = postTags.size(); i < userTags.size(); i++) {
                 newUserTags.add(userTags.get(i));
             }
             newUserTags.addAll(postTags);

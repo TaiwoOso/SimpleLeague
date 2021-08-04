@@ -1,18 +1,16 @@
 package com.example.simpleleague.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Champion;
-import com.example.simpleleague.models.Post;
 
 import org.parceler.Parcels;
 

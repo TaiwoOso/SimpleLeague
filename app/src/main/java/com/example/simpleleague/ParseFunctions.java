@@ -361,4 +361,21 @@ public class ParseFunctions {
             }
         });
     }
+
+    public static void savePostViewsCount(Post post) {
+        try {
+            if (post.getViewsCount() == post.getViews().size()) return;
+            post.put(Post.KEY_VIEWS_COUNT, post.getViews().size());
+        } catch (NullPointerException e) {
+            post.put(Post.KEY_VIEWS_COUNT, 0);
+        }
+        post.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "Couldn't save # of views for "+post.getUser().getUsername()+"'s post.");
+                }
+            }
+        });
+    }
 }

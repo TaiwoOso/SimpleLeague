@@ -77,6 +77,7 @@
         android:lines="14"
         android:maxLines="16"
         android:minLines="12"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="vertical"
         android:textColor="@color/white"
         android:textColorHint="#939191" />
@@ -96,6 +97,7 @@
         android:ems="10"
         android:hint="Title..."
         android:inputType="textShortMessage"
+        android:scrollbarThumbHorizontal="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="horizontal"
         android:textColor="@color/white"
         android:textColorHint="#939191" />

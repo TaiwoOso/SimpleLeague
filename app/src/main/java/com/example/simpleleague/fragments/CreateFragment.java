@@ -1,34 +1,17 @@
 package com.example.simpleleague.fragments;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
-
-import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.R;
-import com.example.simpleleague.models.Post;
 import com.google.android.material.tabs.TabLayout;
-import com.parse.ParseException;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class CreateFragment extends Fragment {
 

@@ -121,6 +121,7 @@
         android:ems="10"
         android:hint="Title..."
         android:inputType="textShortMessage"
+        android:scrollbarThumbHorizontal="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="horizontal"
         android:textColor="@color/white"
         android:textColorHint="#939191" />

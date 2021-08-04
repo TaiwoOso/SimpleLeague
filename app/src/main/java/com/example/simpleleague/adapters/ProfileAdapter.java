@@ -6,7 +6,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,9 @@ import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 
 import com.example.simpleleague.CameraFunctions;
 import com.example.simpleleague.ParseFunctions;
+import com.example.simpleleague.R;
 import com.example.simpleleague.activities.EditProfileActivity;
 import com.example.simpleleague.activities.PostDetailsActivity;
-import com.example.simpleleague.R;
 import com.example.simpleleague.activities.UserFollowersActivity;
 import com.example.simpleleague.activities.UserFollowingActivity;
 import com.example.simpleleague.models.Post;

@@ -63,7 +63,7 @@ public class TrendingFragment extends FeedFragment {
         query.setLimit(20);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS);
+        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS_COUNT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -90,7 +90,7 @@ public class TrendingFragment extends FeedFragment {
         query.setLimit(10);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS);
+        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS_COUNT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {
@@ -117,7 +117,7 @@ public class TrendingFragment extends FeedFragment {
         query.setLimit(10);
         query.setSkip(skips);
         query.include(Post.KEY_USER);
-        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS);
+        query.addDescendingOrder(Post.KEY_UPDATED_AT).addDescendingOrder(Post.KEY_VIEWS_COUNT);
         query.findInBackground(new FindCallback<Post>() {
             @Override
             public void done(List<Post> posts, ParseException e) {

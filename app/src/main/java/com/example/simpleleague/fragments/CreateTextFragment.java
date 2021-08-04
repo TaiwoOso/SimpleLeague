@@ -1,11 +1,6 @@
 package com.example.simpleleague.fragments;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +10,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
 
-import com.example.simpleleague.CameraFunctions;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.example.simpleleague.R;
 import com.example.simpleleague.models.Post;
 import com.parse.ParseException;
@@ -26,7 +23,6 @@ import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public class CreateTextFragment extends Fragment {
 
