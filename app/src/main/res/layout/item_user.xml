@@ -9,6 +9,7 @@
     android:layout_marginTop="16dp"
     android:layout_marginRight="4dp"
     android:clickable="true"
+    app:cardBackgroundColor="@color/black"
     app:cardCornerRadius="8dp"
     app:cardElevation="0dp"
     tools:context=".fragments.SearchUsersFragment">
@@ -41,6 +42,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            android:textColor="@color/white"
             android:textSize="18sp"
             tools:text="taiwo" />
 

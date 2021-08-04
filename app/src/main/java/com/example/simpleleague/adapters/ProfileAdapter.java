@@ -166,7 +166,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                         mTvFollowers.setText(String.valueOf(followers));
                     } else {
                         ParseFunctions.unfollowUser(user);
-                        mBtnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.purple_200));
+                        mBtnFollow.setBackgroundColor(mContext.getResources().getColor(R.color.blue_500));
                         mBtnFollow.setTextColor(mContext.getResources().getColor(R.color.white));
                         mBtnFollow.setText(R.string.Follow);
                         int followers = Integer.parseInt(mTvFollowers.getText().toString())-1;

@@ -92,7 +92,7 @@ public class PostViewHolder extends ViewHolder {
             mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
         } else {
             mIbtnLike.setTag("NotLiked");
-            mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+            mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         }
         // Change appearance of dislike button
         if (ParseFunctions.userDislikesPost(post)) {
@@ -100,7 +100,7 @@ public class PostViewHolder extends ViewHolder {
             mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
         } else {
             mIbtnDislike.setTag("NotDisliked");
-            mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+            mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
         }
         // Listeners
         listeners(post);
@@ -129,14 +129,14 @@ public class PostViewHolder extends ViewHolder {
                         int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
                         mTvDislikes.setText(String.valueOf(dislikes));
                         mIbtnDislike.setTag("NotDisliked");
-                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                     }
                 } else {
                     ParseFunctions.removeLikePost(post);
                     int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
                     mTvLikes.setText(String.valueOf(likes));
                     mIbtnLike.setTag("NotLiked");
-                    mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                    mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                 }
             }
         });
@@ -154,14 +154,14 @@ public class PostViewHolder extends ViewHolder {
                         int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
                         mTvLikes.setText(String.valueOf(likes));
                         mIbtnLike.setTag("NotLiked");
-                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                     }
                 } else {
                     ParseFunctions.removeDislikePost(post);
                     int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
                     mTvDislikes.setText(String.valueOf(dislikes));
                     mIbtnDislike.setTag("NotDisliked");
-                    mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                    mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                 }
             }
         });

@@ -20,6 +20,7 @@
         android:id="@+id/cvPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/black"
         app:cardElevation="0dp"
         app:contentPadding="10dp">
 
@@ -54,6 +55,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
                     tools:text="taiwo" />
 
                 <TextView
@@ -63,6 +65,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="5dp"
                     android:text="·"
+                    android:textColor="@color/white"
                     android:textSize="34sp" />
 
                 <TextView
@@ -71,7 +74,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="3dp"
-                    android:text="1h" />
+                    android:text="1h"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 
@@ -80,6 +84,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:textColor="@color/white"
                 android:textStyle="bold"
                 tools:text="Title of Post" />
 
@@ -88,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/white"
                 tools:text="Body of Post" />
 
             <LinearLayout
@@ -102,7 +108,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="@drawable/ic_dislike"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/white"
                     android:cropToPadding="false"
                     android:rotationX="180"
                     android:scaleType="centerCrop" />
@@ -115,7 +121,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="center_horizontal"
-                    android:text="Like" />
+                    android:text="Like"
+                    android:textColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/ibtnDislike"
@@ -124,7 +131,7 @@
                     android:layout_height="25dp"
                     android:layout_gravity="center_horizontal|center_vertical"
                     android:background="@drawable/ic_dislike"
-                    android:backgroundTint="@color/black"
+                    android:backgroundTint="@color/white"
                     android:cropToPadding="false"
                     android:rotationY="180"
                     android:scaleType="centerCrop" />
@@ -137,7 +144,8 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
                     android:gravity="center_horizontal"
-                    android:text="Dislike" />
+                    android:text="Dislike"
+                    android:textColor="@color/white" />
 
                 <ImageButton
                     android:id="@+id/ibtnComment"
@@ -148,14 +156,16 @@
                     android:backgroundTint="#00FFFFFF"
                     android:clickable="false"
                     android:scaleType="centerCrop"
-                    app:srcCompat="@drawable/ic_comment" />
+                    app:srcCompat="@drawable/ic_comment"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/tvComments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:text="Comment" />
+                    android:text="Comment"
+                    android:textColor="@color/white" />
 
             </LinearLayout>
 

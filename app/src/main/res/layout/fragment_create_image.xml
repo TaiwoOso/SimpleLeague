@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".fragments.CreateVideoFragment">
 
     <ImageView
@@ -14,8 +15,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:scaleType="centerCrop"
-        android:tag="Empty"
-        app:srcCompat="@drawable/image_placeholder" />
+        android:tag="Empty" />
 
     <Button
         android:id="@+id/btnPost"
@@ -25,7 +25,7 @@
         android:layout_alignParentEnd="true"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/blue_200"
         android:text="Post" />
 
     <ImageButton
@@ -38,7 +38,7 @@
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_add"
-        app:tint="@color/purple_200" />
+        app:tint="@color/blue_500" />
 
     <EditText
         android:id="@+id/etTag"
@@ -49,10 +49,12 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="40dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/blue_500"
         android:ems="10"
         android:hint="Add Tag..."
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="#939191" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvTag2"
@@ -62,6 +64,7 @@
         android:layout_alignStart="@+id/etTag"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#00FFFFFF"
         app:cardCornerRadius="250dp">
 
         <TextView
@@ -70,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/blue_700"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -86,6 +89,7 @@
         android:layout_alignStart="@+id/etTag"
         android:layout_marginStart="20dp"
         android:layout_marginTop="10dp"
+        app:cardBackgroundColor="#00FFFFFF"
         app:cardCornerRadius="250dp">
 
         <TextView
@@ -94,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
-            android:textColor="@color/purple_200"
+            android:textColor="@color/blue_700"
             android:textSize="16sp"
             android:textStyle="bold"
             android:visibility="visible"
@@ -113,11 +117,13 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="@color/purple_200"
+        android:backgroundTint="@color/blue_500"
         android:ems="10"
         android:hint="Title..."
         android:inputType="textShortMessage"
-        android:scrollbars="horizontal" />
+        android:scrollbars="horizontal"
+        android:textColor="@color/white"
+        android:textColorHint="#939191" />
 
     <ImageButton
         android:id="@+id/ibtnAddImage"
@@ -131,5 +137,6 @@
         android:layout_marginTop="10dp"
         android:backgroundTint="#00FFFFFF"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_image" />
+        android:src="@drawable/ic_add_image"
+        app:tint="@color/blue_500" />
 </RelativeLayout>

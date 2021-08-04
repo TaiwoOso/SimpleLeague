@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="?actionBarSize"
+    android:background="@color/black"
     android:outlineProvider="none"
     tools:context=".fragments.ProfileFragment">
 
@@ -14,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp"
+        android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="vertical" />
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
