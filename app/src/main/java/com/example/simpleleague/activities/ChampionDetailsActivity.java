@@ -34,7 +34,7 @@ public class ChampionDetailsActivity extends AppCompatActivity {
     private ImageView mIvEImage;
     private ImageView mIvRImage;
     private ImageView mIvPImage;
-    private ImageButton ibBack;
+    private ImageButton mIbBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class ChampionDetailsActivity extends AppCompatActivity {
         mIvEImage = findViewById(R.id.ivChampionEImage);
         mIvRImage = findViewById(R.id.ivChampionRImage);
         mIvPImage = findViewById(R.id.ivChampionPImage);
-        ibBack = findViewById(R.id.ibBack);
+        mIbBack = findViewById(R.id.ibBack);
         mChampion = Parcels.unwrap(getIntent().getParcelableExtra(Champion.class.getSimpleName()));
         Glide.with(this).load(mChampion.getImage().getUrl()).placeholder(R.drawable.default_profile_image).centerCrop().into(mIvChampionImage);
         mTvChampionName.setText(mChampion.getName());
@@ -68,7 +68,7 @@ public class ChampionDetailsActivity extends AppCompatActivity {
         Glide.with(this).load(mChampion.getEImageUrl()).centerCrop().into(mIvEImage);
         Glide.with(this).load(mChampion.getRImageUrl()).centerCrop().into(mIvRImage);
         Glide.with(this).load(mChampion.getPImageUrl()).centerCrop().into(mIvPImage);
-        ibBack.setOnClickListener(new View.OnClickListener() {
+        mIbBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

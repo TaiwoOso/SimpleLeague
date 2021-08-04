@@ -4,29 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
-import com.bumptech.glide.Glide;
-import com.example.simpleleague.models.User;
-import com.parse.ParseException;
-import com.parse.ParseFile;
-import com.parse.ParseUser;
-import com.parse.SaveCallback;
-
 import java.io.File;
 import java.io.IOException;
-
-import static android.app.Activity.RESULT_OK;
 
 public class CameraFunctions {
 

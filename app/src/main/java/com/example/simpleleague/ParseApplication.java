@@ -1,15 +1,13 @@
 package com.example.simpleleague;
 
+import android.app.Application;
+
 import com.example.simpleleague.models.Champion;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
-import com.example.simpleleague.models.User;
 import com.parse.Parse;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
-
-import android.app.Application;
 
 public class ParseApplication extends Application {
 

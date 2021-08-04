@@ -38,11 +38,11 @@ public class UserFollowersActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_followers);
+        mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
         mRvFollowers = findViewById(R.id.rvFollowers);
-        mIbBack = findViewById(R.id.ibBack);
         mFollowersUsers = new ArrayList<>();
         mAdapter = new UsersAdapter(this, mFollowersUsers);
-        mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
+        mIbBack = findViewById(R.id.ibBack);
         GridLayoutManager layout = new GridLayoutManager(this, 2);
         mRvFollowers.setAdapter(mAdapter);
         mRvFollowers.setLayoutManager(layout);
@@ -60,7 +60,6 @@ public class UserFollowersActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 
     /**

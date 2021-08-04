@@ -32,7 +32,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     private RecyclerView mRvUserDetails;
     private List<Post> mPosts;
     private ProfileAdapter mAdapter;
-    private ImageButton ibBack;
+    private ImageButton mIbBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         mRvUserDetails = findViewById(R.id.rvUserDetails);
         mPosts = new ArrayList<>();
         mAdapter = new ProfileAdapter(this, mUser, mPosts);
-        ibBack = findViewById(R.id.ibBack);
+        mIbBack = findViewById(R.id.ibBack);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRvUserDetails.setAdapter(mAdapter);
         mRvUserDetails.setLayoutManager(layout);
@@ -54,7 +54,7 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         };
         mRvUserDetails.addOnScrollListener(scrollListener);
-        ibBack.setOnClickListener(new View.OnClickListener() {
+        mIbBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

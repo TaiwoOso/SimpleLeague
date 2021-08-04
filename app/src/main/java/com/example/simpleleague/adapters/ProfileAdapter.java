@@ -179,7 +179,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                 public void onClick(View v) {
                     // Get the photo
                     CameraFunctions.launchCamera(mContext, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
-                    // Main Activity's onActivityResult() takes care of the rest
+                    // MainActivity's onActivityResult() takes care of the rest
                 }
             });
             mCvFollowers.setOnClickListener(new View.OnClickListener() {

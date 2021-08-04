@@ -64,7 +64,6 @@ public class LoginActivity extends AppCompatActivity {
                 signup();
             }
         });
-
     }
 
     @Override

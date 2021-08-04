@@ -2,20 +2,16 @@ package com.example.simpleleague;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.example.simpleleague.activities.EditProfileActivity;
 import com.example.simpleleague.models.Comment;
 import com.example.simpleleague.models.Follow;
 import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.CountCallback;
-import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseQuery;
@@ -23,7 +19,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ParseFunctions {
@@ -367,4 +362,3 @@ public class ParseFunctions {
         });
     }
 }
-

@@ -38,11 +38,11 @@ public class UserFollowingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_following);
+        mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
         mRvFollowing = findViewById(R.id.rvFollowing);
-        mIbBack = findViewById(R.id.ibBack);
         mFollowingUsers = new ArrayList<>();
         mAdapter = new UsersAdapter(this, mFollowingUsers);
-        mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
+        mIbBack = findViewById(R.id.ibBack);
         GridLayoutManager layout = new GridLayoutManager(this, 2);
         mRvFollowing.setAdapter(mAdapter);
         mRvFollowing.setLayoutManager(layout);

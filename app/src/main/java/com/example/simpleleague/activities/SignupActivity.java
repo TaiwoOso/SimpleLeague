@@ -58,13 +58,9 @@ public class SignupActivity extends AppCompatActivity {
         mTvLogIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                login();
+                finish();
             }
         });
-    }
-
-    private void login() {
-        finish();
     }
 
     private void checkPasswords() {
