@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:outlineProvider="none"
     tools:context=".fragments.ProfileFragment">
 
@@ -16,6 +17,7 @@
         android:layout_marginStart="-40dp"
         android:layout_marginTop="28dp"
         android:layout_toEndOf="@id/cvChampionW"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -35,7 +37,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="P" />
+                android:text="P"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tvPName"
@@ -43,6 +46,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="Umbra Blades" />
 
@@ -58,6 +62,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="-40dp"
         android:layout_toStartOf="@+id/cvChampionW"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -77,7 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="R" />
+                android:text="R"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tvRName"
@@ -85,6 +91,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="Paranoia" />
 
@@ -101,6 +108,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="28dp"
         android:layout_toEndOf="@id/cvChampionW"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -120,7 +128,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="E" />
+                android:text="E"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tvEName"
@@ -129,6 +138,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="Unspeakable Horror" />
 
@@ -143,6 +153,7 @@
         android:layout_below="@id/textView10"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="28dp"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -162,7 +173,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="W" />
+                android:text="W"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tvWName"
@@ -171,6 +183,7 @@
                 android:layout_marginStart="5dp"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="Shroud of Darkness" />
 
@@ -186,6 +199,7 @@
         android:layout_marginTop="28dp"
         android:layout_marginEnd="20dp"
         android:layout_toStartOf="@+id/cvChampionW"
+        app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
         <LinearLayout
@@ -205,7 +219,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="Q" />
+                android:text="Q"
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/tvQName"
@@ -213,6 +228,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="Duskbringer" />
 
@@ -228,6 +244,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
         android:textSize="18sp"
         tools:text="Nocturne" />
 
@@ -240,6 +257,7 @@
         android:layout_marginTop="10dp"
         android:text="Abilities"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="@color/white"
         android:textSize="16sp" />
 
     <TextView
@@ -251,6 +269,7 @@
         android:gravity="center_horizontal"
         android:padding="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="@color/white"
         android:textSize="16sp"
         tools:text="A demonic amalgamation drawn from the nightmares that haunt every sentient mind, the thing known as Nocturne has become a primordial force of pure evil. It is liquidly chaotic in aspect, a faceless shadow with cold eyes and armed with wicked-looking blades. After freeing itself from the spirit realm, Nocturne descended upon the waking world, to feed upon the kind of terror that can only thrive in true darkness." />
 

@@ -89,7 +89,7 @@
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/textView19"
         android:layout_alignParentStart="false"
         android:layout_alignParentEnd="false"
@@ -98,8 +98,7 @@
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
+        android:padding="10dp"
         android:textColor="@color/white"
         android:textColorHint="#ACABAB" />
 

@@ -216,7 +216,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#039BE5")));
             } else {
                 mIbtnLike.setTag("NotLiked");
-                mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
             }
             // Change appearance of dislike button
             if (ParseFunctions.userDislikesComment(comment)) {
@@ -224,7 +224,7 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                 mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(mContext.getResources().getColor(R.color.purple_500)));
             } else {
                 mIbtnDislike.setTag("NotDisliked");
-                mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
             }
             listeners(comment);
         }
@@ -252,14 +252,14 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                             int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
                             mTvDislikes.setText(String.valueOf(dislikes));
                             mIbtnDislike.setTag("NotDisliked");
-                            mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                            mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                         }
                     } else {
                         ParseFunctions.removeLikeComment(comment);
                         int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
                         mTvLikes.setText(String.valueOf(likes));
                         mIbtnLike.setTag("NotLiked");
-                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                        mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                     }
                 }
             });
@@ -277,14 +277,14 @@ public class PostsDetailsAdapter extends RecyclerView.Adapter<ViewHolder> {
                             int likes = Integer.parseInt(mTvLikes.getText().toString())-1;
                             mTvLikes.setText(String.valueOf(likes));
                             mIbtnLike.setTag("NotLiked");
-                            mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                            mIbtnLike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                         }
                     } else {
                         ParseFunctions.removeDislikeComment(comment);
                         int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
                         mTvDislikes.setText(String.valueOf(dislikes));
                         mIbtnDislike.setTag("NotDisliked");
-                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                     }
                 }
             });
