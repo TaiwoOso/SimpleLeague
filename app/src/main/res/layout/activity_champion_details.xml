@@ -9,13 +9,43 @@
     tools:context=".fragments.ProfileFragment">
 
 
+    <View
+        android:id="@+id/divider13"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:rotationY="180"
+            android:src="@drawable/ic_arrow"
+            app:tint="@color/white" />
+    </LinearLayout>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvChampionP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cvChampionW"
         android:layout_marginStart="-40dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/cvChampionW"
         app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
@@ -59,7 +89,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/cvChampionW"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="-40dp"
         android:layout_toStartOf="@+id/cvChampionW"
         app:cardBackgroundColor="@color/black"
@@ -106,7 +136,7 @@
         android:layout_below="@id/textView10"
         android:layout_centerHorizontal="false"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         android:layout_toEndOf="@id/cvChampionW"
         app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
@@ -152,7 +182,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/textView10"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         app:cardBackgroundColor="@color/black"
         app:cardElevation="0dp">
 
@@ -196,7 +226,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/textView10"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
         android:layout_toStartOf="@+id/cvChampionW"
         app:cardBackgroundColor="@color/black"
@@ -277,7 +307,8 @@
         android:id="@+id/cvChampionImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/linearLayout"
+        android:layout_alignParentTop="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp">
 

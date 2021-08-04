@@ -9,9 +9,13 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
+import com.example.simpleleague.ParseFunctions;
 import com.example.simpleleague.R;
 import com.example.simpleleague.adapters.PostsDetailsAdapter;
 import com.example.simpleleague.models.Comment;
@@ -19,6 +23,7 @@ import com.example.simpleleague.models.Post;
 import com.example.simpleleague.models.User;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -33,11 +38,13 @@ public class PostDetailsActivity extends AppCompatActivity {
 
     public static final String TAG = "PostDetailsActivity";
 
-    private RecyclerView mRvPostDetails;
     private Post mPost;
+    private RecyclerView mRvPostDetails;
     private List<Comment> mComments;
     private PostsDetailsAdapter mAdapter;
     private EditText mEtComment;
+    private ImageButton mIbBack;
+    private ImageView mIvProfileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +55,9 @@ public class PostDetailsActivity extends AppCompatActivity {
         mComments = new ArrayList<>();
         mAdapter = new PostsDetailsAdapter(this, mPost, mComments);
         mEtComment = findViewById(R.id.etComment);
+        mIbBack = findViewById(R.id.ibBack);
+        mIvProfileImage = findViewById(R.id.ivProfileImage);
+        ParseFunctions.loadProfileImage(mIvProfileImage, this, ParseUser.getCurrentUser());
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRvPostDetails.setAdapter(mAdapter);
         mRvPostDetails.setLayoutManager(layout);
@@ -69,6 +79,12 @@ public class PostDetailsActivity extends AppCompatActivity {
                     return true;
                 }
                 return false;
+            }
+        });
+        mIbBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
     }

@@ -12,7 +12,38 @@
         android:id="@+id/rvFollowers"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/linearLayout"
         android:padding="8dp"
         android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="vertical" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:rotationY="180"
+            android:src="@drawable/ic_arrow"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/divider10"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/white" />
 </RelativeLayout>

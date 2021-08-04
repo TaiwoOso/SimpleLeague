@@ -8,6 +8,36 @@
     tools:context=".activities.PostDetailsActivity">
 
     <View
+        android:id="@+id/divider12"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:background="?android:attr/listDivider"
+        android:backgroundTint="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <ImageButton
+            android:id="@+id/ibBack"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:rotationY="180"
+            android:src="@drawable/ic_arrow"
+            app:tint="@color/white" />
+    </LinearLayout>
+
+    <View
         android:id="@+id/divider9"
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -20,6 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/cvAddComment"
+        android:layout_below="@id/linearLayout"
         android:padding="8dp"
         android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
         android:scrollbars="vertical" />
@@ -34,15 +65,38 @@
         app:cardMaxElevation="50dp"
         app:contentPadding="10dp">
 
-        <EditText
-            android:id="@+id/etComment"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Comment..."
-            android:inputType="textPersonName"
-            android:textColor="@color/white"
-            android:textColorHint="#939191" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cvProfileImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                app:cardCornerRadius="250dp"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/ivProfileImage"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <EditText
+                android:id="@+id/etComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:ems="10"
+                android:hint="Comment..."
+                android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textColorHint="#939191" />
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 

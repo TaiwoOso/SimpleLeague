@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -30,6 +32,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     private RecyclerView mRvUserDetails;
     private List<Post> mPosts;
     private ProfileAdapter mAdapter;
+    private ImageButton ibBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         mRvUserDetails = findViewById(R.id.rvUserDetails);
         mPosts = new ArrayList<>();
         mAdapter = new ProfileAdapter(this, mUser, mPosts);
+        ibBack = findViewById(R.id.ibBack);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRvUserDetails.setAdapter(mAdapter);
         mRvUserDetails.setLayoutManager(layout);
@@ -50,6 +54,12 @@ public class UserDetailsActivity extends AppCompatActivity {
             }
         };
         mRvUserDetails.addOnScrollListener(scrollListener);
+        ibBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**

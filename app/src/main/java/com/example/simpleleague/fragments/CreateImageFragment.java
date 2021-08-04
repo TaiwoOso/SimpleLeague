@@ -86,7 +86,7 @@ public class CreateImageFragment extends CreateTextFragment {
                 Toast.makeText(getContext(), "Posted!", Toast.LENGTH_SHORT).show();
                 mEtTitle.setText("");
                 mImageView.setTag("Empty");
-                Glide.with(getContext()).load(R.drawable.image_placeholder).into(mImageView);
+                Glide.with(getContext()).load("").into(mImageView);
                 mEtTag.setText("");
                 mTvTag1.setText("");
                 mTvTag2.setText("");

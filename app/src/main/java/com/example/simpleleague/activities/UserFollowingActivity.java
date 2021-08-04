@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -30,12 +32,14 @@ public class UserFollowingActivity extends AppCompatActivity {
     private RecyclerView mRvFollowing;
     private List<ParseUser> mFollowingUsers;
     private UsersAdapter mAdapter;
+    private ImageButton mIbBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_following);
         mRvFollowing = findViewById(R.id.rvFollowing);
+        mIbBack = findViewById(R.id.ibBack);
         mFollowingUsers = new ArrayList<>();
         mAdapter = new UsersAdapter(this, mFollowingUsers);
         mUser = ((User) Parcels.unwrap(getIntent().getParcelableExtra(User.class.getSimpleName()))).getParseUser();
@@ -50,6 +54,12 @@ public class UserFollowingActivity extends AppCompatActivity {
             }
         };
         mRvFollowing.addOnScrollListener(scrollListener);
+        mIbBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     /**
