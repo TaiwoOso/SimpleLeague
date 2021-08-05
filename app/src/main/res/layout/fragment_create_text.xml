@@ -8,6 +8,15 @@
     tools:context=".fragments.CreateFragment">
 
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="10dp"
+        android:visibility="gone" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/cvTag1"
         android:layout_width="wrap_content"

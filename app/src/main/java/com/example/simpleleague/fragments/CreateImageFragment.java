@@ -58,6 +58,7 @@ public class CreateImageFragment extends CreateTextFragment {
             Toast.makeText(getContext(), "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
+        mProgressBar.setVisibility(View.VISIBLE);
         Post post = new Post();
         post.setUser(currentUser);
         post.setTitle(title);
@@ -86,6 +87,7 @@ public class CreateImageFragment extends CreateTextFragment {
                 mEtTag.setText("");
                 mTvTag1.setText("");
                 mTvTag2.setText("");
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -37,6 +38,7 @@ public class SearchUsersFragment extends SearchFragment {
     private RecyclerView mRvUsers;
     private List<ParseUser> mUsers;
     private UsersAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -81,6 +83,7 @@ public class SearchUsersFragment extends SearchFragment {
         mRvUsers = view.findViewById(R.id.rvUsers);
         mUsers = new ArrayList<>();
         mAdapter = new UsersAdapter(getContext(), mUsers);
+        mProgressBar = view.findViewById(R.id.progressBar);
         GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         mRvUsers.setAdapter(mAdapter);
         mRvUsers.setLayoutManager(layout);
@@ -115,6 +118,7 @@ public class SearchUsersFragment extends SearchFragment {
      * @param search - tells Parse to show only data with this param
      */
     private void queryUsers(int skips, String search) {
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         query.whereMatches(User.KEY_USERNAME, search, "i");
@@ -131,6 +135,7 @@ public class SearchUsersFragment extends SearchFragment {
                 }
                 mAdapter.addAll(users);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), users.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

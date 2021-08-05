@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -41,6 +42,7 @@ public class InfoFragment extends Fragment {
     private List<Champion> mChampions;
     private ChampionsAdapter mAdapter;
     private SearchView mSvSearch;
+    private ProgressBar mProgressBar;
 
     public InfoFragment() {
         setHasOptionsMenu(true);
@@ -102,6 +104,7 @@ public class InfoFragment extends Fragment {
         GridLayoutManager layout = new GridLayoutManager(getContext(), 2);
         mRvChampions.setAdapter(mAdapter);
         mRvChampions.setLayoutManager(layout);
+        mProgressBar = view.findViewById(R.id.progressBar);
         queryChampions(0, "");
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layout) {
             @Override
@@ -133,6 +136,7 @@ public class InfoFragment extends Fragment {
      * @param search - tells Parse to show only data with this param
      */
     private void queryChampions(int skips, String search) {
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<Champion> query = ParseQuery.getQuery(Champion.class);
         query.whereMatches(Champion.KEY_NAME, search, "i");
@@ -148,6 +152,7 @@ public class InfoFragment extends Fragment {
                 }
                 mAdapter.addAll(champions);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), champions.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

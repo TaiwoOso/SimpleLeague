@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -34,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private RecyclerView mRvProfile;
     private List<Post> mPosts;
     private ProfileAdapter mAdapter;
+    private ProgressBar mProgressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -47,6 +49,7 @@ public class ProfileFragment extends Fragment {
         mRvProfile = view.findViewById(R.id.rvProfile);
         mPosts = new ArrayList<>();
         mAdapter = new ProfileAdapter(getContext(), mCurrentUser, mPosts);
+        mProgressBar = view.findViewById(R.id.progressBar);
         LinearLayoutManager layout = new LinearLayoutManager(getContext());
         mRvProfile.setAdapter(mAdapter);
         mRvProfile.setLayoutManager(layout);
@@ -78,6 +81,7 @@ public class ProfileFragment extends Fragment {
      * @param skips - tells Parse how much data to skip
      */
     private void queryPosts(int skips) {
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.whereEqualTo(Post.KEY_USER, mCurrentUser);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -93,6 +97,7 @@ public class ProfileFragment extends Fragment {
                 }
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

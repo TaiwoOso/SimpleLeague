@@ -7,6 +7,15 @@
     android:background="@color/black"
     tools:context=".fragments.CreateVideoFragment">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:elevation="10dp"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/rlVideoView"
         android:layout_width="wrap_content"

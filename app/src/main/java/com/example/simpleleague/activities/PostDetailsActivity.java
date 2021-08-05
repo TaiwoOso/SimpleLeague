@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -43,6 +44,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private EditText mEtComment;
     private ImageButton mIbBack;
     private ImageView mIvProfileImage;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +57,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         mEtComment = findViewById(R.id.etComment);
         mIbBack = findViewById(R.id.ibBack);
         mIvProfileImage = findViewById(R.id.ivProfileImage);
+        mProgressBar = findViewById(R.id.progressBar);
         ParseFunctions.loadProfileImage(mIvProfileImage, this, ParseUser.getCurrentUser());
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRvPostDetails.setAdapter(mAdapter);
@@ -94,6 +97,7 @@ public class PostDetailsActivity extends AppCompatActivity {
      * @param skips - tells Parse how much data to skip
      */
     private void queryPostDetails(int skips) {
+        mProgressBar.setVisibility(View.VISIBLE);
         List<String> commentsIds = mPost.getComments();
         if (commentsIds == null) {
             commentsIds = new ArrayList<>();
@@ -114,6 +118,7 @@ public class PostDetailsActivity extends AppCompatActivity {
                 Collections.sort(comments);
                 mAdapter.addAll(comments);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), comments.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

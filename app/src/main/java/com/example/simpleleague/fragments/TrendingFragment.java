@@ -44,6 +44,7 @@ public class TrendingFragment extends FeedFragment {
      */
     @Override
     public void queryPosts(int skips) {
+        mProgressBar.setVisibility(View.VISIBLE);
         List<String> userTags = (List<String>) mCurrentUser.get(User.KEY_TAGS);
         if (userTags == null) {
             queryPostsNullTags(skips);
@@ -74,6 +75,7 @@ public class TrendingFragment extends FeedFragment {
                 Collections.sort(posts);
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -101,6 +103,7 @@ public class TrendingFragment extends FeedFragment {
                 Collections.sort(posts);
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -128,6 +131,7 @@ public class TrendingFragment extends FeedFragment {
                 Collections.sort(posts);
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

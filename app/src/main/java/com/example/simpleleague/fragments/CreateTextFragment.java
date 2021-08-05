@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ public class CreateTextFragment extends Fragment {
     public EditText mEtTag;
     public TextView mTvTag1;
     public TextView mTvTag2;
+    public ProgressBar mProgressBar;
 
     private EditText mEtBody;
     private Button mBtnPost;
@@ -51,6 +53,7 @@ public class CreateTextFragment extends Fragment {
         mEtTag = view.findViewById(R.id.etTag);
         mTvTag1 = view.findViewById(R.id.tvTag1);
         mTvTag2 = view.findViewById(R.id.tvTag2);
+        mProgressBar = view.findViewById(R.id.progressBar);
         mIbtnAddTag = view.findViewById(R.id.ibtnAddTag);
         mIbtnAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,6 +96,7 @@ public class CreateTextFragment extends Fragment {
             Toast.makeText(getContext(), "Fields cannot be empty!", Toast.LENGTH_SHORT).show();
             return;
         }
+        mProgressBar.setVisibility(View.VISIBLE);
         Post post = new Post();
         post.setUser(currentUser);
         post.setTitle(title.trim());
@@ -120,6 +124,7 @@ public class CreateTextFragment extends Fragment {
                 mEtTag.setText("");
                 mTvTag1.setText("");
                 mTvTag2.setText("");
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

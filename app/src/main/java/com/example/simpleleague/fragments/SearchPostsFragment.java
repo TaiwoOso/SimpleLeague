@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -37,6 +38,7 @@ public class SearchPostsFragment extends SearchFragment {
     private RecyclerView mRvPosts;
     private PostsAdapter mAdapter;
     private List<Post> mPosts;
+    private ProgressBar mProgressBar;
 
     @Override
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
@@ -81,6 +83,7 @@ public class SearchPostsFragment extends SearchFragment {
         mRvPosts = view.findViewById(R.id.rvPosts);
         mPosts = new ArrayList<Post>();
         mAdapter = new PostsAdapter(getContext(), mPosts);
+        mProgressBar = view.findViewById(R.id.progressBar);
         LinearLayoutManager layout = new LinearLayoutManager(getContext());
         mRvPosts.setAdapter(mAdapter);
         mRvPosts.setLayoutManager(layout);
@@ -115,6 +118,7 @@ public class SearchPostsFragment extends SearchFragment {
      * @param search - tells Parse to show only data with this param
      */
     private void queryPosts(int skips, String search) {
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseUser currentUser = ParseUser.getCurrentUser();
         ParseQuery<Post> titleQuery = ParseQuery.getQuery(Post.class);
         titleQuery.whereMatches(Post.KEY_TITLE, search, "i");
@@ -137,6 +141,7 @@ public class SearchPostsFragment extends SearchFragment {
                 }
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }

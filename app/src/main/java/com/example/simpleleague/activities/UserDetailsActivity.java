@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import com.example.simpleleague.EndlessRecyclerViewScrollListener;
 import com.example.simpleleague.R;
@@ -33,6 +34,7 @@ public class UserDetailsActivity extends AppCompatActivity {
     private List<Post> mPosts;
     private ProfileAdapter mAdapter;
     private ImageButton mIbBack;
+    private ProgressBar mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,7 @@ public class UserDetailsActivity extends AppCompatActivity {
         mPosts = new ArrayList<>();
         mAdapter = new ProfileAdapter(this, mUser, mPosts);
         mIbBack = findViewById(R.id.ibBack);
+        mProgressBar = findViewById(R.id.progressBar);
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRvUserDetails.setAdapter(mAdapter);
         mRvUserDetails.setLayoutManager(layout);
@@ -67,6 +70,7 @@ public class UserDetailsActivity extends AppCompatActivity {
      * @param skips - tells Parse how much data to skip
      */
     private void queryUserPosts(int skips) {
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
         query.whereEqualTo(Post.KEY_USER, mUser);
         query.addDescendingOrder(Post.KEY_CREATED_AT);
@@ -82,6 +86,7 @@ public class UserDetailsActivity extends AppCompatActivity {
                 }
                 mAdapter.addAll(posts);
                 mAdapter.notifyItemRangeInserted(mAdapter.getItemCount(), posts.size());
+                mProgressBar.setVisibility(View.GONE);
             }
         });
     }
