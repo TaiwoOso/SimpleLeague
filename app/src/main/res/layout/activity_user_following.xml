@@ -8,6 +8,16 @@
     android:outlineProvider="none"
     tools:context=".fragments.ProfileFragment">
 
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:text="Following"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyle"

@@ -24,7 +24,9 @@
         android:layout_below="@id/linearLayout"
         android:padding="8dp"
         android:scrollbarThumbVertical="@drawable/scrollbar_vertical_thumb"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical" >
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -44,6 +46,7 @@
             android:rotationY="180"
             android:src="@drawable/ic_arrow"
             app:tint="@color/white" />
+
     </LinearLayout>
 
     <View
@@ -55,4 +58,13 @@
         android:layout_alignParentTop="false"
         android:background="?android:attr/listDivider"
         android:backgroundTint="@color/white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:text="Followers"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold" />
 </RelativeLayout>

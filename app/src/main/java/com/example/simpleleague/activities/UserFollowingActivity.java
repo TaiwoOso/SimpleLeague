@@ -70,11 +70,11 @@ public class UserFollowingActivity extends AppCompatActivity {
      * @param skips - tells Parse how much data to skip
      */
     private void queryFollowing(int skips) {
-        mProgressBar.setVisibility(View.VISIBLE);
         Follow follow = (Follow) mUser.get(User.KEY_FOLLOW);
         if (follow == null) return;
         List<String> followingIds = follow.getFollowing();
         if (followingIds == null) return;
+        mProgressBar.setVisibility(View.VISIBLE);
         ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
         query.whereContainedIn(ParseUser.KEY_OBJECT_ID, followingIds);
         query.setLimit(20);

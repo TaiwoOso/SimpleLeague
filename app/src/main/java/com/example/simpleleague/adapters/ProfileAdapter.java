@@ -274,7 +274,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ViewHolder> {
                         int dislikes = Integer.parseInt(mTvDislikes.getText().toString())-1;
                         mTvDislikes.setText(String.valueOf(dislikes));
                         mIbtnDislike.setTag("NotDisliked");
-                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.BLACK));
+                        mIbtnDislike.setBackgroundTintList(ColorStateList.valueOf(Color.WHITE));
                     }
                 }
             }

@@ -65,7 +65,7 @@ public class CreateVideoFragment extends CreateTextFragment {
         mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_play_button);
+                mIbtnPlayVideo.setBackgroundResource(R.drawable.ic_replay_button);
             }
         });
     }
