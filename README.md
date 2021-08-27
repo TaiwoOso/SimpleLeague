@@ -9,6 +9,7 @@
 ## Overview
 ### Description
 SimpleLeague is an application centered primarily around the popular MMO, League of Legends. In this application, users can view a wide variety of information about the game such as champions, abilities, lores and objectives. The users of this application also have the option of creating an account to view posts by other users and create their own. This application aims to create a community around this popular MMO that can be accessed on the go, at home, or wherever there is internet and a mobile device.
+Link: https://www.youtube.com/watch?v=SAZ-aiFUlB8
 
 
 ### App Evaluation
